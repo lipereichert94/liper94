@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FirebaseAutenticacao</string>
+    <string name="facebook_app_id">1756311187738014</string>
+    <string name="fb_login_protocol_scheme">fb1756311187738014</string>
+
+
+    <string name="facebook_application_id" translatable="false">1756311187738014</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1756311187738014</string>
+
+
 </resources>

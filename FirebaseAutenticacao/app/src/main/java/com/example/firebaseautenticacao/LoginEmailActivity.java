@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,12 +48,59 @@ public class LoginEmailActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.RecuperarSenhaLogin:
+                recuperarSenha();
 
                 break;
 
 
         }
     }
+
+    private void recuperarSenha(){
+
+        String email = editText_Email.getText().toString().trim();
+
+        if (email.isEmpty()){
+
+            Toast.makeText(getBaseContext(),"Insira pelo menos seu e-mail para poder Recuperar sua senha", Toast.LENGTH_LONG).show();
+
+
+        }else{
+
+
+            enviarEmail(email);
+        }
+
+    }
+    private void  enviarEmail(String email){
+
+
+
+        auth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                Toast.makeText(getBaseContext(),"Enviamos uma MSG para o seu email com um link para você redefinir a sua senha",
+                        Toast.LENGTH_LONG).show();
+
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+
+                String erro = e.toString();
+
+                Util.opcoesErro(getBaseContext(),erro);
+
+
+            }
+        });
+
+
+    }
+
 
     private void loginEmail(){
 
