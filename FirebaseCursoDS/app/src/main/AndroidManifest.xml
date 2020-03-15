@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.firebaseautenticacao">
-    <uses-permission android:name="android.permission.INTERNET" />
+    package="com.example.firebasecursods">
 
     <application
         android:allowBackup="true"
@@ -10,10 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Abertura"></activity>
-        <activity android:name=".PrincipalActivity" />
-        <activity android:name=".LoginEmailActivity" />
-        <activity android:name=".CadastrarActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,8 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
-
 
 </manifest>
