@@ -2,30 +2,66 @@ package com.example.firebasecursods.Util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.widget.Toast;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Util {
 
-    public static boolean verificarInternet(Context context){
+    public static boolean statusInternet(Context context) {
+
+        boolean status = false;
+        ConnectivityManager conexao = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (conexao != null){
+
+            // PARA DISPOSTIVOS NOVOS
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                NetworkCapabilities recursosRede = conexao.getNetworkCapabilities(conexao.getActiveNetwork());
+
+                if (recursosRede != null) {//VERIFICAMOS SE RECUPERAMOS ALGO
+
+                    if (recursosRede.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+
+                        //VERIFICAMOS SE DISPOSITIVO TEM 3G
+                        return true;
+
+                    }
+                    else if (recursosRede.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+
+                        //VERIFICAMOS SE DISPOSITIVO TEM WIFFI
+                        return true;
+
+                    }
+
+                    //NÃO POSSUI UMA CONEXAO DE REDE VÁLIDA
+
+                    return false;
+
+                }
+
+            } else {//COMECO DO ELSE
+
+                // PARA DISPOSTIVOS ANTIGOS  (PRECAUÇÃO)         MESMO CODIGO
+                NetworkInfo informacao = conexao.getActiveNetworkInfo();
 
 
-        ConnectivityManager conexao = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo informacao = conexao.getActiveNetworkInfo();
+                if (informacao != null && informacao.isConnected()) {
+                    status = true;
+                } else
+                    status = false;
 
+                return status;
 
-        if ( informacao != null && informacao.isConnected()){
-
-            return true;
-
-        }else{
-
-            return false;
+            }//FIM DO ELSE
         }
 
 
+
+        return false;
     }
 
     public static boolean verificarCampos(Context context, String texto_1, String texto_2){
@@ -33,7 +69,7 @@ public class Util {
 
         if( !texto_1.isEmpty() && !texto_2.isEmpty()){
 
-            if( verificarInternet(context)){
+            if( statusInternet(context)){
 
                 return true;
 

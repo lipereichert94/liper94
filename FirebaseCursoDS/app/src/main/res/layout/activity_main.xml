@@ -21,7 +21,7 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:gravity="center"
-           android:text="Storage Download"
+           android:text="Storage Download"></TextView>
 
    </androidx.cardview.widget.CardView>
 
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Storage Upload"
+            android:text="Storage Upload"></TextView>
 
     </androidx.cardview.widget.CardView>
 
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Database - Ler Dados"
+            android:text="Database - Ler Dados"></TextView>
 
     </androidx.cardview.widget.CardView>
 
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Database - Gravar - Alterar - Excluir"
+            android:text="Database - Gravar - Alterar - Excluir"></TextView>
 
     </androidx.cardview.widget.CardView>
 
@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Empresas"
+            android:text="Empresas"></TextView>
 
     </androidx.cardview.widget.CardView>
 
