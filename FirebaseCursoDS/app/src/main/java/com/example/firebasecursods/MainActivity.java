@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.firebasecursods.Util.Permissao;
+import com.example.firebasecursods.database.DatabaseLerDadosActivity;
 import com.example.firebasecursods.storage.StorageDownloadActivity;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
@@ -62,8 +63,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
             case R.id.cardView_Database_LerDados:
                 //ir para activity de lerdados
-                Toast.makeText(this,"Cardview lerdados",Toast.LENGTH_LONG).show();
+                Intent intent2 = new Intent(getBaseContext(), DatabaseLerDadosActivity.class);
 
+                startActivity(intent2);
                 break;
 
             case R.id.cardView_Database_GravarAlterarExcluirDados:
