@@ -227,7 +227,7 @@ public class DatabaseLerDadosActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-
+        ouvinte_2();
         ouvinte_3();
     }
 

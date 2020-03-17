@@ -348,7 +348,7 @@ public class StorageDownloadActivity extends AppCompatActivity implements View.O
     private void remover_imagem_1(){
 
 
-        String url = "https://firebasestorage.googleapis.com/v0/b/fir-cursods.appspot.com/o/imagem%2Fjafapps.png?alt=media&token=0c4f290f-e99a-4443-ac70-ba0a47ea82ac";
+        String url = "https://firebasestorage.googleapis.com/v0/b/fir-cursods-a4679.appspot.com/o/imagem%2Flogin_google.png?alt=media&token=edb94d39-59f5-4a31-b104-3ca154ba91da";
 
 
         StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
@@ -384,7 +384,7 @@ public class StorageDownloadActivity extends AppCompatActivity implements View.O
 
     private void remover_imagem_2(){
 
-        String nome = "jafapps.png";
+        String nome = "login_google.png";
 
 
         StorageReference reference = storage.getReference().child("imagem").child(nome);

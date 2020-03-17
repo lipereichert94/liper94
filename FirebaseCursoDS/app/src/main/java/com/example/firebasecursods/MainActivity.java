@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.firebasecursods.Util.Permissao;
+import com.example.firebasecursods.database.DatabaseGravarAlterarRemoverActivity;
 import com.example.firebasecursods.database.DatabaseLerDadosActivity;
 import com.example.firebasecursods.storage.StorageDownloadActivity;
 
@@ -70,8 +71,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
             case R.id.cardView_Database_GravarAlterarExcluirDados:
                 //ir para activity de gravar alterar excluir
-                Toast.makeText(this,"Cardview CRUD",Toast.LENGTH_LONG).show();
+                Intent intent3 = new Intent(getBaseContext(), DatabaseGravarAlterarRemoverActivity.class);
 
+                startActivity(intent3);
 
                 break;
 
