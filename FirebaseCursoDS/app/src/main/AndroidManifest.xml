@@ -14,25 +14,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".storage.StorageDownloadActivity"></activity>
-        <activity android:name=".database.DatabaseLerDadosActivity"></activity>
-        <activity android:name=".database.DatabaseGravarAlterarRemoverActivity"></activity>
-        <activity android:name=".storage.StorageUploadActivity"></activity>
-        <activity android:name=".database_lista_empresa.DatabaseListaEmpresaActivity"></activity>
-        <activity android:name=".database_lista_funcionario.DatabaseListaFuncionarioActivity"></activity>
-        <activity android:name=".database_lista_funcionario.DatabaseListaFuncionarioDadosActivity"></activity>
-        <activity android:name=".database_lista__funcionario_offline.DatabaseListaFuncionarioActivityOffLine"></activity>
-        <activity android:name=".database_lista__funcionario_offline.DatabaseListaFuncionarioDadosActivityOffLine"></activity>
+        <activity android:name=".database.DatabaseListaGerenteActivity"></activity>
+        <activity android:name=".storage.StorageDownloadActivity" />
+        <activity android:name=".database.DatabaseLerDadosActivity" />
+        <activity android:name=".database.DatabaseGravarAlterarRemoverActivity" />
+        <activity android:name=".storage.StorageUploadActivity" />
+        <activity android:name=".database_lista_empresa.DatabaseListaEmpresaActivity" />
+        <activity android:name=".database_lista_funcionario.DatabaseListaFuncionarioActivity" />
+        <activity android:name=".database_lista_funcionario.DatabaseListaFuncionarioDadosActivity" />
+        <activity android:name=".database.DatabaseListaGerenteDadosActivity" />
 
         <activity android:name=".MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -43,7 +41,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider" />
         </provider>
-
     </application>
 
 </manifest>

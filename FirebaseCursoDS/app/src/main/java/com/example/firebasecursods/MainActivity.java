@@ -14,7 +14,7 @@ import androidx.cardview.widget.CardView;
 import com.example.firebasecursods.Util.Permissao;
 import com.example.firebasecursods.database.DatabaseGravarAlterarRemoverActivity;
 import com.example.firebasecursods.database.DatabaseLerDadosActivity;
-import com.example.firebasecursods.database_lista__funcionario_offline.DatabaseListaFuncionarioActivityOffLine;
+import com.example.firebasecursods.database.DatabaseListaGerenteActivity;
 import com.example.firebasecursods.database_lista_empresa.DatabaseListaEmpresaActivity;
 import com.example.firebasecursods.storage.StorageDownloadActivity;
 import com.example.firebasecursods.storage.StorageUploadActivity;
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 break;
             case R.id.cardView_Empresas_ModoOffline:
                 //ir para activity de empresas
-                Intent intent6 = new Intent(getBaseContext(), DatabaseListaFuncionarioActivityOffLine.class);
+                Intent intent6 = new Intent(getBaseContext(), DatabaseListaGerenteActivity.class);
 
                 startActivity(intent6);
                 break;

@@ -221,7 +221,7 @@ public class DatabaseGravarAlterarRemoverActivity extends AppCompatActivity impl
         DatabaseReference reference = database.getReference().child("BD").child("Gerentes");
 
 
-        Gerente gerente = new Gerente(nome,idade,false);
+        Gerente gerente = new Gerente(nome,idade);
 
 
         reference.push().setValue(gerente).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -265,7 +265,7 @@ public class DatabaseGravarAlterarRemoverActivity extends AppCompatActivity impl
             DatabaseReference reference = database.getReference().child("BD").child("Gerentes");
 
 
-            Gerente gerente = new Gerente(nome,idade,false);
+            Gerente gerente = new Gerente(nome,idade);
 
 
             Map<String, Object> atualizacao = new HashMap<>();

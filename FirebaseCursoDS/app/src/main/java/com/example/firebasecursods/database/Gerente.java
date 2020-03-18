@@ -1,29 +1,24 @@
 package com.example.firebasecursods.database;
 
-import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Gerente {
 
 
+public class Gerente implements Parcelable {
+
+    private String id;
     private String nome;
     private int idade;
-    private boolean fumante;
-    private List<String> contatos;
 
-
-
-    public Gerente(){
-
+    public Gerente() {
     }
 
-
-    public Gerente(String nome, int idade, boolean fumante) {
+    public Gerente( String nome, int idade ) {
         this.nome = nome;
         this.idade = idade;
-        this.fumante = fumante;
+
     }
-
-
 
     public String getNome() {
         return nome;
@@ -41,19 +36,46 @@ public class Gerente {
         this.idade = idade;
     }
 
-    public boolean isFumante() {
-        return fumante;
+
+
+    public String getId() {
+        return id;
     }
 
-    public void setFumante(boolean fumante) {
-        this.fumante = fumante;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public List<String> getContatos() {
-        return contatos;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setContatos(List<String> contatos) {
-        this.contatos = contatos;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.nome);
+        dest.writeInt(this.idade);
+
     }
+
+    protected Gerente(Parcel in) {
+        this.id = in.readString();
+        this.nome = in.readString();
+        this.idade = in.readInt();
+
+    }
+
+    public static final Parcelable.Creator<Gerente> CREATOR = new Parcelable.Creator<Gerente>() {
+        @Override
+        public Gerente createFromParcel(Parcel source) {
+            return new Gerente(source);
+        }
+
+        @Override
+        public Gerente[] newArray(int size) {
+            return new Gerente[size];
+        }
+    };
+
 }

@@ -88,11 +88,9 @@ public class DatabaseLerDadosActivity extends AppCompatActivity {
 
                 textView_Nome.setText(gerentes.get(0).getNome());
                 textView_Idade.setText(gerentes.get(0).getIdade()+"");
-                textView_Fumante.setText(gerentes.get(0).isFumante()+"");
 
                 textView_Nome_2.setText(gerentes.get(1).getNome());
                 textView_Idade_2.setText(gerentes.get(1).getIdade()+"");
-                textView_Fumante_2.setText(gerentes.get(1).isFumante()+"");
 
             }
 
@@ -136,11 +134,9 @@ public class DatabaseLerDadosActivity extends AppCompatActivity {
 
                 textView_Nome.setText(gerentes.get(0).getNome());
                 textView_Idade.setText(gerentes.get(0).getIdade()+"");
-                textView_Fumante.setText(gerentes.get(0).isFumante()+"");
 
                 textView_Nome_2.setText(gerentes.get(1).getNome());
                 textView_Idade_2.setText(gerentes.get(1).getIdade()+"");
-                textView_Fumante_2.setText(gerentes.get(1).isFumante()+"");
 
 
 
