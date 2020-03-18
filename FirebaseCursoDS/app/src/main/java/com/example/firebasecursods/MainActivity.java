@@ -1,9 +1,5 @@
 package com.example.firebasecursods;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,10 +7,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import com.example.firebasecursods.Util.Permissao;
 import com.example.firebasecursods.database.DatabaseGravarAlterarRemoverActivity;
 import com.example.firebasecursods.database.DatabaseLerDadosActivity;
+import com.example.firebasecursods.database_lista__funcionario_offline.DatabaseListaFuncionarioActivityOffLine;
+import com.example.firebasecursods.database_lista_empresa.DatabaseListaEmpresaActivity;
 import com.example.firebasecursods.storage.StorageDownloadActivity;
+import com.example.firebasecursods.storage.StorageUploadActivity;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
 
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private CardView cardView_Database_LerDados;
     private CardView cardView_Database_GravarAlterarExcluir;
     private CardView cardView_Empresas;
+    private CardView CardView_Empresas_Offline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +38,14 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         cardView_Database_LerDados = (CardView)findViewById(R.id.cardView_Database_LerDados);
         cardView_Storage_Upload = (CardView)findViewById(R.id.cardView_Storage_Upload);
         cardView_Empresas = (CardView)findViewById(R.id.cardView_Empresas);
+        CardView_Empresas_Offline = (CardView)findViewById(R.id.cardView_Empresas_ModoOffline);
 
         cardView_Empresas.setOnClickListener(this);
         cardView_Storage_Download.setOnClickListener(this);
         cardView_Database_GravarAlterarExcluir.setOnClickListener(this);
         cardView_Storage_Upload.setOnClickListener(this);
         cardView_Database_LerDados.setOnClickListener(this);
+        CardView_Empresas_Offline.setOnClickListener(this);
 
         permissao();
     }
@@ -58,8 +64,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
             case R.id.cardView_Storage_Upload:
                 //ir para activity de upload
-                Toast.makeText(this,"Cardview upload",Toast.LENGTH_LONG).show();
+                Intent intent4 = new Intent(getBaseContext(), StorageUploadActivity.class);
 
+                startActivity(intent4);
                 break;
 
             case R.id.cardView_Database_LerDados:
@@ -79,10 +86,16 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
             case R.id.cardView_Empresas:
                 //ir para activity de empresas
-                Toast.makeText(this,"Cardview Empresas",Toast.LENGTH_LONG).show();
+                Intent intent5 = new Intent(getBaseContext(), DatabaseListaEmpresaActivity.class);
 
+                startActivity(intent5);
                 break;
+            case R.id.cardView_Empresas_ModoOffline:
+                //ir para activity de empresas
+                Intent intent6 = new Intent(getBaseContext(), DatabaseListaFuncionarioActivityOffLine.class);
 
+                startActivity(intent6);
+                break;
 
         }
     }

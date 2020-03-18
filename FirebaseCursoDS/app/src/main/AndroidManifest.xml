@@ -17,7 +17,12 @@
         <activity android:name=".storage.StorageDownloadActivity"></activity>
         <activity android:name=".database.DatabaseLerDadosActivity"></activity>
         <activity android:name=".database.DatabaseGravarAlterarRemoverActivity"></activity>
-
+        <activity android:name=".storage.StorageUploadActivity"></activity>
+        <activity android:name=".database_lista_empresa.DatabaseListaEmpresaActivity"></activity>
+        <activity android:name=".database_lista_funcionario.DatabaseListaFuncionarioActivity"></activity>
+        <activity android:name=".database_lista_funcionario.DatabaseListaFuncionarioDadosActivity"></activity>
+        <activity android:name=".database_lista__funcionario_offline.DatabaseListaFuncionarioActivityOffLine"></activity>
+        <activity android:name=".database_lista__funcionario_offline.DatabaseListaFuncionarioDadosActivityOffLine"></activity>
 
         <activity android:name=".MainActivity">
 

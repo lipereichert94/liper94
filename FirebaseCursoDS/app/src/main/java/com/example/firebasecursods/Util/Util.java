@@ -75,7 +75,7 @@ public class Util {
 
             }else{
 
-                Toast.makeText(context,"Sem conexão com a Internet",Toast.LENGTH_LONG).show();
+               // Toast.makeText(context,"Sem conexão com a Internet",Toast.LENGTH_LONG).show();
 
                 return true;
             }
