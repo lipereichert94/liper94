@@ -78,10 +78,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_primeira_tela) {
 
-            ft.replace(R.id.conteudo_fragmento, new FragmentoPrimeiraTela());
+            ft.replace(R.id.conteudo_fragmento, new Lista_Usuario());
             ft.commit();
         } else if (id == R.id.nav_segunda_tela) {
-            ft.replace(R.id.conteudo_fragmento, new FragmentoSegundaTela());
+            ft.replace(R.id.conteudo_fragmento, new Lista_Usuario());
             ft.commit();
         } else if (id == R.id.nav_cadastro_usuario) {
             ft.replace(R.id.conteudo_fragmento, new Cadastro_Usuario());

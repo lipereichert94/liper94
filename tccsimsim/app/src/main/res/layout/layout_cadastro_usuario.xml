@@ -7,7 +7,16 @@
     android:gravity="center"
     android:padding="10dp"
     >
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome*"/>
+    <EditText
+        android:id="@+id/editText_NomeCadastro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insira o nome"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

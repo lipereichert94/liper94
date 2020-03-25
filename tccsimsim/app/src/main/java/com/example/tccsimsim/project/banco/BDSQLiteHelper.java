@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.projeto3.model.DayTrade;
 import com.example.tccsimsim.project.model.Usuario;
 
 import java.util.ArrayList;
@@ -45,25 +44,25 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS usuario");
         this.onCreate(db);
     }
-    public void limpatabela(){
+    public void limpatabela(String tabela){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABELA_USUARIO);
+        db.execSQL("DELETE FROM "+tabela);
         db.close();
     }
 
     public void addUsuario(Usuario user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DATA, dt.getData());
-        values.put(VALOR, new Integer(dt.getValor()));
-        values.put(CONTRATO, new Integer(dt.getContrato()));
-        db.insert(TABELA_DAYTRADE, null, values);
+        values.put(NOME, user.getNome());
+        values.put(LOGIN, user.getLogin());
+        values.put(SENHA, user.getSenha());
+        db.insert(TABELA_USUARIO, null, values);
         db.close();
     }
 
-    public DayTrade getDayTrade(int id) {
+    public Usuario getUsuario(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABELA_DAYTRADE, // a. tabela
+        Cursor cursor = db.query(TABELA_USUARIO, // a. tabela
                 COLUNAS, // b. colunas
                 " id = ?", // c. colunas para comparar
                 new String[] { String.valueOf(id) }, // d. parâmetros
@@ -75,57 +74,74 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
             return null;
         } else {
             cursor.moveToFirst();
-            DayTrade dt = cursorToDayTrade(cursor);
-            return dt;
+            Usuario user = cursorToUsuario(cursor);
+            return user;
         }
     }
-
-    private DayTrade cursorToDayTrade(Cursor cursor) {
-        DayTrade dt = new DayTrade();
-        dt.setId(Integer.parseInt(cursor.getString(0)));
-        dt.setData(cursor.getString(1));
-        dt.setValor(Integer.parseInt(cursor.getString(2)));
-        dt.setContrato(Integer.parseInt(cursor.getString(3)));
-        dt.setObs(cursor.getString(4));
-        dt.setFoto(cursor.getString(5));
-        return dt;
+    public Usuario login(String login) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_USUARIO, // a. tabela
+                COLUNAS, // b. colunas
+                " nome = ?", // c. colunas para comparar
+                new String[] { String.valueOf(login) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            return null;
+        } else {
+            if(cursor.getCount() != 0) {
+                cursor.moveToFirst();
+                Usuario user = cursorToUsuario(cursor);
+                return user;
+            }else{
+                return null;
+            }
+        }
+    }
+    private Usuario cursorToUsuario(Cursor cursor) {
+        Usuario user = new Usuario();
+        user.setId(Integer.parseInt(cursor.getString(0)));
+        user.setNome(cursor.getString(1));
+        user.setLogin(cursor.getString(2));
+        user.setSenha(cursor.getString(3));
+        return user;
     }
 
-    public ArrayList<DayTrade> getAllDayTrades() {
-        ArrayList<DayTrade> listaDayTrade = new ArrayList<DayTrade>();
-        String query = "SELECT * FROM " + TABELA_DAYTRADE;
+    public ArrayList<Usuario> getAllUsuarios() {
+        ArrayList<Usuario> listaUsuario = new ArrayList<Usuario>();
+        String query = "SELECT * FROM " + TABELA_USUARIO;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
-                DayTrade dt = cursorToDayTrade(cursor);
-                listaDayTrade.add(dt);
+                Usuario user = cursorToUsuario(cursor);
+                listaUsuario.add(user);
             } while (cursor.moveToNext());
         }
-        return listaDayTrade;
+        return listaUsuario;
     }
 
-    public int updateDayTrade(DayTrade dt) {
+    public int updateUsuario(Usuario user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DATA, dt.getData());
-        values.put(VALOR, new Integer(dt.getValor()));
-        values.put(CONTRATO, new Integer(dt.getContrato()));
-        values.put(OBS, dt.getObs());
-        values.put(FOTO,dt.getFoto());
-        int i = db.update(TABELA_DAYTRADE, //tabela
+        values.put(NOME, user.getNome());
+        values.put(LOGIN, user.getLogin());
+        values.put(SENHA, user.getSenha());
+        int i = db.update(TABELA_USUARIO, //tabela
                 values, // valores
                 ID+" = ?", // colunas para comparar
-                new String[] { String.valueOf(dt.getId()) }); //parâmetros
+                new String[] { String.valueOf(user.getId()) }); //parâmetros
         db.close();
         return i; // número de linhas modificadas
     }
 
-    public int deleteDayTrade(DayTrade dt) {
+    public int deleteUsuario(Usuario user) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int i = db.delete(TABELA_DAYTRADE, //tabela
+        int i = db.delete(TABELA_USUARIO, //tabela
                 ID+" = ?", // colunas para comparar
-                new String[] { String.valueOf(dt.getId()) }); //parâmetros
+                new String[] { String.valueOf(user.getId()) }); //parâmetros
         db.close();
         return i; // número de linhas excluídas
     }
