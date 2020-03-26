@@ -6,11 +6,11 @@
             android:id="@+id/nav_primeira_tela"
             android:title="Cadastrar DayTrade" />
         <item
-            android:id="@+id/nav_segunda_tela"
-            android:title="Visualizar DayTrade" />
+            android:id="@+id/nav_estabelecimentos"
+            android:title="Estabelecimentos" />
         <item
-            android:id="@+id/nav_cadastro_usuario"
-            android:title="Cadastrar Usuario" />
+            android:id="@+id/nav_usuarios"
+            android:title="Usuários" />
     </group>
 
 </menu>

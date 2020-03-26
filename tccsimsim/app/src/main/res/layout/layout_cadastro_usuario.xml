@@ -50,10 +50,17 @@
         android:inputType="textPassword"
         android:hint="Repita sua senha"/>
     <Button
-        android:id="@+id/button_CadastrarUsuario"
+        android:id="@+id/button_SalvarUsuario"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Cadastrar"
+        android:text="Salvar"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_removerUsuario"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Limpar"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button

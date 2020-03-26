@@ -66,6 +66,8 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     private void confirmarLogin(String login, String senha) {
         String parametro = "' "+login+" '%";
         Usuario user = bd.login(login);
+        startActivity(new Intent(getBaseContext(),MainActivity.class));
+
         if(user==null){
             Toast.makeText(getBaseContext(),"Usuário não encontrado", Toast.LENGTH_LONG).show();
         }

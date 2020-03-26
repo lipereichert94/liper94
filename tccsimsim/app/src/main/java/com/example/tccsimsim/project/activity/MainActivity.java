@@ -39,12 +39,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        FragmentManager fm = this.getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());
+        ft.commit();
     }
 
     @Override
@@ -80,11 +78,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             ft.replace(R.id.conteudo_fragmento, new Lista_Usuario());
             ft.commit();
-        } else if (id == R.id.nav_segunda_tela) {
-            ft.replace(R.id.conteudo_fragmento, new Lista_Usuario());
+        } else if (id == R.id.nav_estabelecimentos) {
+            ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());
             ft.commit();
-        } else if (id == R.id.nav_cadastro_usuario) {
-            ft.replace(R.id.conteudo_fragmento, new Cadastro_Usuario());
+        } else if (id == R.id.nav_usuarios) {
+            ft.replace(R.id.conteudo_fragmento, new Lista_Usuario());
             ft.commit();
         }
 

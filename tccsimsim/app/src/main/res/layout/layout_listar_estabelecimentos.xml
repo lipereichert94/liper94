@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +9,7 @@
     android:padding="10dp"
     >
     <Button
-        android:id="@+id/button__listausuario_CadastrarUsuario"
+        android:id="@+id/button__listaestabelecimento_Cadastraestabelecimento"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Cadastrar"
@@ -16,13 +17,20 @@
         android:textAllCaps="false"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_ListaUsuarios"
+        android:id="@+id/recyclerView_ListaEstabelecimentos"
         android:layout_width="match_parent"
         android:layout_height ="match_parent"
         >
 
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </LinearLayout>
 
