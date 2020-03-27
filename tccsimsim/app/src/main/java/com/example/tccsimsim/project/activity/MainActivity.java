@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        if (id == R.id.nav_primeira_tela) {
+        if (id == R.id.nav_produtos) {
 
-            ft.replace(R.id.conteudo_fragmento, new Lista_Usuario());
+            ft.replace(R.id.conteudo_fragmento, new Lista_Produto());
             ft.commit();
         } else if (id == R.id.nav_estabelecimentos) {
             ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());

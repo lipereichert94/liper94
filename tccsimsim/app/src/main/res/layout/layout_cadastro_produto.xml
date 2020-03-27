@@ -7,64 +7,44 @@
     android:gravity="center"
     android:padding="10dp"
     >
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nome*"/>
-    <EditText
-        android:id="@+id/editText_NomeCadastro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Insira o nome"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login*"/>
-    <EditText
-        android:id="@+id/editText_LoginCadastro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Insira o login"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Senha*"
-        android:layout_marginTop="20dp"/>
-    <EditText
-        android:id="@+id/editText_SenhaCadastro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Insira uma senha"
-        android:inputType="textPassword"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Repetir senha*"
-        android:layout_marginTop="20dp"/>
-    <EditText
-        android:id="@+id/editText_SenhaRepetirCadastro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="Repita sua senha"/>
+        android:text="Escolha o Estabelecimento*"/>
     <Button
-        android:id="@+id/button_SalvarUsuario"
+        android:id="@+id/button_EscolherEstabelecimento"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher estabelecimento"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome do Produto*"/>
+    <EditText
+        android:id="@+id/editText_NomeCadastroProduto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insira o nome do produto"
+        />
+    <Button
+        android:id="@+id/button_SalvarProduto"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Salvar"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button
-        android:id="@+id/button_removerUsuario"
+        android:id="@+id/button_removerProduto"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Limpar"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button
-        android:id="@+id/button_CancelarUsuario"
+        android:id="@+id/button_CancelarProduto"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Cancelar"

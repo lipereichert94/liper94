@@ -3,8 +3,8 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_primeira_tela"
-            android:title="Cadastrar DayTrade" />
+            android:id="@+id/nav_produtos"
+            android:title="Produtos" />
         <item
             android:id="@+id/nav_estabelecimentos"
             android:title="Estabelecimentos" />

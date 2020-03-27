@@ -96,7 +96,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NOME_PRODUTO, produto.getNome());
-        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getId()));
+        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getId_estabelecimento()));
         db.insert(TABELA_PRODUTO, null, values);
         db.close();
     }
