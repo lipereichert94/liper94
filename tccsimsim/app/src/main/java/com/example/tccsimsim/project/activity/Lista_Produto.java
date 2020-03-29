@@ -52,8 +52,8 @@ public class Lista_Produto extends Fragment {
                         FragmentTransaction ft = fm.beginTransaction();
                       // ft.replace(R.id.conteudo_fragmento, new FragmentoPrimeiraTela().newInstance(position));
                         Log.d("----->", "No frame lista produto passou id produto" + listaproduto.get(position).getId());
-                        Log.d("----->", "No frame lista produto passou o id estabelecimetno" + listaproduto.get(position).getId_estabelecimento());
-                        ft.replace(R.id.conteudo_fragmento, new Cadastro_Produto().newInstance(listaproduto.get(position).getId(),listaproduto.get(position).getId_estabelecimento()));
+                        Log.d("----->", "No frame lista produto passou o id estabelecimetno" + listaproduto.get(position).getEstabelecimento().getId());
+                        ft.replace(R.id.conteudo_fragmento, new Cadastro_Produto().newInstance(listaproduto.get(position).getId(),listaproduto.get(position).getEstabelecimento().getId()));
                          ft.commit();
 
                     }

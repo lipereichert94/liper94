@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tccsimsim.R;
-import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Produto;
 
 import java.util.List;
@@ -22,11 +21,12 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.DatumVie
     private Context context;
     public static class DatumViewHolder extends RecyclerView.ViewHolder {
         LinearLayout produtolayout;
-        TextView nome;
+        TextView nome,nome_empresa;
         public DatumViewHolder(View v) {
             super(v);
             produtolayout = (LinearLayout) v.findViewById(R.id.produto_layout);
             nome = (TextView) v.findViewById(R.id.nome_produto_lista);
+            nome_empresa = (TextView) v.findViewById(R.id.nome_empresa_produto_lista);
         }
     }
     public ProdutoAdapter(List<Produto> produtos, int rowLayout, Context context) {
@@ -45,7 +45,10 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.DatumVie
 
     @Override
     public void onBindViewHolder(@NonNull DatumViewHolder holder, int position) {
+
+
         holder.nome.setText(produtos.get(position).getNome());
+        holder.nome_empresa.setText(""+produtos.get(position).getEstabelecimento().getNome());
     }
 
     @Override

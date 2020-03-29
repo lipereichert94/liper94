@@ -96,7 +96,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NOME_PRODUTO, produto.getNome());
-        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getId_estabelecimento()));
+        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getEstabelecimento().getId()));
         db.insert(TABELA_PRODUTO, null, values);
         db.close();
     }
@@ -192,10 +192,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         return estabelecimento;
     }
     private Produto cursorToProduto(Cursor cursor) {
+        Estabelecimento estabelecimento = new Estabelecimento();
+        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(2)));
         Produto produto = new Produto();
         produto.setId(Integer.parseInt(cursor.getString(0)));
         produto.setNome(cursor.getString(1));
-        produto.setId_estabelecimento(Integer.parseInt(cursor.getString(2)));
+        produto.setEstabelecimento(estabelecimento);
         return produto;
     }
     public ArrayList<Usuario> getAllUsuarios() {
@@ -267,7 +269,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NOME_PRODUTO, produto.getNome());
-        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getId_estabelecimento()));
+        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getEstabelecimento().getId()));
         int i = db.update(TABELA_PRODUTO, //tabela
                 values, // valores
                 ID_PRODUTO+" = ?", // colunas para comparar

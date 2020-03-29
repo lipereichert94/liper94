@@ -114,11 +114,12 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
         if (id != 0) {
             //alterar
             Log.d("----->", "No frame alterar produtochegou");
-
+                Estabelecimento estabelecimento = new Estabelecimento();
                 Produto produto = new Produto();
                 produto.setId(id);
                 produto.setNome(nome.getText().toString());
-                produto.setId_estabelecimento(id_estabelecimento);
+                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+                produto.setEstabelecimento(estabelecimento);
             Log.d("----->", "No frame alterar produtochegou e id_estabelecimento é "+id_estabelecimento);
 
                 bd.updateProduto(produto);
@@ -132,10 +133,11 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
         }
         //gravar novo usuario
         else {
-
+            Estabelecimento estabelecimento = new Estabelecimento();
             Produto produto = new Produto();
             produto.setNome(nome.getText().toString());
-            produto.setId_estabelecimento(id_estabelecimento);
+            estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            produto.setEstabelecimento(estabelecimento);
             Log.d("----->", "No frame cadastrar produtochegou e id_estabelecimento é "+id_estabelecimento);
 
 
