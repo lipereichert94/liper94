@@ -13,38 +13,53 @@
         android:layout_height="wrap_content"
         android:text="Escolha o Estabelecimento*"/>
     <Button
-        android:id="@+id/button_EscolherEstabelecimento_cadastro_produto"
+        android:id="@+id/button_EscolherEstabelecimento_cadastro_atestado_saude"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Clique para escolher estabelecimento"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nome do Produto*"/>
-    <EditText
-        android:id="@+id/editText_NomeCadastroProduto"
+        android:text="Escolha a data de validade*"/>
+    <Button
+        android:id="@+id/button_EscolherData_cadastro_atestado_saude"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Insira o nome do produto"
-        />
+        android:text="Data de registro"/>
     <Button
-        android:id="@+id/button_SalvarProduto"
+        android:id="@+id/btn_dtregistro_atestadosaude"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/button_SalvarAtestadoSaude"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Salvar"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button
-        android:id="@+id/button_removerProduto"
+        android:id="@+id/button_removerAtestadoSaude"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Limpar"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button
-        android:id="@+id/button_CancelarProduto"
+        android:id="@+id/button_CancelarAtestadoSaude"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Cancelar"

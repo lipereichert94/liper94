@@ -84,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_usuarios) {
             ft.replace(R.id.conteudo_fragmento, new Lista_Usuario());
             ft.commit();
+        } else if (id == R.id.nav_atestadoSaude) {
+            ft.replace(R.id.conteudo_fragmento, new Cadastro_Atestado_Saude());
+            ft.commit();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

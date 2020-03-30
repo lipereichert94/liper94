@@ -1,6 +1,7 @@
 package com.example.tccsimsim.project.activity;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -17,62 +20,100 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tccsimsim.R;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
+import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Produto;
 
-public class Cadastro_Produto extends Fragment implements View.OnClickListener {
+import java.util.Calendar;
+import java.util.Date;
+
+public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickListener {
     View minhaView;
-    private Button btnescolherestabelecimento,btnsalvar, btnremover;
-    private EditText nome;
+    private Button btnescolherestabelecimento, btnsalvar, btnremover, btnescolherdata,dt_registro;
     private BDSQLiteHelper bd;
     private int id = 0;
     private int id_estabelecimento = -1;
+    DatePickerDialog dpd;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        minhaView = inflater.inflate(R.layout.layout_cadastro_produto, container, false);
+        minhaView = inflater.inflate(R.layout.layout_cadastro_atestado_saude, container, false);
         bd = new BDSQLiteHelper(getActivity());
-        btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarProduto);
-        btnremover = (Button) minhaView.findViewById(R.id.button_removerProduto);
-        btnescolherestabelecimento = (Button) minhaView.findViewById(R.id.button_EscolherEstabelecimento_cadastro_produto);
-        nome = (EditText) minhaView.findViewById(R.id.editText_NomeCadastroProduto);
+        btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarAtestadoSaude);
+        btnremover = (Button) minhaView.findViewById(R.id.button_removerAtestadoSaude);
+        dt_registro = (Button) minhaView.findViewById(R.id.btn_dtregistro_atestadosaude);
+        btnescolherestabelecimento = (Button) minhaView.findViewById(R.id.button_EscolherEstabelecimento_cadastro_atestado_saude);
+        btnescolherdata = (Button) minhaView.findViewById(R.id.button_EscolherData_cadastro_atestado_saude);
         btnsalvar.setOnClickListener(this);
+        btnescolherdata.setOnClickListener(this);
         btnremover.setOnClickListener(this);
         btnescolherestabelecimento.setOnClickListener(this);
+        setDataAtual();
         readBundle(getArguments());
-        if (id_estabelecimento != -1 ) {
+        if (id_estabelecimento != -1) {
             Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
             btnescolherestabelecimento.setText(estabelecimento.getNome());
         }
         if (id != 0) {
             btnremover.setText("Remover");
             Produto produto = bd.getProduto(id);
-            nome.setText(produto.getNome());
-           // Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-           // btnescolherestabelecimento.setText(estabelecimento.getNome());
+            //nome.setText(produto.getNome());
+            // Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            // btnescolherestabelecimento.setText(estabelecimento.getNome());
 
         }
         return minhaView;
+    }
+
+    private void setDataAtual() {
+        Calendar c= Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int month = c.get(Calendar.MONTH);
+        int year = c.get(Calendar.YEAR);
+        dt_registro.setText(day + "/" + (month + 1) + "/" + year);
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.button_SalvarProduto:
-                SalvarProduto();
+            case R.id.button_SalvarAtestadoSaude:
+                SalvarAtestadoSaude();
                 break;
-            case R.id.button_EscolherEstabelecimento_cadastro_produto:
+            case R.id.button_EscolherEstabelecimento_cadastro_atestado_saude:
                 EscolherEstabelecimento();
                 break;
-            case R.id.button_removerProduto:
+            case R.id.button_EscolherData_cadastro_atestado_saude:
+                EscolherData();
+                break;
+            case R.id.button_removerAtestadoSaude:
                 if (id != 0) {
-                    RemoverProduto();
+                    RemoverAtestadoSaude();
                 } else {
                     limparcampos();
                 }
                 break;
         }
+    }
+
+    private void EscolherData() {
+
+        Calendar c= Calendar.getInstance();
+        c.setTimeInMillis(System.currentTimeMillis());
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int month = c.get(Calendar.MONTH);
+        int year = c.get(Calendar.YEAR);
+
+
+        dpd = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int myear, int mMonth, int mDay) {
+                btnescolherdata.setText(mDay + "/" + (mMonth + 1) + "/" + myear);
+            }
+        }, year,month,day);
+        dpd.show();
     }
 
     private void EscolherEstabelecimento() {
@@ -85,7 +126,7 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
 
     }
 
-    private void RemoverProduto() {
+    private void RemoverAtestadoSaude() {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirmar_exclusao)
                 .setMessage(R.string.quer_mesmo_apagar)
@@ -107,17 +148,17 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
     }
 
     private void limparcampos() {
-        nome.setText("");
+        //nome.setText("");
     }
 
-    private void SalvarProduto() {
+    private void SalvarAtestadoSaude() {
         if (id != 0) {
             //alterar
             Log.d("----->", "No frame alterar produtochegou");
                 Estabelecimento estabelecimento = new Estabelecimento();
                 Produto produto = new Produto();
                 produto.setId(id);
-                produto.setNome(nome.getText().toString());
+                //produto.setNome(nome.getText().toString());
                 estabelecimento = bd.getEstabelecimento(id_estabelecimento);
                 produto.setEstabelecimento(estabelecimento);
             Log.d("----->", "No frame alterar produtochegou e id_estabelecimento é "+id_estabelecimento);
@@ -134,15 +175,15 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
         //gravar novo usuario
         else {
             Estabelecimento estabelecimento = new Estabelecimento();
-            Produto produto = new Produto();
-            produto.setNome(nome.getText().toString());
+            Atestado_Saude atestado_saude = new Atestado_Saude();
+          //  produto.setNome(nome.getText().toString());
             estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-            produto.setEstabelecimento(estabelecimento);
+            atestado_saude.setEstabelecimento(estabelecimento);
             Log.d("----->", "No frame cadastrar produtochegou e id_estabelecimento é "+id_estabelecimento);
 
 
-            bd.addProduto(produto);
-                Toast.makeText(getActivity(), "Produto criado com sucesso!",
+            bd.addAtestadoSaude(atestado_saude);
+                Toast.makeText(getActivity(), "Atestado de Saúde criado com sucesso!",
                         Toast.LENGTH_LONG).show();
             FragmentManager fm = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -151,12 +192,12 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
         }
     }
 
-    public static Cadastro_Produto newInstance(int id,int id_estabelecimento) {
+    public static Cadastro_Atestado_Saude newInstance(int id, int id_estabelecimento) {
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);
         bundle.putInt("id_estabelecimento", id_estabelecimento);
 
-        Cadastro_Produto fragment = new Cadastro_Produto();
+        Cadastro_Atestado_Saude fragment = new Cadastro_Atestado_Saude();
         fragment.setArguments(bundle);
 
         return fragment;

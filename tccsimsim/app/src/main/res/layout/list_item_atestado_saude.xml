@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/produto_layout"
+    android:id="@+id/atestado_saude_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -15,25 +15,6 @@
         android:layout_weight="1"
         android:orientation="vertical">
         <TextView
-            android:text="Nome:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:paddingRight="16dp"
-            android:textStyle="bold"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp" />
-        <TextView
-            android:text="nome"
-            android:id="@+id/nome_produto_lista"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:paddingRight="16dp"
-            android:textStyle="bold"
-            android:textColor="@color/colorBlack"
-            android:textSize="16sp" />
-        <TextView
             android:text="Estabelecimento:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,8 +24,46 @@
             android:textColor="@color/colorBlack"
             android:textSize="16sp" />
         <TextView
-            android:text="nome"
-            android:id="@+id/nome_estabelecimento_produto_lista"
+            android:text="Estabelecimento"
+            android:id="@+id/estabelecimento_atestado_saude_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Data de validade:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Data de Validade"
+            android:id="@+id/dt_validade_atestado_saude_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Data de Registro:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Data de Registro"
+            android:id="@+id/dt_registro_atestado_saude_lista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"

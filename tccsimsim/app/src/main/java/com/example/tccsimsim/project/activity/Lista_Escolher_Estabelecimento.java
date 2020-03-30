@@ -81,7 +81,7 @@ public class Lista_Escolher_Estabelecimento extends Fragment {
     public static Lista_Escolher_Estabelecimento newInstance(int id_produto) {
         Bundle bundle = new Bundle();
         bundle.putInt("id_produto", id_produto);
-
+        
         Lista_Escolher_Estabelecimento fragment = new Lista_Escolher_Estabelecimento();
         fragment.setArguments(bundle);
 

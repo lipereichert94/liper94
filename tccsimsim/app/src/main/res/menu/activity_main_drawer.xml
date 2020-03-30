@@ -11,6 +11,9 @@
         <item
             android:id="@+id/nav_usuarios"
             android:title="Usuários" />
+        <item
+            android:id="@+id/nav_atestadoSaude"
+            android:title="Atestado de Saúde" />
     </group>
 
 </menu>

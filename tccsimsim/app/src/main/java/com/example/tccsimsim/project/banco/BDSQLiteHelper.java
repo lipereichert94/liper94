@@ -6,16 +6,21 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Produto;
 import com.example.tccsimsim.project.model.Usuario;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BDSQLiteHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "SIMSIM";
+
     private static final String TABELA_USUARIO = "usuario";
     private static final String ID_USUARIO = "id";
     private static final String NOME_USUARIO = "nome";
@@ -31,9 +36,16 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String NOME_PRODUTO = "nome";
     private static final String ID_PRODUTO_ESTABELECIMENTO = "id_estabelecimento";
 
+    private static final String TABELA_ATESTADO_SAUDE = "atestado_saude";
+    private static final String ID_ATESTADO_SAUDE = "id";
+    private static final String DT_REGISTRO_ATESTADO_SAUDE = "dt_registro";
+    private static final String DT_VALIDADE_ATESTADO_SAUDE = "dt_validade";
+    private static final String ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE = "id_estabelecimento";
+
     private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO};
     private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO};
     private static final String[] COLUNAS_PRODUTO = {ID_PRODUTO,NOME_PRODUTO,ID_PRODUTO_ESTABELECIMENTO};
+    private static final String[] COLUNAS_ATESTADO_SAUDE = {ID_ATESTADO_SAUDE,DT_REGISTRO_ATESTADO_SAUDE,DT_VALIDADE_ATESTADO_SAUDE,ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE};
 
     public BDSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,6 +72,13 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 "id_estabelecimento REFERENCES estabelecimento(id) )";
 
         db.execSQL(CREATE_TABLE3);
+        String CREATE_TABLE4 = "CREATE TABLE "+TABELA_ATESTADO_SAUDE+" ("+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "dt_registro DATE,"+
+                "dt_validade TEXT,"+
+                "id_estabelecimento REFERENCES estabelecimento(id) )";
+
+        db.execSQL(CREATE_TABLE4);
     }
 
     @Override
@@ -67,6 +86,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS usuario");
         db.execSQL("DROP TABLE IF EXISTS estabelecimento");
         db.execSQL("DROP TABLE IF EXISTS produto");
+        db.execSQL("DROP TABLE IF EXISTS atestado_saude");
 
         this.onCreate(db);
     }
@@ -97,6 +117,15 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(NOME_PRODUTO, produto.getNome());
         values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getEstabelecimento().getId()));
+        db.insert(TABELA_PRODUTO, null, values);
+        db.close();
+    }
+    public void addAtestadoSaude(Atestado_Saude atestado_saude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro().toString());
+        values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade().toString());
+        values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
         db.insert(TABELA_PRODUTO, null, values);
         db.close();
     }
@@ -154,7 +183,24 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
             return produto;
         }
     }
-
+    public Atestado_Saude getAtestadoSaude(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_ATESTADO_SAUDE, // a. tabela
+                COLUNAS_ATESTADO_SAUDE, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
+            return atestado_saude;
+        }
+    }
     public Usuario login(String login) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABELA_USUARIO, // a. tabela
@@ -200,6 +246,37 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         produto.setEstabelecimento(estabelecimento);
         return produto;
     }
+    private Atestado_Saude cursorToAtestado_Saude(Cursor cursor) {
+        Date dt_registro = new Date();
+        Date dt_validade = new Date();
+        dt_registro = formataStringtoDate(cursor.getString(1));
+        dt_validade = formataStringtoDate(cursor.getString(2));
+
+        Estabelecimento estabelecimento = new Estabelecimento();
+        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
+
+        Atestado_Saude atestado_saude = new Atestado_Saude();
+        atestado_saude.setId(Integer.parseInt(cursor.getString(0)));
+        atestado_saude.setDt_registro(dt_registro);
+        atestado_saude.setDt_validade(dt_validade);
+        atestado_saude.setEstabelecimento(estabelecimento);
+
+        return atestado_saude;
+    }
+
+    private Date formataStringtoDate(String string) {
+        Date dt = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            dt = formatter.parse(string);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dt;
+    }
+
+
     public ArrayList<Usuario> getAllUsuarios() {
         ArrayList<Usuario> listaUsuario = new ArrayList<Usuario>();
         String query = "SELECT * FROM " + TABELA_USUARIO;
@@ -239,6 +316,19 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
         return listaProdutos;
     }
+    public ArrayList<Atestado_Saude> getAllAtestadoSaude() {
+        ArrayList<Atestado_Saude> listaAtestadoSaude = new ArrayList<Atestado_Saude>();
+        String query = "SELECT * FROM " + TABELA_ATESTADO_SAUDE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
+                listaAtestadoSaude.add(atestado_saude);
+            } while (cursor.moveToNext());
+        }
+        return listaAtestadoSaude;
+    }
 
     public int updateUsuario(Usuario user) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -277,6 +367,19 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return i; // número de linhas modificadas
     }
+    public int updateAtestadoSaude(Atestado_Saude atestado_saude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro().toString());
+        values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade().toString());
+        values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
+        int i = db.update(TABELA_ATESTADO_SAUDE, //tabela
+                values, // valores
+                ID_ATESTADO_SAUDE+" = ?", // colunas para comparar
+                new String[] { String.valueOf(atestado_saude.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
     public int deleteUsuario(Usuario user) {
         SQLiteDatabase db = this.getWritableDatabase();
         int i = db.delete(TABELA_USUARIO, //tabela
@@ -298,6 +401,14 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         int i = db.delete(TABELA_PRODUTO, //tabela
                 ID_PRODUTO+" = ?", // colunas para comparar
                 new String[] { String.valueOf(produto.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
+    public int deleteAtestadoSaude(Atestado_Saude atestado_saude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_ATESTADO_SAUDE, //tabela
+                ID_ATESTADO_SAUDE+" = ?", // colunas para comparar
+                new String[] { String.valueOf(atestado_saude.getId()) }); //parâmetros
         db.close();
         return i; // número de linhas excluídas
     }
