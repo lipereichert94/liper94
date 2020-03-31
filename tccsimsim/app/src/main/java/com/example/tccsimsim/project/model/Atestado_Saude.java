@@ -5,18 +5,15 @@ import java.util.Date;
 
 public class Atestado_Saude  {
     private Integer id;
-    private Date dt_registro;
-    private Date dt_validade;
+    private String dt_registro;
+    private String dt_validade;
     private Estabelecimento estabelecimento;
 
-    public Atestado_Saude(Integer id, Date dt_registro, Date dt_validade, Estabelecimento estabelecimento) {
+    public Atestado_Saude(Integer id, String dt_registro, String dt_validade, Estabelecimento estabelecimento) {
         this.id = id;
         this.dt_registro = dt_registro;
         this.dt_validade = dt_validade;
         this.estabelecimento = estabelecimento;
-    }
-
-    public Atestado_Saude() {
     }
 
     public Integer getId() {
@@ -27,19 +24,19 @@ public class Atestado_Saude  {
         this.id = id;
     }
 
-    public Date getDt_registro() {
+    public String getDt_registro() {
         return dt_registro;
     }
 
-    public void setDt_registro(Date dt_registro) {
+    public void setDt_registro(String dt_registro) {
         this.dt_registro = dt_registro;
     }
 
-    public Date getDt_validade() {
+    public String getDt_validade() {
         return dt_validade;
     }
 
-    public void setDt_validade(Date dt_validade) {
+    public void setDt_validade(String dt_validade) {
         this.dt_validade = dt_validade;
     }
 
@@ -49,5 +46,8 @@ public class Atestado_Saude  {
 
     public void setEstabelecimento(Estabelecimento estabelecimento) {
         this.estabelecimento = estabelecimento;
+    }
+
+    public Atestado_Saude() {
     }
 }

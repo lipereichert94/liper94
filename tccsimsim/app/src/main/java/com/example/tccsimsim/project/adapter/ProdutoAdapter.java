@@ -26,7 +26,7 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.DatumVie
             super(v);
             produtolayout = (LinearLayout) v.findViewById(R.id.produto_layout);
             nome = (TextView) v.findViewById(R.id.nome_produto_lista);
-            nome_empresa = (TextView) v.findViewById(R.id.nome_estabelecimento_lista);
+            nome_empresa = (TextView) v.findViewById(R.id.nome_estabelecimento_produto_lista);
         }
     }
     public ProdutoAdapter(List<Produto> produtos, int rowLayout, Context context) {

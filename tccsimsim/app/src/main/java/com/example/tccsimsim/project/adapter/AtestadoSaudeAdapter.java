@@ -50,8 +50,8 @@ public class AtestadoSaudeAdapter extends RecyclerView.Adapter<AtestadoSaudeAdap
     public void onBindViewHolder(@NonNull DatumViewHolder holder, int position) {
 
         holder.nome_estabelecimento.setText(""+atestadosdesaude.get(position).getEstabelecimento().getNome());
-        holder.dt_registro.setText(atestadosdesaude.get(position).getDt_registro().toString());
-        holder.dt_validade.setText(atestadosdesaude.get(position).getDt_validade().toString());
+        holder.dt_registro.setText(atestadosdesaude.get(position).getDt_registro());
+        holder.dt_validade.setText(atestadosdesaude.get(position).getDt_validade());
     }
 
     @Override

@@ -126,7 +126,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro().toString());
         values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade().toString());
         values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
-        db.insert(TABELA_PRODUTO, null, values);
+        db.insert(TABELA_ATESTADO_SAUDE, null, values);
         db.close();
     }
     public Usuario getUsuario(int id) {
@@ -247,18 +247,14 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         return produto;
     }
     private Atestado_Saude cursorToAtestado_Saude(Cursor cursor) {
-        Date dt_registro = new Date();
-        Date dt_validade = new Date();
-        dt_registro = formataStringtoDate(cursor.getString(1));
-        dt_validade = formataStringtoDate(cursor.getString(2));
 
         Estabelecimento estabelecimento = new Estabelecimento();
         estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
 
         Atestado_Saude atestado_saude = new Atestado_Saude();
         atestado_saude.setId(Integer.parseInt(cursor.getString(0)));
-        atestado_saude.setDt_registro(dt_registro);
-        atestado_saude.setDt_validade(dt_validade);
+        atestado_saude.setDt_registro(cursor.getString(1));
+        atestado_saude.setDt_validade(cursor.getString(2));
         atestado_saude.setEstabelecimento(estabelecimento);
 
         return atestado_saude;
@@ -318,7 +314,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     }
     public ArrayList<Atestado_Saude> getAllAtestadoSaude() {
         ArrayList<Atestado_Saude> listaAtestadoSaude = new ArrayList<Atestado_Saude>();
-        String query = "SELECT * FROM " + TABELA_ATESTADO_SAUDE;
+        String query = "SELECT * FROM " + TABELA_ATESTADO_SAUDE +" ORDER by " +DT_VALIDADE_ATESTADO_SAUDE;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -370,8 +366,8 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     public int updateAtestadoSaude(Atestado_Saude atestado_saude) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro().toString());
-        values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade().toString());
+        values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro());
+        values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade());
         values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
         int i = db.update(TABELA_ATESTADO_SAUDE, //tabela
                 values, // valores

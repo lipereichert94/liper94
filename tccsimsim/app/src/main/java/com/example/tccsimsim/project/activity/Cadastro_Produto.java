@@ -80,7 +80,7 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
         FragmentTransaction ft = fm.beginTransaction();
         Log.d("----->", "No frame escolher estabelecimento chegou passando id do produto ="+id);
 
-        ft.replace(R.id.conteudo_fragmento, new Lista_Escolher_Estabelecimento().newInstance(id));
+        ft.replace(R.id.conteudo_fragmento, new Lista_Escolher_Estabelecimento().newInstance(id,"cadastro_produto",0));
         ft.commit();
 
     }

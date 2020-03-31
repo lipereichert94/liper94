@@ -24,6 +24,8 @@ import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Produto;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,7 +58,9 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
         }
         if (id != 0) {
             btnremover.setText("Remover");
-            Produto produto = bd.getProduto(id);
+            Atestado_Saude atestado_saude = bd.getAtestadoSaude(id);
+            dt_registro.setText(atestado_saude.getDt_registro().toString());
+            btnescolherdata.setText(atestado_saude.getDt_validade().toString());
             //nome.setText(produto.getNome());
             // Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
             // btnescolherestabelecimento.setText(estabelecimento.getNome());
@@ -121,7 +125,7 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
         FragmentTransaction ft = fm.beginTransaction();
         Log.d("----->", "No frame escolher estabelecimento chegou passando id do produto ="+id);
 
-        ft.replace(R.id.conteudo_fragmento, new Lista_Escolher_Estabelecimento().newInstance(id));
+        ft.replace(R.id.conteudo_fragmento, new Lista_Escolher_Estabelecimento().newInstance(id,"atestado_saude",id));
         ft.commit();
 
     }
@@ -134,13 +138,13 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        final Produto finalproduto = bd.getProduto(id);
-                        bd.deleteProduto(finalproduto);
-                        Toast.makeText(getActivity(), "Produto Excluído com sucesso!",
+                        final Atestado_Saude finalatestatosaude = bd.getAtestadoSaude(id);
+                        bd.deleteAtestadoSaude(finalatestatosaude);
+                        Toast.makeText(getActivity(), "Atestado de Saúde Excluído com sucesso!",
                                 Toast.LENGTH_LONG).show();
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                        ft.replace(R.id.conteudo_fragmento, new Lista_Produto());
+                        ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
                         ft.commit();
                     }
                 })
@@ -156,42 +160,66 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
             //alterar
             Log.d("----->", "No frame alterar produtochegou");
                 Estabelecimento estabelecimento = new Estabelecimento();
-                Produto produto = new Produto();
-                produto.setId(id);
+                Atestado_Saude atestado_saude = new Atestado_Saude();
+                atestado_saude.setId(id);
                 //produto.setNome(nome.getText().toString());
                 estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-                produto.setEstabelecimento(estabelecimento);
+            atestado_saude.setDt_validade(btnescolherdata.getText().toString());
+            atestado_saude.setDt_registro(dt_registro.getText().toString());
+            atestado_saude.setEstabelecimento(estabelecimento);
             Log.d("----->", "No frame alterar produtochegou e id_estabelecimento é "+id_estabelecimento);
 
-                bd.updateProduto(produto);
-                Toast.makeText(getActivity(), "Produto alterado com sucesso!",
+                bd.updateAtestadoSaude(atestado_saude);
+                Toast.makeText(getActivity(), "Atestado de Saúde alterado com sucesso!",
                         Toast.LENGTH_LONG).show();
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.conteudo_fragmento, new Lista_Produto());
+                ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
                 ft.commit();
 
         }
-        //gravar novo usuario
+        //gravar novo atestado saude
         else {
             Estabelecimento estabelecimento = new Estabelecimento();
             Atestado_Saude atestado_saude = new Atestado_Saude();
           //  produto.setNome(nome.getText().toString());
-            estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-            atestado_saude.setEstabelecimento(estabelecimento);
-            Log.d("----->", "No frame cadastrar produtochegou e id_estabelecimento é "+id_estabelecimento);
+            Date dt_registro2 = new Date();
+            Date dt_validade2 = new Date();
+            dt_registro2 = formataStringtoDate(dt_registro.getText().toString());
+            dt_validade2 = formataStringtoDate(btnescolherdata.getText().toString());
 
+            estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            atestado_saude.setDt_validade(btnescolherdata.getText().toString());
+            atestado_saude.setDt_registro(dt_registro.getText().toString());
+            atestado_saude.setEstabelecimento(estabelecimento);
+            Log.d("----->", "No frame cadastrar atestado de saude está e id_estabelecimento é "+id_estabelecimento);
+
+            Log.d("----->", "No frame cadastrar atestado de saude está e dt_validade "+btnescolherdata.getText().toString());
+            Log.d("----->", "No frame cadastrar atestado de saude está e dt_validade "+dt_validade2.toString());
 
             bd.addAtestadoSaude(atestado_saude);
                 Toast.makeText(getActivity(), "Atestado de Saúde criado com sucesso!",
                         Toast.LENGTH_LONG).show();
             FragmentManager fm = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.conteudo_fragmento, new Lista_Produto());
+            ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
             ft.commit();
         }
     }
+    private Date formataStringtoDate(String string) {
+        Date dt = new Date();
+        Log.d("----->", "Formatar data "+string);
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            dt = formatter.parse(string);
+            Log.d("----->", "Formatada data "+dt.toString());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dt;
+    }
     public static Cadastro_Atestado_Saude newInstance(int id, int id_estabelecimento) {
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);
