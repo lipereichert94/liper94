@@ -48,9 +48,6 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
             btnremover.setText("Remover");
             Produto produto = bd.getProduto(id);
             nome.setText(produto.getNome());
-           // Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-           // btnescolherestabelecimento.setText(estabelecimento.getNome());
-
         }
         return minhaView;
     }
@@ -78,8 +75,6 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
     private void EscolherEstabelecimento() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        Log.d("----->", "No frame escolher estabelecimento chegou passando id do produto ="+id);
-
         ft.replace(R.id.conteudo_fragmento, new Lista_Escolher_Estabelecimento().newInstance(id,"cadastro_produto",0));
         ft.commit();
 
@@ -112,16 +107,14 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
 
     private void SalvarProduto() {
         if (id != 0) {
-            //alterar
-            Log.d("----->", "No frame alterar produtochegou");
+            if(verificacampos()) {
+                //alterar
                 Estabelecimento estabelecimento = new Estabelecimento();
                 Produto produto = new Produto();
                 produto.setId(id);
                 produto.setNome(nome.getText().toString());
                 estabelecimento = bd.getEstabelecimento(id_estabelecimento);
                 produto.setEstabelecimento(estabelecimento);
-            Log.d("----->", "No frame alterar produtochegou e id_estabelecimento é "+id_estabelecimento);
-
                 bd.updateProduto(produto);
                 Toast.makeText(getActivity(), "Produto alterado com sucesso!",
                         Toast.LENGTH_LONG).show();
@@ -129,25 +122,35 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.conteudo_fragmento, new Lista_Produto());
                 ft.commit();
-
+            }
         }
-        //gravar novo usuario
+        //gravar novo produto
         else {
-            Estabelecimento estabelecimento = new Estabelecimento();
-            Produto produto = new Produto();
-            produto.setNome(nome.getText().toString());
-            estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-            produto.setEstabelecimento(estabelecimento);
-            Log.d("----->", "No frame cadastrar produtochegou e id_estabelecimento é "+id_estabelecimento);
-
-
-            bd.addProduto(produto);
+            if(verificacampos()) {
+                Estabelecimento estabelecimento = new Estabelecimento();
+                Produto produto = new Produto();
+                produto.setNome(nome.getText().toString());
+                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+                produto.setEstabelecimento(estabelecimento);
+                bd.addProduto(produto);
                 Toast.makeText(getActivity(), "Produto criado com sucesso!",
                         Toast.LENGTH_LONG).show();
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.conteudo_fragmento, new Lista_Produto());
-            ft.commit();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Produto());
+                ft.commit();
+            }
+        }
+    }
+
+    private boolean verificacampos() {
+        if(btnescolherestabelecimento.getText().toString().equals("Clique para escolher estabelecimento") || nome.getText().toString().equals("")){
+            Toast.makeText(getActivity(), "Favor preencher todos os campos solicitados!",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else{
+            return true;
         }
     }
 

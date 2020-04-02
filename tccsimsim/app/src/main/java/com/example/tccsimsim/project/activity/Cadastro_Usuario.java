@@ -112,6 +112,7 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
                 user.setLogin(login.getText().toString());
                 user.setSenha(senha.getText().toString());
                 bd.updateUsuario(user);
+                limparcampos();
                 Toast.makeText(getActivity(), "Usuário alterado com sucesso!",
                         Toast.LENGTH_LONG).show();
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -135,6 +136,7 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
                 user.setLogin(login.getText().toString());
                 user.setSenha(senha.getText().toString());
                 bd.addUsuario(user);
+                limparcampos();
                 Toast.makeText(getActivity(), "Usuário criado com sucesso!",
                         Toast.LENGTH_LONG).show();
                 FragmentManager fm = getActivity().getSupportFragmentManager();

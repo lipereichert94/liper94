@@ -89,7 +89,7 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
     private void SalvarEstabelecimento() {
         if (id != 0) {
             //alterar
-
+            if(verificacampos()){
                 Estabelecimento estabelecimento = new Estabelecimento();
                 estabelecimento.setId(id);
                 estabelecimento.setNome(nome.getText().toString());
@@ -100,20 +100,31 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());
                 ft.commit();
-
+}
         }
-        //gravar novo usuario
+        //gravar novo estabelecimento
         else {
-
-            Estabelecimento estabelecimento = new Estabelecimento();
-            estabelecimento.setNome(nome.getText().toString());
+            if(verificacampos()) {
+                Estabelecimento estabelecimento = new Estabelecimento();
+                estabelecimento.setNome(nome.getText().toString());
                 bd.addEstabelecimento(estabelecimento);
                 Toast.makeText(getActivity(), "Estabelecimento criado com sucesso!",
                         Toast.LENGTH_LONG).show();
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());
-            ft.commit();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());
+                ft.commit();
+            }
+        }
+    }
+
+    private boolean verificacampos() {
+        if(nome.getText().toString().equals("")){
+            Toast.makeText(getActivity(), "Favor preencher o nome do estabelecimento!",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
         }
     }
 

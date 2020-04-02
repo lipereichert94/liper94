@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickListener {
+
     View minhaView;
     private Button btnescolherestabelecimento, btnsalvar, btnremover, btnescolherdata,dt_registro;
     private BDSQLiteHelper bd;
@@ -39,8 +40,10 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         minhaView = inflater.inflate(R.layout.layout_cadastro_atestado_saude, container, false);
         bd = new BDSQLiteHelper(getActivity());
+
         btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarAtestadoSaude);
         btnremover = (Button) minhaView.findViewById(R.id.button_removerAtestadoSaude);
         dt_registro = (Button) minhaView.findViewById(R.id.btn_dtregistro_atestadosaude);
@@ -52,6 +55,7 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
         btnescolherestabelecimento.setOnClickListener(this);
         setDataAtual();
         readBundle(getArguments());
+        //verifica se é cadastro ou alteração
         if (id_estabelecimento != -1) {
             Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
             btnescolherestabelecimento.setText(estabelecimento.getNome());
@@ -59,12 +63,8 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
         if (id != 0) {
             btnremover.setText("Remover");
             Atestado_Saude atestado_saude = bd.getAtestadoSaude(id);
-            dt_registro.setText(atestado_saude.getDt_registro().toString());
-            btnescolherdata.setText(atestado_saude.getDt_validade().toString());
-            //nome.setText(produto.getNome());
-            // Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-            // btnescolherestabelecimento.setText(estabelecimento.getNome());
-
+            dt_registro.setText(atestado_saude.getDt_registro());
+            btnescolherdata.setText(atestado_saude.getDt_validade());
         }
         return minhaView;
     }
@@ -95,8 +95,6 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
             case R.id.button_removerAtestadoSaude:
                 if (id != 0) {
                     RemoverAtestadoSaude();
-                } else {
-                    limparcampos();
                 }
                 break;
         }
@@ -151,24 +149,18 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
-    private void limparcampos() {
-        //nome.setText("");
-    }
 
     private void SalvarAtestadoSaude() {
         if (id != 0) {
-            //alterar
-            Log.d("----->", "No frame alterar produtochegou");
+            if(verificacampos()) {
+                //alterar
                 Estabelecimento estabelecimento = new Estabelecimento();
                 Atestado_Saude atestado_saude = new Atestado_Saude();
                 atestado_saude.setId(id);
-                //produto.setNome(nome.getText().toString());
                 estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-            atestado_saude.setDt_validade(btnescolherdata.getText().toString());
-            atestado_saude.setDt_registro(dt_registro.getText().toString());
-            atestado_saude.setEstabelecimento(estabelecimento);
-            Log.d("----->", "No frame alterar produtochegou e id_estabelecimento é "+id_estabelecimento);
-
+                atestado_saude.setDt_validade(btnescolherdata.getText().toString());
+                atestado_saude.setDt_registro(dt_registro.getText().toString());
+                atestado_saude.setEstabelecimento(estabelecimento);
                 bd.updateAtestadoSaude(atestado_saude);
                 Toast.makeText(getActivity(), "Atestado de Saúde alterado com sucesso!",
                         Toast.LENGTH_LONG).show();
@@ -176,36 +168,39 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
                 ft.commit();
-
+            }
         }
         //gravar novo atestado saude
         else {
-            Estabelecimento estabelecimento = new Estabelecimento();
-            Atestado_Saude atestado_saude = new Atestado_Saude();
-          //  produto.setNome(nome.getText().toString());
-            Date dt_registro2 = new Date();
-            Date dt_validade2 = new Date();
-            dt_registro2 = formataStringtoDate(dt_registro.getText().toString());
-            dt_validade2 = formataStringtoDate(btnescolherdata.getText().toString());
-
-            estabelecimento = bd.getEstabelecimento(id_estabelecimento);
-            atestado_saude.setDt_validade(btnescolherdata.getText().toString());
-            atestado_saude.setDt_registro(dt_registro.getText().toString());
-            atestado_saude.setEstabelecimento(estabelecimento);
-            Log.d("----->", "No frame cadastrar atestado de saude está e id_estabelecimento é "+id_estabelecimento);
-
-            Log.d("----->", "No frame cadastrar atestado de saude está e dt_validade "+btnescolherdata.getText().toString());
-            Log.d("----->", "No frame cadastrar atestado de saude está e dt_validade "+dt_validade2.toString());
-
-            bd.addAtestadoSaude(atestado_saude);
+            if(verificacampos()) {
+                Estabelecimento estabelecimento = new Estabelecimento();
+                Atestado_Saude atestado_saude = new Atestado_Saude();
+                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+                atestado_saude.setDt_validade(btnescolherdata.getText().toString());
+                atestado_saude.setDt_registro(dt_registro.getText().toString());
+                atestado_saude.setEstabelecimento(estabelecimento);
+                bd.addAtestadoSaude(atestado_saude);
                 Toast.makeText(getActivity(), "Atestado de Saúde criado com sucesso!",
                         Toast.LENGTH_LONG).show();
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
-            ft.commit();
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
+                ft.commit();
+            }
         }
     }
+
+    private boolean verificacampos() {
+        if(btnescolherestabelecimento.getText().toString().equals("Clique para escolher estabelecimento") || btnescolherdata.getText().toString().equals("Clique para escolher a data")){
+            Toast.makeText(getActivity(), "Escolha os campos solicitados!",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
     private Date formataStringtoDate(String string) {
         Date dt = new Date();
         Log.d("----->", "Formatar data "+string);
