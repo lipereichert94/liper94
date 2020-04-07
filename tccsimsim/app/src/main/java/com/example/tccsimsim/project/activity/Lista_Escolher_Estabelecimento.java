@@ -46,17 +46,15 @@ public class Lista_Escolher_Estabelecimento extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         // do whatever
-                        Log.d("----->", "POSICAO" + position);
-
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                        // ft.replace(R.id.conteudo_fragmento, new FragmentoPrimeiraTela().newInstance(position));
-                        Log.d("----->", "No frame escolher estabelecimento passou id estabelecimetno" + listaestabelecimento.get(position).getId());
-                        Log.d("----->", "No frame escolher estabelecimento passou id prouto" + id_produto);
                         if(origem.equals("atestado_saude")){
                             ft.replace(R.id.conteudo_fragmento, new Cadastro_Atestado_Saude().newInstance(id_atestado_saude, listaestabelecimento.get(position).getId()));
                         }else if (origem.equals("cadastro_produto")) {
                             ft.replace(R.id.conteudo_fragmento, new Cadastro_Produto().newInstance(id_produto, listaestabelecimento.get(position).getId()));
+                        }
+                        else if (origem.equals("licenca_ambiental")) {
+                            ft.replace(R.id.conteudo_fragmento, new Cadastro_Licenca_Ambiental().newInstance(id_produto, listaestabelecimento.get(position).getId()));
                         }
                         ft.commit();
 
@@ -65,11 +63,6 @@ public class Lista_Escolher_Estabelecimento extends Fragment {
                     @Override
                     public void onLongItemClick(View view, int position) {
                         // do whatever
-                        Log.d("----->", "TESTE" + position);
-                        //    DayTrade dt = listaDT.get(position);
-                        //  Intent intent = new Intent(getActivity().getBaseContext(), FullScreenDT.class);
-                        //   intent.putExtra("parametro", dt.getFoto());
-                        //   startActivity(intent);
 
                     }
                 })

@@ -46,24 +46,14 @@ public class Lista_Atestado_Saude extends Fragment {
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         // do whatever
-                        Log.d("----->", "POSICAO"+position);
-
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                      // ft.replace(R.id.conteudo_fragmento, new FragmentoPrimeiraTela().newInstance(position));
-                     //   Log.d("----->", "No frame lista produto passou id produto" + listaproduto.get(position).getId());
-                    //    Log.d("----->", "No frame lista produto passou o id estabelecimetno" + listaproduto.get(position).getEstabelecimento().getId());
                         ft.replace(R.id.conteudo_fragmento, new Cadastro_Atestado_Saude().newInstance(listaatestadosaude.get(position).getId(),listaatestadosaude.get(position).getEstabelecimento().getId()));
-                         ft.commit();
+                        ft.commit();
 
                     }
                     @Override public void onLongItemClick(View view, int position) {
                         // do whatever
-                        Log.d("----->", "TESTE"+position);
-                    //    DayTrade dt = listaDT.get(position);
-                      //  Intent intent = new Intent(getActivity().getBaseContext(), FullScreenDT.class);
-                     //   intent.putExtra("parametro", dt.getFoto());
-                     //   startActivity(intent);
 
                     }
                 })

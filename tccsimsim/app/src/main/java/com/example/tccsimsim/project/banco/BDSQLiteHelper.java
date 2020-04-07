@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Estabelecimento;
+import com.example.tccsimsim.project.model.Licenca_Ambiental;
 import com.example.tccsimsim.project.model.Produto;
 import com.example.tccsimsim.project.model.Usuario;
 
@@ -42,10 +43,17 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String DT_VALIDADE_ATESTADO_SAUDE = "dt_validade";
     private static final String ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE = "id_estabelecimento";
 
+    private static final String TABELA_LICENCA_AMBIENTAL = "licenca_ambiental";
+    private static final String ID_LICENCA_AMBIENTAL = "id";
+    private static final String DT_REGISTRO_LICENCA_AMBIENTAL = "dt_registro";
+    private static final String DT_VALIDADE_LICENCA_AMBIENTAL = "dt_validade";
+    private static final String ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL = "id_estabelecimento";
+
     private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO};
     private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO};
     private static final String[] COLUNAS_PRODUTO = {ID_PRODUTO,NOME_PRODUTO,ID_PRODUTO_ESTABELECIMENTO};
     private static final String[] COLUNAS_ATESTADO_SAUDE = {ID_ATESTADO_SAUDE,DT_REGISTRO_ATESTADO_SAUDE,DT_VALIDADE_ATESTADO_SAUDE,ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE};
+    private static final String[] COLUNAS_LICENCA_AMBIENTAL = {ID_LICENCA_AMBIENTAL,DT_REGISTRO_LICENCA_AMBIENTAL,DT_VALIDADE_LICENCA_AMBIENTAL,ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL};
 
     public BDSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -79,6 +87,13 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 "id_estabelecimento REFERENCES estabelecimento(id) )";
 
         db.execSQL(CREATE_TABLE4);
+        String CREATE_TABLE5 = "CREATE TABLE "+TABELA_LICENCA_AMBIENTAL+" ("+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "dt_registro DATE,"+
+                "dt_validade TEXT,"+
+                "id_estabelecimento REFERENCES estabelecimento(id) )";
+
+        db.execSQL(CREATE_TABLE5);
     }
 
     @Override
@@ -87,6 +102,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS estabelecimento");
         db.execSQL("DROP TABLE IF EXISTS produto");
         db.execSQL("DROP TABLE IF EXISTS atestado_saude");
+        db.execSQL("DROP TABLE IF EXISTS licenca_ambiental");
 
         this.onCreate(db);
     }
@@ -96,6 +112,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //---------------------------------------------USUARIO---------------------------------------------------
     public void addUsuario(Usuario user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -103,30 +120,6 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         values.put(LOGIN_USUARIO, user.getLogin());
         values.put(SENHA_USUARIO, user.getSenha());
         db.insert(TABELA_USUARIO, null, values);
-        db.close();
-    }
-    public void addEstabelecimento(Estabelecimento estabelecimento) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOME_ESTABELECIMENTO, estabelecimento.getNome());
-        db.insert(TABELA_ESTABELECIMENTO, null, values);
-        db.close();
-    }
-    public void addProduto(Produto produto) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOME_PRODUTO, produto.getNome());
-        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getEstabelecimento().getId()));
-        db.insert(TABELA_PRODUTO, null, values);
-        db.close();
-    }
-    public void addAtestadoSaude(Atestado_Saude atestado_saude) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro().toString());
-        values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade().toString());
-        values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
-        db.insert(TABELA_ATESTADO_SAUDE, null, values);
         db.close();
     }
     public Usuario getUsuario(int id) {
@@ -145,60 +138,6 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             Usuario user = cursorToUsuario(cursor);
             return user;
-        }
-    }
-    public Estabelecimento getEstabelecimento(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABELA_ESTABELECIMENTO, // a. tabela
-                COLUNAS_ESTABELECIMENTO, // b. colunas
-                " id = ?", // c. colunas para comparar
-                new String[] { String.valueOf(id) }, // d. parâmetros
-                null, // e. group by
-                null, // f. having
-                null, // g. order by
-                null); // h. limit
-        if (cursor == null) {
-            return null;
-        } else {
-            cursor.moveToFirst();
-            Estabelecimento estabelecimento = cursorToEstabelecimento(cursor);
-            return estabelecimento;
-        }
-    }
-    public Produto getProduto(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABELA_PRODUTO, // a. tabela
-                COLUNAS_PRODUTO, // b. colunas
-                " id = ?", // c. colunas para comparar
-                new String[] { String.valueOf(id) }, // d. parâmetros
-                null, // e. group by
-                null, // f. having
-                null, // g. order by
-                null); // h. limit
-        if (cursor == null) {
-            return null;
-        } else {
-            cursor.moveToFirst();
-            Produto produto = cursorToProduto(cursor);
-            return produto;
-        }
-    }
-    public Atestado_Saude getAtestadoSaude(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABELA_ATESTADO_SAUDE, // a. tabela
-                COLUNAS_ATESTADO_SAUDE, // b. colunas
-                " id = ?", // c. colunas para comparar
-                new String[] { String.valueOf(id) }, // d. parâmetros
-                null, // e. group by
-                null, // f. having
-                null, // g. order by
-                null); // h. limit
-        if (cursor == null) {
-            return null;
-        } else {
-            cursor.moveToFirst();
-            Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
-            return atestado_saude;
         }
     }
     public Usuario login(String login) {
@@ -223,6 +162,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
             }
         }
     }
+
     private Usuario cursorToUsuario(Cursor cursor) {
         Usuario user = new Usuario();
         user.setId(Integer.parseInt(cursor.getString(0)));
@@ -231,48 +171,6 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         user.setSenha(cursor.getString(3));
         return user;
     }
-    private Estabelecimento cursorToEstabelecimento(Cursor cursor) {
-        Estabelecimento estabelecimento = new Estabelecimento();
-        estabelecimento.setId(Integer.parseInt(cursor.getString(0)));
-        estabelecimento.setNome(cursor.getString(1));
-        return estabelecimento;
-    }
-    private Produto cursorToProduto(Cursor cursor) {
-        Estabelecimento estabelecimento = new Estabelecimento();
-        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(2)));
-        Produto produto = new Produto();
-        produto.setId(Integer.parseInt(cursor.getString(0)));
-        produto.setNome(cursor.getString(1));
-        produto.setEstabelecimento(estabelecimento);
-        return produto;
-    }
-    private Atestado_Saude cursorToAtestado_Saude(Cursor cursor) {
-
-        Estabelecimento estabelecimento = new Estabelecimento();
-        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
-
-        Atestado_Saude atestado_saude = new Atestado_Saude();
-        atestado_saude.setId(Integer.parseInt(cursor.getString(0)));
-        atestado_saude.setDt_registro(cursor.getString(1));
-        atestado_saude.setDt_validade(cursor.getString(2));
-        atestado_saude.setEstabelecimento(estabelecimento);
-
-        return atestado_saude;
-    }
-
-    private Date formataStringtoDate(String string) {
-        Date dt = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            dt = formatter.parse(string);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return dt;
-    }
-
-
     public ArrayList<Usuario> getAllUsuarios() {
         ArrayList<Usuario> listaUsuario = new ArrayList<Usuario>();
         String query = "SELECT * FROM " + TABELA_USUARIO;
@@ -285,6 +183,60 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return listaUsuario;
+    }
+    public int updateUsuario(Usuario user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOME_USUARIO, user.getNome());
+        values.put(LOGIN_USUARIO, user.getLogin());
+        values.put(SENHA_USUARIO, user.getSenha());
+        int i = db.update(TABELA_USUARIO, //tabela
+                values, // valores
+                ID_USUARIO+" = ?", // colunas para comparar
+                new String[] { String.valueOf(user.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
+    public int deleteUsuario(Usuario user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_USUARIO, //tabela
+                ID_USUARIO+" = ?", // colunas para comparar
+                new String[] { String.valueOf(user.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
+    //---------------------------------------------ESTABELECIMENTO--------------------------------------------------
+    public void addEstabelecimento(Estabelecimento estabelecimento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOME_ESTABELECIMENTO, estabelecimento.getNome());
+        db.insert(TABELA_ESTABELECIMENTO, null, values);
+        db.close();
+    }
+    public Estabelecimento getEstabelecimento(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_ESTABELECIMENTO, // a. tabela
+                COLUNAS_ESTABELECIMENTO, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            Estabelecimento estabelecimento = cursorToEstabelecimento(cursor);
+            return estabelecimento;
+        }
+    }
+
+    private Estabelecimento cursorToEstabelecimento(Cursor cursor) {
+        Estabelecimento estabelecimento = new Estabelecimento();
+        estabelecimento.setId(Integer.parseInt(cursor.getString(0)));
+        estabelecimento.setNome(cursor.getString(1));
+        return estabelecimento;
     }
     public ArrayList<Estabelecimento> getAllEstabelecimentos() {
         ArrayList<Estabelecimento> listaEstabelecimento = new ArrayList<Estabelecimento>();
@@ -299,6 +251,62 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
         return listaEstabelecimento;
     }
+    public int updateEstabelecimento(Estabelecimento estabelecimento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOME_ESTABELECIMENTO, estabelecimento.getNome());
+        int i = db.update(TABELA_ESTABELECIMENTO, //tabela
+                values, // valores
+                ID_ESTABELECIMENTO+" = ?", // colunas para comparar
+                new String[] { String.valueOf(estabelecimento.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
+    public int deleteEstabelecimento(Estabelecimento estabelecimento) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_ESTABELECIMENTO, //tabela
+                ID_ESTABELECIMENTO+" = ?", // colunas para comparar
+                new String[] { String.valueOf(estabelecimento.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
+    //---------------------------------------------PRODUTO------------------------------------------------------------
+    public void addProduto(Produto produto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOME_PRODUTO, produto.getNome());
+        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getEstabelecimento().getId()));
+        db.insert(TABELA_PRODUTO, null, values);
+        db.close();
+    }
+
+    public Produto getProduto(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_PRODUTO, // a. tabela
+                COLUNAS_PRODUTO, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            Produto produto = cursorToProduto(cursor);
+            return produto;
+        }
+    }
+    private Produto cursorToProduto(Cursor cursor) {
+        Estabelecimento estabelecimento = new Estabelecimento();
+        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(2)));
+        Produto produto = new Produto();
+        produto.setId(Integer.parseInt(cursor.getString(0)));
+        produto.setNome(cursor.getString(1));
+        produto.setEstabelecimento(estabelecimento);
+        return produto;
+    }
     public ArrayList<Produto> getAllProduto() {
         ArrayList<Produto> listaProdutos = new ArrayList<Produto>();
         String query = "SELECT * FROM " + TABELA_PRODUTO;
@@ -311,6 +319,70 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return listaProdutos;
+    }
+    public int updateProduto(Produto produto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NOME_PRODUTO, produto.getNome());
+        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getEstabelecimento().getId()));
+        int i = db.update(TABELA_PRODUTO, //tabela
+                values, // valores
+                ID_PRODUTO+" = ?", // colunas para comparar
+                new String[] { String.valueOf(produto.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
+    public int deleteProduto(Produto produto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_PRODUTO, //tabela
+                ID_PRODUTO+" = ?", // colunas para comparar
+                new String[] { String.valueOf(produto.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
+
+    //-----------------------------------------ATESTADO DE SAÚDE-------------------------------------------------------
+    public void addAtestadoSaude(Atestado_Saude atestado_saude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro().toString());
+        values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade().toString());
+        values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
+        db.insert(TABELA_ATESTADO_SAUDE, null, values);
+        db.close();
+    }
+
+    public Atestado_Saude getAtestadoSaude(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_ATESTADO_SAUDE, // a. tabela
+                COLUNAS_ATESTADO_SAUDE, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
+            return atestado_saude;
+        }
+    }
+
+    private Atestado_Saude cursorToAtestado_Saude(Cursor cursor) {
+
+        Estabelecimento estabelecimento = new Estabelecimento();
+        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
+
+        Atestado_Saude atestado_saude = new Atestado_Saude();
+        atestado_saude.setId(Integer.parseInt(cursor.getString(0)));
+        atestado_saude.setDt_registro(cursor.getString(1));
+        atestado_saude.setDt_validade(cursor.getString(2));
+        atestado_saude.setEstabelecimento(estabelecimento);
+
+        return atestado_saude;
     }
     public ArrayList<Atestado_Saude> getAllAtestadoSaude() {
         ArrayList<Atestado_Saude> listaAtestadoSaude = new ArrayList<Atestado_Saude>();
@@ -325,44 +397,6 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
         return listaAtestadoSaude;
     }
-
-    public int updateUsuario(Usuario user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOME_USUARIO, user.getNome());
-        values.put(LOGIN_USUARIO, user.getLogin());
-        values.put(SENHA_USUARIO, user.getSenha());
-        int i = db.update(TABELA_USUARIO, //tabela
-                values, // valores
-                ID_USUARIO+" = ?", // colunas para comparar
-                new String[] { String.valueOf(user.getId()) }); //parâmetros
-        db.close();
-        return i; // número de linhas modificadas
-    }
-
-    public int updateEstabelecimento(Estabelecimento estabelecimento) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOME_ESTABELECIMENTO, estabelecimento.getNome());
-        int i = db.update(TABELA_ESTABELECIMENTO, //tabela
-                values, // valores
-                ID_ESTABELECIMENTO+" = ?", // colunas para comparar
-                new String[] { String.valueOf(estabelecimento.getId()) }); //parâmetros
-        db.close();
-        return i; // número de linhas modificadas
-    }
-    public int updateProduto(Produto produto) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(NOME_PRODUTO, produto.getNome());
-        values.put(ID_PRODUTO_ESTABELECIMENTO, new Integer(produto.getEstabelecimento().getId()));
-        int i = db.update(TABELA_PRODUTO, //tabela
-                values, // valores
-                ID_PRODUTO+" = ?", // colunas para comparar
-                new String[] { String.valueOf(produto.getId()) }); //parâmetros
-        db.close();
-        return i; // número de linhas modificadas
-    }
     public int updateAtestadoSaude(Atestado_Saude atestado_saude) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -376,30 +410,6 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return i; // número de linhas modificadas
     }
-    public int deleteUsuario(Usuario user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int i = db.delete(TABELA_USUARIO, //tabela
-                ID_USUARIO+" = ?", // colunas para comparar
-                new String[] { String.valueOf(user.getId()) }); //parâmetros
-        db.close();
-        return i; // número de linhas excluídas
-    }
-    public int deleteEstabelecimento(Estabelecimento estabelecimento) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int i = db.delete(TABELA_ESTABELECIMENTO, //tabela
-                ID_ESTABELECIMENTO+" = ?", // colunas para comparar
-                new String[] { String.valueOf(estabelecimento.getId()) }); //parâmetros
-        db.close();
-        return i; // número de linhas excluídas
-    }
-    public int deleteProduto(Produto produto) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int i = db.delete(TABELA_PRODUTO, //tabela
-                ID_PRODUTO+" = ?", // colunas para comparar
-                new String[] { String.valueOf(produto.getId()) }); //parâmetros
-        db.close();
-        return i; // número de linhas excluídas
-    }
     public int deleteAtestadoSaude(Atestado_Saude atestado_saude) {
         SQLiteDatabase db = this.getWritableDatabase();
         int i = db.delete(TABELA_ATESTADO_SAUDE, //tabela
@@ -407,5 +417,96 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(atestado_saude.getId()) }); //parâmetros
         db.close();
         return i; // número de linhas excluídas
+    }
+
+    //-----------------------------------------LICENCA AMBIENTAL-------------------------------------------------------
+    public void addLicencaAmbiental(Licenca_Ambiental licenca_ambiental) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_REGISTRO_LICENCA_AMBIENTAL, licenca_ambiental.getDt_registro().toString());
+        values.put(DT_VALIDADE_LICENCA_AMBIENTAL, licenca_ambiental.getDt_validade().toString());
+        values.put(ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL, new Integer(licenca_ambiental.getEstabelecimento().getId()));
+        db.insert(TABELA_LICENCA_AMBIENTAL, null, values);
+        db.close();
+    }
+
+    public Licenca_Ambiental getLicencaAmbiental(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_LICENCA_AMBIENTAL, // a. tabela
+                COLUNAS_LICENCA_AMBIENTAL, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            Licenca_Ambiental licenca_ambiental = cursorToLicencaAmbiental(cursor);
+            return licenca_ambiental;
+        }
+    }
+
+    private Licenca_Ambiental cursorToLicencaAmbiental(Cursor cursor) {
+
+        Estabelecimento estabelecimento = new Estabelecimento();
+        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
+
+        Licenca_Ambiental licenca_ambiental = new Licenca_Ambiental();
+        licenca_ambiental.setId(Integer.parseInt(cursor.getString(0)));
+        licenca_ambiental.setDt_registro(cursor.getString(1));
+        licenca_ambiental.setDt_validade(cursor.getString(2));
+        licenca_ambiental.setEstabelecimento(estabelecimento);
+
+        return licenca_ambiental;
+    }
+    public ArrayList<Licenca_Ambiental> getAllLicencaAmbiental() {
+        ArrayList<Licenca_Ambiental> listaLicencaAmbiental = new ArrayList<Licenca_Ambiental>();
+        String query = "SELECT * FROM " + TABELA_LICENCA_AMBIENTAL +" ORDER by " +DT_VALIDADE_LICENCA_AMBIENTAL;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Licenca_Ambiental licenca_ambiental = cursorToLicencaAmbiental(cursor);
+                listaLicencaAmbiental.add(licenca_ambiental);
+            } while (cursor.moveToNext());
+        }
+        return listaLicencaAmbiental;
+    }
+    public int updateLicencaAmbiental(Licenca_Ambiental licenca_ambiental) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_REGISTRO_LICENCA_AMBIENTAL, licenca_ambiental.getDt_registro());
+        values.put(DT_VALIDADE_LICENCA_AMBIENTAL, licenca_ambiental.getDt_validade());
+        values.put(ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL, new Integer(licenca_ambiental.getEstabelecimento().getId()));
+        int i = db.update(TABELA_LICENCA_AMBIENTAL, //tabela
+                values, // valores
+                ID_LICENCA_AMBIENTAL+" = ?", // colunas para comparar
+                new String[] { String.valueOf(licenca_ambiental.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
+    public int deleteLicencaAmbiental(Licenca_Ambiental licenca_ambiental) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_LICENCA_AMBIENTAL, //tabela
+                ID_LICENCA_AMBIENTAL+" = ?", // colunas para comparar
+                new String[] { String.valueOf(licenca_ambiental.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
+
+
+    private Date formataStringtoDate(String string) {
+        Date dt = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            dt = formatter.parse(string);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dt;
     }
 }

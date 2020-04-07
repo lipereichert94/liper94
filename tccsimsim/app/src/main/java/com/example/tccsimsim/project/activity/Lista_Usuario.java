@@ -47,23 +47,14 @@ public class Lista_Usuario extends Fragment {
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         // do whatever
-                        Log.d("----->", "POSICAO"+position);
-
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                      // ft.replace(R.id.conteudo_fragmento, new FragmentoPrimeiraTela().newInstance(position));
                          ft.replace(R.id.conteudo_fragmento, new Cadastro_Usuario().newInstance(listauser.get(position).getId()));
                          ft.commit();
 
                     }
                     @Override public void onLongItemClick(View view, int position) {
                         // do whatever
-                        Log.d("----->", "TESTE"+position);
-                    //    DayTrade dt = listaDT.get(position);
-                      //  Intent intent = new Intent(getActivity().getBaseContext(), FullScreenDT.class);
-                     //   intent.putExtra("parametro", dt.getFoto());
-                     //   startActivity(intent);
-
                     }
                 })
 

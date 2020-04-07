@@ -88,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
             ft.commit();
         }
+        else if (id == R.id.nav_licencaAmbiental) {
+            ft.replace(R.id.conteudo_fragmento, new Lista_Licenca_Ambiental());
+            ft.commit();
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

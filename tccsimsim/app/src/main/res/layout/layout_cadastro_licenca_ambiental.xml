@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Escolha o Estabelecimento*"/>
+    <Button
+        android:id="@+id/button_EscolherEstabelecimento_cadastro_licenca_ambiental"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher estabelecimento"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Escolha a data de validade*"/>
+    <Button
+        android:id="@+id/button_EscolherData_cadastro_licenca_ambiental"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data de registro"/>
+    <Button
+        android:id="@+id/btn_dtregistro_licenca_ambiental"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/button_SalvarLicencaAmbiental"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_removerLicencaAmbiental"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Limpar"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_CancelarLicencaAmbiental"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:textAllCaps="false"/>
+</LinearLayout>

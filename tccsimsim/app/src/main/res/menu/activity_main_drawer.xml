@@ -14,6 +14,9 @@
         <item
             android:id="@+id/nav_atestadoSaude"
             android:title="Atestado de Saúde" />
+        <item
+            android:id="@+id/nav_licencaAmbiental"
+            android:title="Licenca Ambiental" />
     </group>
 
 </menu>
