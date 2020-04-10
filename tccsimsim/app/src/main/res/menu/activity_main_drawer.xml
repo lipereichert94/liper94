@@ -17,6 +17,9 @@
         <item
             android:id="@+id/nav_licencaAmbiental"
             android:title="Licenca Ambiental" />
+        <item
+            android:id="@+id/nav_mediaMensal"
+            android:title="Média Mensal" />
     </group>
 
 </menu>

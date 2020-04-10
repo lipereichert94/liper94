@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Licenca_Ambiental;
+import com.example.tccsimsim.project.model.Media_Mensal;
 import com.example.tccsimsim.project.model.Produto;
 import com.example.tccsimsim.project.model.Usuario;
 
@@ -49,11 +50,18 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String DT_VALIDADE_LICENCA_AMBIENTAL = "dt_validade";
     private static final String ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL = "id_estabelecimento";
 
+    private static final String TABELA_MEDIA_MENSAL = "media_mensal";
+    private static final String ID_MEDIA_MENSAL = "id";
+    private static final String DT_MEDIA_MENSAL = "data";
+    private static final String QUANTIDADE_MEDIA_MENSAL = "quantidade";
+    private static final String ID_PRODUTO_MEDIA_MENSAL = "id_Produto";
+
     private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO};
     private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO};
     private static final String[] COLUNAS_PRODUTO = {ID_PRODUTO,NOME_PRODUTO,ID_PRODUTO_ESTABELECIMENTO};
     private static final String[] COLUNAS_ATESTADO_SAUDE = {ID_ATESTADO_SAUDE,DT_REGISTRO_ATESTADO_SAUDE,DT_VALIDADE_ATESTADO_SAUDE,ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE};
     private static final String[] COLUNAS_LICENCA_AMBIENTAL = {ID_LICENCA_AMBIENTAL,DT_REGISTRO_LICENCA_AMBIENTAL,DT_VALIDADE_LICENCA_AMBIENTAL,ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL};
+    private static final String[] COLUNAS_MEDIA_MENSAL = {ID_MEDIA_MENSAL,DT_MEDIA_MENSAL,QUANTIDADE_MEDIA_MENSAL,ID_PRODUTO_MEDIA_MENSAL};
 
     public BDSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -83,17 +91,24 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         String CREATE_TABLE4 = "CREATE TABLE "+TABELA_ATESTADO_SAUDE+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "dt_registro DATE,"+
-                "dt_validade TEXT,"+
+                "dt_validade DATE,"+
                 "id_estabelecimento REFERENCES estabelecimento(id) )";
 
         db.execSQL(CREATE_TABLE4);
         String CREATE_TABLE5 = "CREATE TABLE "+TABELA_LICENCA_AMBIENTAL+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "dt_registro DATE,"+
-                "dt_validade TEXT,"+
+                "dt_validade DATE,"+
                 "id_estabelecimento REFERENCES estabelecimento(id) )";
 
         db.execSQL(CREATE_TABLE5);
+        String CREATE_TABLE6 = "CREATE TABLE "+TABELA_MEDIA_MENSAL+" ("+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "data DATE,"+
+                "quantidade INTEGER,"+
+                "id_produto REFERENCES produto(id) )";
+
+        db.execSQL(CREATE_TABLE6);
     }
 
     @Override
@@ -103,6 +118,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS produto");
         db.execSQL("DROP TABLE IF EXISTS atestado_saude");
         db.execSQL("DROP TABLE IF EXISTS licenca_ambiental");
+        db.execSQL("DROP TABLE IF EXISTS media_mensal");
 
         this.onCreate(db);
     }
@@ -497,6 +513,84 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         return i; // número de linhas excluídas
     }
 
+
+    //-----------------------------------------MEDIA MENSAL -------------------------------------------------------
+    public void addMediaMensal(Media_Mensal media_mensal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_MEDIA_MENSAL, media_mensal.getDt_media_mensal());
+        values.put(QUANTIDADE_MEDIA_MENSAL,media_mensal.getQuantidade());
+        values.put(ID_PRODUTO_MEDIA_MENSAL, new Integer(media_mensal.getProduto().getId()));
+        db.insert(TABELA_MEDIA_MENSAL, null, values);
+        db.close();
+    }
+
+    public Media_Mensal getMediaMensal(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_MEDIA_MENSAL, // a. tabela
+                COLUNAS_MEDIA_MENSAL, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            Media_Mensal media_mensal = cursorToMediaMensal(cursor);
+            return media_mensal;
+        }
+    }
+
+    private Media_Mensal cursorToMediaMensal(Cursor cursor) {
+
+        Produto produto = new Produto();
+        produto =  getProduto(Integer.parseInt(cursor.getString(3)));
+
+        Media_Mensal media_mensal = new Media_Mensal();
+        media_mensal.setId(Integer.parseInt(cursor.getString(0)));
+        media_mensal.setDt_media_mensal(cursor.getString(1));
+        media_mensal.setQuantidade(new Integer(cursor.getString(2)));
+        media_mensal.setProduto(produto);
+
+        return media_mensal;
+    }
+    public ArrayList<Media_Mensal> getAllMediaMensal() {
+        ArrayList<Media_Mensal> listaMediaMensal = new ArrayList<Media_Mensal>();
+        String query = "SELECT * FROM " + TABELA_MEDIA_MENSAL +" ORDER by " +ID_PRODUTO_MEDIA_MENSAL;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Media_Mensal media_mensal = cursorToMediaMensal(cursor);
+                listaMediaMensal.add(media_mensal);
+            } while (cursor.moveToNext());
+        }
+        return listaMediaMensal;
+    }
+    public int updateMediaMensal(Media_Mensal media_mensal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_MEDIA_MENSAL, media_mensal.getDt_media_mensal());
+        values.put(QUANTIDADE_MEDIA_MENSAL,media_mensal.getQuantidade());
+        values.put(ID_PRODUTO_MEDIA_MENSAL, new Integer(media_mensal.getProduto().getId()));
+        int i = db.update(TABELA_MEDIA_MENSAL, //tabela
+                values, // valores
+                ID_MEDIA_MENSAL+" = ?", // colunas para comparar
+                new String[] { String.valueOf(media_mensal.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
+    public int deleteMediaMensal(Media_Mensal media_mensal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_MEDIA_MENSAL, //tabela
+                ID_MEDIA_MENSAL+" = ?", // colunas para comparar
+                new String[] { String.valueOf(media_mensal.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
 
     private Date formataStringtoDate(String string) {
         Date dt = new Date();

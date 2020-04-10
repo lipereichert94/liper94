@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Escolha o produto*"/>
+    <Button
+        android:id="@+id/button_EscolherProduto_cadastro_media_mensal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher produto"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selecione o mês e o ano da produção*"/>
+    <Button
+        android:id="@+id/button_EscolherData_cadastro_media_mensal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quantidade mensal produzida*"/>
+    <EditText
+        android:id="@+id/editText_QuantidadeCadastroMediaMensal"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:hint="Insira a quantidade mensal produzida"></EditText>
+
+    <Button
+        android:id="@+id/button_SalvarMediaMensal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_removerMediaMensal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Limpar"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_CancelarMediaMensal"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Cancelar"
+        android:textAllCaps="false"/>
+</LinearLayout>
