@@ -19,6 +19,7 @@ import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Licenca_Ambiental;
 import com.example.tccsimsim.project.model.Media_Mensal;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Lista_Media_Mensal extends Fragment {
@@ -37,7 +38,11 @@ public class Lista_Media_Mensal extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) minhaView.findViewById(R.id.recyclerView_ListaMediasMensais);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bd = new BDSQLiteHelper(getActivity());
-        listamediamensal = bd.getAllMediaMensal();
+        try {
+            listamediamensal = bd.getAllMediaMensal();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         recyclerView.setAdapter(new MediaMensalAdapter(listamediamensal, R.layout.list_item_media_mensal, getActivity().getApplicationContext()));
         recyclerView.addOnItemTouchListener(

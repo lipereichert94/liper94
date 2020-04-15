@@ -64,7 +64,12 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
         }
         if (id != 0) {
             btnremover.setText("Remover");
-            Media_Mensal media_mensal = bd.getMediaMensal(id);
+            Media_Mensal media_mensal = null;
+            try {
+                media_mensal = bd.getMediaMensal(id);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             btnescolherdata.setText(media_mensal.getDt_media_mensal());
         quantidade.setText(""+media_mensal.getQuantidade());
         }
@@ -79,13 +84,16 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
         int year = c.get(Calendar.YEAR);
 
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
 
             case R.id.button_SalvarMediaMensal:
-                SalvarMediaMensal();
+                try {
+                    SalvarMediaMensal();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.button_EscolherProduto_cadastro_media_mensal:
                 EscolherProduto();
@@ -113,7 +121,18 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
         dpd = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int myear, int mMonth, int mDay) {
-                btnescolherdata.setText(mDay + "/" + (mMonth + 1) + "/" + myear);
+                if(mDay == 1 || mDay == 2 || mDay == 3 || mDay ==4 || mDay ==5 || mDay ==6 || mDay ==7 || mDay ==8 || mDay ==9 ){
+                    btnescolherdata.setText("0"+mDay+"-");
+                }
+                else{
+                    btnescolherdata.setText(mDay+"-");
+                }
+                if(mMonth == 0 || mMonth == 1 || mMonth == 2 || mMonth == 3 || mMonth ==4 || mMonth ==5 || mMonth ==6 || mMonth ==7 || mMonth ==8 || mMonth ==9 ) {
+                    btnescolherdata.setText(btnescolherdata.getText()+"0"+(mMonth+1)+"-"+myear);
+                }
+                else{
+                    btnescolherdata.setText(""+btnescolherdata.getText()+(mMonth+1)+"-"+myear);
+                }
             }
         }, year,month,day);
         dpd.show();
@@ -135,7 +154,12 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        final Media_Mensal finalmedia_mensal = bd.getMediaMensal(id);
+                        Media_Mensal finalmedia_mensal = null;
+                        try {
+                            finalmedia_mensal = bd.getMediaMensal(id);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         bd.deleteMediaMensal(finalmedia_mensal);
                         Toast.makeText(getActivity(), "Média Mensal excluída com sucesso!",
                                 Toast.LENGTH_LONG).show();
@@ -149,7 +173,7 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
     }
 
 
-    private void SalvarMediaMensal(){
+    private void SalvarMediaMensal() throws ParseException {
 
         if (id != 0) {
             if(verificacampos()) {

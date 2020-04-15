@@ -20,6 +20,7 @@ import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Produto;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Lista_Atestado_Saude extends Fragment {
@@ -38,7 +39,11 @@ public class Lista_Atestado_Saude extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) minhaView.findViewById(R.id.recyclerView_ListaAtestadosdeSaude);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bd = new BDSQLiteHelper(getActivity());
-        listaatestadosaude = bd.getAllAtestadoSaude();
+        try {
+            listaatestadosaude = bd.getAllAtestadoSaude();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         recyclerView.setAdapter(new AtestadoSaudeAdapter(listaatestadosaude, R.layout.list_item_atestado_saude, getActivity().getApplicationContext()));
         recyclerView.addOnItemTouchListener(

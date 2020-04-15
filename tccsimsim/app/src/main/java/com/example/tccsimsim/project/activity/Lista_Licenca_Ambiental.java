@@ -19,6 +19,7 @@ import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Licenca_Ambiental;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Lista_Licenca_Ambiental extends Fragment {
@@ -37,7 +38,11 @@ public class Lista_Licenca_Ambiental extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) minhaView.findViewById(R.id.recyclerView_ListaLicencasAmbientais);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bd = new BDSQLiteHelper(getActivity());
-        listalicencaambiental = bd.getAllLicencaAmbiental();
+        try {
+            listalicencaambiental = bd.getAllLicencaAmbiental();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         recyclerView.setAdapter(new LicencaAmbientalAdapter(listalicencaambiental, R.layout.list_item_licenca_ambiental, getActivity().getApplicationContext()));
         recyclerView.addOnItemTouchListener(

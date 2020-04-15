@@ -60,7 +60,12 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         }
         if (id != 0) {
             btnremover.setText("Remover");
-            Licenca_Ambiental licenca_ambiental = bd.getLicencaAmbiental(id);
+            Licenca_Ambiental licenca_ambiental = null;
+            try {
+                licenca_ambiental = bd.getLicencaAmbiental(id);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             dt_registro.setText(licenca_ambiental.getDt_registro());
             btnescolherdata.setText(licenca_ambiental.getDt_validade());
         }
@@ -73,7 +78,19 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         int day = c.get(Calendar.DAY_OF_MONTH);
         int month = c.get(Calendar.MONTH);
         int year = c.get(Calendar.YEAR);
-        dt_registro.setText(day + "/" + (month + 1) + "/" + year);
+        if(day == 1 || day == 2 || day == 3 || day ==4 || day ==5 || day ==6 || day ==7 || day ==8 || day ==9 ){
+            dt_registro.setText("0"+day+"-");
+        }
+        else{
+            dt_registro.setText(day+"-");
+        }
+        if(month == 0 || month == 1 || month == 2 || month == 3 || month ==4 || month ==5 || month ==6 || month ==7 || month ==8 || month ==9 ) {
+            dt_registro.setText(dt_registro.getText()+"0"+(month+1)+"-"+year);
+        }
+        else{
+            dt_registro.setText(""+dt_registro.getText()+(month+1)+"-"+year);
+        }
+        dt_registro.setText(day + "-" + (month + 1) + "-" + year);
 
     }
 
@@ -82,7 +99,11 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         switch (view.getId()) {
 
             case R.id.button_SalvarLicencaAmbiental:
-                SalvarLicencaAmbiental();
+                try {
+                    SalvarLicencaAmbiental();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.button_EscolherEstabelecimento_cadastro_licenca_ambiental:
                 EscolherEstabelecimento();
@@ -110,7 +131,18 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         dpd = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int myear, int mMonth, int mDay) {
-                btnescolherdata.setText(mDay + "/" + (mMonth + 1) + "/" + myear);
+                if(mDay == 1 || mDay == 2 || mDay == 3 || mDay ==4 || mDay ==5 || mDay ==6 || mDay ==7 || mDay ==8 || mDay ==9 ){
+                    btnescolherdata.setText("0"+mDay+"-");
+                }
+                else{
+                    btnescolherdata.setText(mDay+"-");
+                }
+                if(mMonth == 0 || mMonth == 1 || mMonth == 2 || mMonth == 3 || mMonth ==4 || mMonth ==5 || mMonth ==6 || mMonth ==7 || mMonth ==8 || mMonth ==9 ) {
+                    btnescolherdata.setText(btnescolherdata.getText()+"0"+(mMonth+1)+"-"+myear);
+                }
+                else{
+                    btnescolherdata.setText(""+btnescolherdata.getText()+(mMonth+1)+"-"+myear);
+                }
             }
         }, year,month,day);
         dpd.show();
@@ -132,7 +164,12 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        final Licenca_Ambiental finallicenca_ambiental = bd.getLicencaAmbiental(id);
+                        Licenca_Ambiental finallicenca_ambiental = null;
+                        try {
+                            finallicenca_ambiental = bd.getLicencaAmbiental(id);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         bd.deleteLicencaAmbiental(finallicenca_ambiental);
                         Toast.makeText(getActivity(), "Licença Ambiental excluída com sucesso!",
                                 Toast.LENGTH_LONG).show();
@@ -146,7 +183,7 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
     }
 
 
-    private void SalvarLicencaAmbiental() {
+    private void SalvarLicencaAmbiental() throws ParseException {
         if (id != 0) {
             if(verificacampos()) {
                 //alterar
@@ -197,20 +234,6 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         }
     }
 
-    private Date formataStringtoDate(String string) {
-        Date dt = new Date();
-        Log.d("----->", "Formatar data "+string);
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-        try {
-            dt = formatter.parse(string);
-            Log.d("----->", "Formatada data "+dt.toString());
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return dt;
-    }
     public static Cadastro_Licenca_Ambiental newInstance(int id, int id_estabelecimento) {
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);

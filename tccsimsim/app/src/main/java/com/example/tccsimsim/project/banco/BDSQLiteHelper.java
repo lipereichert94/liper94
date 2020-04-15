@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Estabelecimento;
@@ -15,6 +16,8 @@ import com.example.tccsimsim.project.model.Usuario;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -358,17 +361,17 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     }
 
     //-----------------------------------------ATESTADO DE SAÚDE-------------------------------------------------------
-    public void addAtestadoSaude(Atestado_Saude atestado_saude) {
+    public void addAtestadoSaude(Atestado_Saude atestado_saude) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro().toString());
-        values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade().toString());
+        values.put(DT_REGISTRO_ATESTADO_SAUDE, formataDataddmmaaaatoyyyymmdd(atestado_saude.getDt_registro().toString()));
+        values.put(DT_VALIDADE_ATESTADO_SAUDE, formataDataddmmaaaatoyyyymmdd(atestado_saude.getDt_validade()));
         values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
         db.insert(TABELA_ATESTADO_SAUDE, null, values);
         db.close();
     }
 
-    public Atestado_Saude getAtestadoSaude(int id) {
+    public Atestado_Saude getAtestadoSaude(int id) throws ParseException {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABELA_ATESTADO_SAUDE, // a. tabela
                 COLUNAS_ATESTADO_SAUDE, // b. colunas
@@ -387,20 +390,20 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    private Atestado_Saude cursorToAtestado_Saude(Cursor cursor) {
+    private Atestado_Saude cursorToAtestado_Saude(Cursor cursor) throws ParseException {
 
         Estabelecimento estabelecimento = new Estabelecimento();
         estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
 
         Atestado_Saude atestado_saude = new Atestado_Saude();
         atestado_saude.setId(Integer.parseInt(cursor.getString(0)));
-        atestado_saude.setDt_registro(cursor.getString(1));
-        atestado_saude.setDt_validade(cursor.getString(2));
+        atestado_saude.setDt_registro(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
+        atestado_saude.setDt_validade(formataDatayyyymmddtoddmmaaa(cursor.getString(2)));
         atestado_saude.setEstabelecimento(estabelecimento);
 
         return atestado_saude;
     }
-    public ArrayList<Atestado_Saude> getAllAtestadoSaude() {
+    public ArrayList<Atestado_Saude> getAllAtestadoSaude() throws ParseException {
         ArrayList<Atestado_Saude> listaAtestadoSaude = new ArrayList<Atestado_Saude>();
         String query = "SELECT * FROM " + TABELA_ATESTADO_SAUDE +" ORDER by " +DT_VALIDADE_ATESTADO_SAUDE;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -413,11 +416,11 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
         return listaAtestadoSaude;
     }
-    public int updateAtestadoSaude(Atestado_Saude atestado_saude) {
+    public int updateAtestadoSaude(Atestado_Saude atestado_saude) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DT_REGISTRO_ATESTADO_SAUDE, atestado_saude.getDt_registro());
-        values.put(DT_VALIDADE_ATESTADO_SAUDE, atestado_saude.getDt_validade());
+        values.put(DT_REGISTRO_ATESTADO_SAUDE, formataDataddmmaaaatoyyyymmdd(atestado_saude.getDt_registro()));
+        values.put(DT_VALIDADE_ATESTADO_SAUDE, formataDataddmmaaaatoyyyymmdd(atestado_saude.getDt_validade()));
         values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
         int i = db.update(TABELA_ATESTADO_SAUDE, //tabela
                 values, // valores
@@ -436,17 +439,19 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     }
 
     //-----------------------------------------LICENCA AMBIENTAL-------------------------------------------------------
-    public void addLicencaAmbiental(Licenca_Ambiental licenca_ambiental) {
+    public void addLicencaAmbiental(Licenca_Ambiental licenca_ambiental) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DT_REGISTRO_LICENCA_AMBIENTAL, licenca_ambiental.getDt_registro().toString());
-        values.put(DT_VALIDADE_LICENCA_AMBIENTAL, licenca_ambiental.getDt_validade().toString());
+        Log.d("----->", "ENTROU ADD LICENC");
+
+        values.put(DT_REGISTRO_LICENCA_AMBIENTAL, formataDataddmmaaaatoyyyymmdd(licenca_ambiental.getDt_registro()));
+        values.put(DT_VALIDADE_LICENCA_AMBIENTAL, formataDataddmmaaaatoyyyymmdd(licenca_ambiental.getDt_validade()));
         values.put(ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL, new Integer(licenca_ambiental.getEstabelecimento().getId()));
         db.insert(TABELA_LICENCA_AMBIENTAL, null, values);
         db.close();
     }
 
-    public Licenca_Ambiental getLicencaAmbiental(int id) {
+    public Licenca_Ambiental getLicencaAmbiental(int id) throws ParseException {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABELA_LICENCA_AMBIENTAL, // a. tabela
                 COLUNAS_LICENCA_AMBIENTAL, // b. colunas
@@ -465,20 +470,20 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    private Licenca_Ambiental cursorToLicencaAmbiental(Cursor cursor) {
+    private Licenca_Ambiental cursorToLicencaAmbiental(Cursor cursor) throws ParseException {
 
         Estabelecimento estabelecimento = new Estabelecimento();
         estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
 
         Licenca_Ambiental licenca_ambiental = new Licenca_Ambiental();
         licenca_ambiental.setId(Integer.parseInt(cursor.getString(0)));
-        licenca_ambiental.setDt_registro(cursor.getString(1));
-        licenca_ambiental.setDt_validade(cursor.getString(2));
+        licenca_ambiental.setDt_registro(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
+        licenca_ambiental.setDt_validade(formataDatayyyymmddtoddmmaaa(cursor.getString(2)));
         licenca_ambiental.setEstabelecimento(estabelecimento);
 
         return licenca_ambiental;
     }
-    public ArrayList<Licenca_Ambiental> getAllLicencaAmbiental() {
+    public ArrayList<Licenca_Ambiental> getAllLicencaAmbiental() throws ParseException {
         ArrayList<Licenca_Ambiental> listaLicencaAmbiental = new ArrayList<Licenca_Ambiental>();
         String query = "SELECT * FROM " + TABELA_LICENCA_AMBIENTAL +" ORDER by " +DT_VALIDADE_LICENCA_AMBIENTAL;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -491,11 +496,11 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
         return listaLicencaAmbiental;
     }
-    public int updateLicencaAmbiental(Licenca_Ambiental licenca_ambiental) {
+    public int updateLicencaAmbiental(Licenca_Ambiental licenca_ambiental) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DT_REGISTRO_LICENCA_AMBIENTAL, licenca_ambiental.getDt_registro());
-        values.put(DT_VALIDADE_LICENCA_AMBIENTAL, licenca_ambiental.getDt_validade());
+        values.put(DT_REGISTRO_LICENCA_AMBIENTAL, formataDataddmmaaaatoyyyymmdd(licenca_ambiental.getDt_registro()));
+        values.put(DT_VALIDADE_LICENCA_AMBIENTAL, formataDataddmmaaaatoyyyymmdd(licenca_ambiental.getDt_validade()));
         values.put(ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL, new Integer(licenca_ambiental.getEstabelecimento().getId()));
         int i = db.update(TABELA_LICENCA_AMBIENTAL, //tabela
                 values, // valores
@@ -515,17 +520,17 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
 
 
     //-----------------------------------------MEDIA MENSAL -------------------------------------------------------
-    public void addMediaMensal(Media_Mensal media_mensal) {
+    public void addMediaMensal(Media_Mensal media_mensal) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DT_MEDIA_MENSAL, media_mensal.getDt_media_mensal());
+        values.put(DT_MEDIA_MENSAL, formataDataddmmaaaatoyyyymmdd(media_mensal.getDt_media_mensal()));
         values.put(QUANTIDADE_MEDIA_MENSAL,media_mensal.getQuantidade());
         values.put(ID_PRODUTO_MEDIA_MENSAL, new Integer(media_mensal.getProduto().getId()));
         db.insert(TABELA_MEDIA_MENSAL, null, values);
         db.close();
     }
 
-    public Media_Mensal getMediaMensal(int id) {
+    public Media_Mensal getMediaMensal(int id) throws ParseException {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABELA_MEDIA_MENSAL, // a. tabela
                 COLUNAS_MEDIA_MENSAL, // b. colunas
@@ -544,20 +549,20 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    private Media_Mensal cursorToMediaMensal(Cursor cursor) {
+    private Media_Mensal cursorToMediaMensal(Cursor cursor) throws ParseException {
 
         Produto produto = new Produto();
         produto =  getProduto(Integer.parseInt(cursor.getString(3)));
 
         Media_Mensal media_mensal = new Media_Mensal();
         media_mensal.setId(Integer.parseInt(cursor.getString(0)));
-        media_mensal.setDt_media_mensal(cursor.getString(1));
+        media_mensal.setDt_media_mensal(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
         media_mensal.setQuantidade(new Integer(cursor.getString(2)));
         media_mensal.setProduto(produto);
 
         return media_mensal;
     }
-    public ArrayList<Media_Mensal> getAllMediaMensal() {
+    public ArrayList<Media_Mensal> getAllMediaMensal() throws ParseException {
         ArrayList<Media_Mensal> listaMediaMensal = new ArrayList<Media_Mensal>();
         String query = "SELECT * FROM " + TABELA_MEDIA_MENSAL +" ORDER by " +ID_PRODUTO_MEDIA_MENSAL;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -570,10 +575,10 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
         return listaMediaMensal;
     }
-    public int updateMediaMensal(Media_Mensal media_mensal) {
+    public int updateMediaMensal(Media_Mensal media_mensal) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DT_MEDIA_MENSAL, media_mensal.getDt_media_mensal());
+        values.put(DT_MEDIA_MENSAL, formataDataddmmaaaatoyyyymmdd(media_mensal.getDt_media_mensal()));
         values.put(QUANTIDADE_MEDIA_MENSAL,media_mensal.getQuantidade());
         values.put(ID_PRODUTO_MEDIA_MENSAL, new Integer(media_mensal.getProduto().getId()));
         int i = db.update(TABELA_MEDIA_MENSAL, //tabela
@@ -591,16 +596,38 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return i; // número de linhas excluídas
     }
+    private String formataDataddmmaaaatoyyyymmdd(String data) throws ParseException {
 
-    private Date formataStringtoDate(String string) {
-        Date dt = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            dt = formatter.parse(string);
+        // *** note that it's "yyyy-MM-dd hh:mm:ss" not "yyyy-mm-dd hh:mm:ss"
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
+        Date date;
+        date = dt.parse(data);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return dt;
+        // *** same for the format String below
+
+        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
+        Log.d("----->", "DATA RECEBIDA "+data);
+        data = dt1.format(date);
+
+        Log.d("----->", "DATA FORMATADA "+data);
+
+        return data;
+    }
+
+    private String formataDatayyyymmddtoddmmaaa(String data) throws ParseException {
+        // *** note that it's "yyyy-MM-dd hh:mm:ss" not "yyyy-mm-dd hh:mm:ss"
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        date = dt.parse(data);
+
+        // *** same for the format String below
+
+        SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
+        Log.d("----->", "DATA RECEBIDA "+data);
+        data = dt1.format(date);
+
+        Log.d("----->", "DATA FORMATADA "+data);
+
+        return data;
     }
 }
