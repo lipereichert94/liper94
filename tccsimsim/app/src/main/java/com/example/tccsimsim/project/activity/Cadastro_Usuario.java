@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.core.view.GravityCompat;
@@ -27,6 +28,7 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
     private EditText nome, login, senha, confirmar_senha;
     private BDSQLiteHelper bd;
     private int id = 0;
+    private RadioButton administrador,visualizador;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
         login = (EditText) minhaView.findViewById(R.id.editText_LoginCadastro);
         senha = (EditText) minhaView.findViewById(R.id.editText_SenhaCadastro);
         confirmar_senha = (EditText) minhaView.findViewById(R.id.editText_SenhaRepetirCadastro);
+        administrador = (RadioButton)minhaView.findViewById(R.id.radioadmin);
+        visualizador = (RadioButton)minhaView.findViewById(R.id.radioleitura);
         btnsalvar.setOnClickListener(this);
         btnremover.setOnClickListener(this);
         readBundle(getArguments());
@@ -48,6 +52,11 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
             login.setText(user.getLogin());
             senha.setText(user.getSenha());
             confirmar_senha.setText(user.getSenha());
+            if(user.getPermissao().equals("rw")){
+                administrador.setChecked(true);
+            }else{
+                visualizador.setChecked(true);
+            }
         }
         return minhaView;
     }
@@ -95,6 +104,8 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
         login.setText("");
         senha.setText("");
         confirmar_senha.setText("");
+        administrador.setChecked(false);
+        visualizador.setChecked(false);
     }
 
     private void SalvarUsuario() {
@@ -104,13 +115,28 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
             if (!senha.getText().toString().equals(confirmar_senha.getText().toString())) {
                 Toast.makeText(getActivity(), "As senhas não correspondem",
                         Toast.LENGTH_LONG).show();
-            } else {
+            }  else if(administrador.isChecked()==false && visualizador.isChecked()==false){
+                Toast.makeText(getActivity(), "Favor selecionar a permissão",
+                        Toast.LENGTH_LONG).show();
+
+            }
+            else if(login.getText().toString().equals("")){
+                Toast.makeText(getActivity(), "Favor preencher login",
+                        Toast.LENGTH_LONG).show();
+
+            }else {
 
                 Usuario user = new Usuario();
                 user.setId(id);
                 user.setNome(nome.getText().toString());
                 user.setLogin(login.getText().toString());
                 user.setSenha(senha.getText().toString());
+                if(administrador.isChecked()==true){
+                    user.setPermissao("rw");
+                }
+                if(visualizador.isChecked()==true){
+                    user.setPermissao("r");
+                }
                 bd.updateUsuario(user);
                 limparcampos();
                 Toast.makeText(getActivity(), "Usuário alterado com sucesso!",
@@ -130,11 +156,26 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
             } else if (!senha.getText().toString().equals(confirmar_senha.getText().toString())) {
                 Toast.makeText(getActivity(), "As senhas não correspondem",
                         Toast.LENGTH_LONG).show();
-            } else {
+            } else if(administrador.isChecked()==false && visualizador.isChecked()==false){
+                Toast.makeText(getActivity(), "Favor selecionar a permissão",
+                        Toast.LENGTH_LONG).show();
+
+            }
+            else if(login.getText().toString().equals("")){
+                Toast.makeText(getActivity(), "Favor preencher login",
+                        Toast.LENGTH_LONG).show();
+
+            }else{
                 Usuario user = new Usuario();
                 user.setNome(nome.getText().toString());
                 user.setLogin(login.getText().toString());
                 user.setSenha(senha.getText().toString());
+                if(administrador.isChecked()==true){
+                    user.setPermissao("rw");
+                }
+                if(visualizador.isChecked()==true){
+                    user.setPermissao("r");
+                }
                 bd.addUsuario(user);
                 limparcampos();
                 Toast.makeText(getActivity(), "Usuário criado com sucesso!",

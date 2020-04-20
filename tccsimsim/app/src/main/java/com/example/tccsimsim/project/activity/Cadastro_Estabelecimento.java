@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import com.example.tccsimsim.R;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Usuario;
+import com.google.android.material.navigation.NavigationView;
 
 public class Cadastro_Estabelecimento extends Fragment implements View.OnClickListener {
     View minhaView;
@@ -25,7 +27,6 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
     private EditText nome;
     private BDSQLiteHelper bd;
     private int id = 0;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         minhaView = inflater.inflate(R.layout.layout_cadastro_estabelecimento, container, false);

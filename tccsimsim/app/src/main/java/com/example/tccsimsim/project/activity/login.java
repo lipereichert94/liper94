@@ -66,15 +66,16 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     private void confirmarLogin(String login, String senha) {
         String parametro = "' "+login+" '%";
         Usuario user = bd.login(login);
-        startActivity(new Intent(getBaseContext(),MainActivity.class));
+       // startActivity(new Intent(getBaseContext(),MainActivity.class));
 
         if(user==null){
             Toast.makeText(getBaseContext(),"Usuário não encontrado", Toast.LENGTH_LONG).show();
         }
         else if(user.getSenha().equals(senha)){
             Toast.makeText(getBaseContext(),"Login efetuado com sucesso", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getBaseContext(),MainActivity.class));
-
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("id_usuario",""+user.getId());
+            startActivity(intent);
         }
         else{
             Toast.makeText(getBaseContext(),"Senha incorreta", Toast.LENGTH_LONG).show();

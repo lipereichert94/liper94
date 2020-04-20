@@ -52,6 +52,25 @@
             android:textStyle="bold"
             android:textColor="@color/colorBlack"
             android:textSize="16sp" />
+        <TextView
+            android:text="Permissão:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="login"
+            android:id="@+id/permissao_usuario_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

@@ -13,21 +13,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.tccsimsim.R;
+import com.example.tccsimsim.project.banco.BDSQLiteHelper;
+import com.example.tccsimsim.project.model.Usuario;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    //private BDSQLiteHelper bd;
+import org.w3c.dom.Text;
 
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private BDSQLiteHelper bd;
+    private TextView txtusuariologado,txtpermissaousuariologado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //bd = new BDSQLiteHelper(this);
-
+        bd = new BDSQLiteHelper(this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -35,6 +40,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        txtpermissaousuariologado = (TextView)headerView.findViewById(R.id.permissaousuariologado);
+        txtusuariologado = (TextView)  headerView.findViewById(R.id.usuariologado);
+        //Pega a intent de outra activity
+        Intent it = getIntent();
+        //Recuperei a string da outra activity
+        Integer id_usuario = Integer.valueOf(it.getStringExtra("id_usuario"));
+        Usuario user = bd.getUsuario(id_usuario);
+        Log.d("----->", "id usuario "+id_usuario);
+
+        txtusuariologado.setText(user.getLogin());
+        txtpermissaousuariologado.setText(user.getPermissao());
     }
 
     @Override

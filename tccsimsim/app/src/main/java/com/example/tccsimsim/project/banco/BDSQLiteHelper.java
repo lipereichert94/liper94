@@ -31,6 +31,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String NOME_USUARIO = "nome";
     private static final String LOGIN_USUARIO = "login";
     private static final String SENHA_USUARIO = "senha";
+    private static final String PERMISSAO_USUARIO = "permissao";
 
     private static final String TABELA_ESTABELECIMENTO = "estabelecimento";
     private static final String ID_ESTABELECIMENTO = "id";
@@ -59,7 +60,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String QUANTIDADE_MEDIA_MENSAL = "quantidade";
     private static final String ID_PRODUTO_MEDIA_MENSAL = "id_Produto";
 
-    private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO};
+    private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO,PERMISSAO_USUARIO};
     private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO};
     private static final String[] COLUNAS_PRODUTO = {ID_PRODUTO,NOME_PRODUTO,ID_PRODUTO_ESTABELECIMENTO};
     private static final String[] COLUNAS_ATESTADO_SAUDE = {ID_ATESTADO_SAUDE,DT_REGISTRO_ATESTADO_SAUDE,DT_VALIDADE_ATESTADO_SAUDE,ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE};
@@ -78,7 +79,8 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "nome TEXT,"+
                 "login TEXT,"+
-                "senha TEXT )";
+                "senha TEXT,"+
+                "permissao TEXT )";
         db.execSQL(CREATE_TABLE);
 
         String CREATE_TABLE2 = "CREATE TABLE "+TABELA_ESTABELECIMENTO+" ("+
@@ -138,6 +140,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         values.put(NOME_USUARIO, user.getNome());
         values.put(LOGIN_USUARIO, user.getLogin());
         values.put(SENHA_USUARIO, user.getSenha());
+        values.put(PERMISSAO_USUARIO, user.getPermissao());
         db.insert(TABELA_USUARIO, null, values);
         db.close();
     }
@@ -188,6 +191,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         user.setNome(cursor.getString(1));
         user.setLogin(cursor.getString(2));
         user.setSenha(cursor.getString(3));
+        user.setPermissao(cursor.getString(4));
         return user;
     }
     public ArrayList<Usuario> getAllUsuarios() {
@@ -209,6 +213,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         values.put(NOME_USUARIO, user.getNome());
         values.put(LOGIN_USUARIO, user.getLogin());
         values.put(SENHA_USUARIO, user.getSenha());
+        values.put(PERMISSAO_USUARIO, user.getPermissao());
         int i = db.update(TABELA_USUARIO, //tabela
                 values, // valores
                 ID_USUARIO+" = ?", // colunas para comparar

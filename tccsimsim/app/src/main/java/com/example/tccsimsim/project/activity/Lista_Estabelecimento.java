@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,6 +21,7 @@ import com.example.tccsimsim.project.adapter.UsuarioAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Usuario;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
@@ -39,17 +42,25 @@ public class Lista_Estabelecimento extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bd = new BDSQLiteHelper(getActivity());
         listaestabelecimento = bd.getAllEstabelecimentos();
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        final TextView permissao_usuario = (TextView) headerView.findViewById(R.id.permissaousuariologado);
 
         recyclerView.setAdapter(new EstabelecimentoAdapter(listaestabelecimento, R.layout.list_item_estabelecimento, getActivity().getApplicationContext()));
         recyclerView.addOnItemTouchListener(
 
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        // do whatever
-                        FragmentManager fm = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                         ft.replace(R.id.conteudo_fragmento, new Cadastro_Estabelecimento().newInstance(listaestabelecimento.get(position).getId()));
-                         ft.commit();
+                        if(permissao_usuario.getText().toString().equals("rw")) {
+                            // do whatever
+                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ft.replace(R.id.conteudo_fragmento, new Cadastro_Estabelecimento().newInstance(listaestabelecimento.get(position).getId()));
+                            ft.commit();
+                        }else{
+                                Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                                        Toast.LENGTH_LONG).show();
+                            }
 
                     }
                     @Override public void onLongItemClick(View view, int position) {
@@ -63,10 +74,15 @@ public class Lista_Estabelecimento extends Fragment {
         cadastra_estabelecimento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.conteudo_fragmento, new Cadastro_Estabelecimento());
-                ft.commit();
+                if(permissao_usuario.getText().toString().equals("rw")) {
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.conteudo_fragmento, new Cadastro_Estabelecimento());
+                    ft.commit();
+                }else{
+                    Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 

@@ -24,11 +24,13 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.DatumVie
         LinearLayout userLayout;
         TextView nome;
         TextView login;
+        TextView permissao;
         public DatumViewHolder(View v) {
             super(v);
             userLayout = (LinearLayout) v.findViewById(R.id.user_layout);
             nome = (TextView) v.findViewById(R.id.nome_usuario_lista);
             login = (TextView) v.findViewById(R.id.login_usuario_lista);
+            permissao = (TextView)v.findViewById(R.id.permissao_usuario_lista);
         }
     }
     public UsuarioAdapter(List<Usuario> users, int rowLayout, Context context) {
@@ -49,6 +51,7 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.DatumVie
     public void onBindViewHolder(@NonNull DatumViewHolder holder, int position) {
         holder.nome.setText(user.get(position).getNome());
         holder.login.setText(user.get(position).getLogin());
+        holder.permissao.setText(user.get(position).getPermissao());
     }
 
     @Override
