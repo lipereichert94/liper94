@@ -53,6 +53,8 @@ public class Lista_Estabelecimento extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         if(permissao_usuario.getText().toString().equals("rw")) {
                             // do whatever
+                            Log.d("----->", "permissao é:"+permissao_usuario.getText().toString());
+
                             FragmentManager fm = getActivity().getSupportFragmentManager();
                             FragmentTransaction ft = fm.beginTransaction();
                             ft.replace(R.id.conteudo_fragmento, new Cadastro_Estabelecimento().newInstance(listaestabelecimento.get(position).getId()));

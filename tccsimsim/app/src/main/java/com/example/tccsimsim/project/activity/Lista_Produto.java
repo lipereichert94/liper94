@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,6 +21,7 @@ import com.example.tccsimsim.project.adapter.ProdutoAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Produto;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
@@ -40,22 +43,26 @@ public class Lista_Produto extends Fragment {
         bd = new BDSQLiteHelper(getActivity());
         listaproduto = bd.getAllProduto();
 
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        final TextView permissao_usuario = (TextView) headerView.findViewById(R.id.permissaousuariologado);
+
         recyclerView.setAdapter(new ProdutoAdapter(listaproduto, R.layout.list_item_produto, getActivity().getApplicationContext()));
         recyclerView.addOnItemTouchListener(
 
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        // do whatever
-                        Log.d("----->", "POSICAO"+position);
-
-                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        if(permissao_usuario.getText().toString().equals("rw")) {
+                            // do whatever
+                            Log.d("----->", "permissao é:"+permissao_usuario.getText().toString());
+                            FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                      // ft.replace(R.id.conteudo_fragmento, new FragmentoPrimeiraTela().newInstance(position));
-                        Log.d("----->", "No frame lista produto passou id produto" + listaproduto.get(position).getId());
-                        Log.d("----->", "No frame lista produto passou o id estabelecimetno" + listaproduto.get(position).getEstabelecimento().getId());
                         ft.replace(R.id.conteudo_fragmento, new Cadastro_Produto().newInstance(listaproduto.get(position).getId(),listaproduto.get(position).getEstabelecimento().getId()));
                          ft.commit();
-
+                        }else{
+                            Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                     @Override public void onLongItemClick(View view, int position) {
                         // do whatever

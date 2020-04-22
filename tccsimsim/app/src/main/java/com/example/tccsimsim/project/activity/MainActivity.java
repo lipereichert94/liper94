@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Recuperei a string da outra activity
         Integer id_usuario = Integer.valueOf(it.getStringExtra("id_usuario"));
         Usuario user = bd.getUsuario(id_usuario);
-        Log.d("----->", "id usuario "+id_usuario);
+       Log.d("----->", "id usuario "+id_usuario);
 
         txtusuariologado.setText(user.getLogin());
         txtpermissaousuariologado.setText(user.getPermissao());
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(getBaseContext(),login.class));
             return true;
         }
 
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.conteudo_fragmento, new Lista_Media_Mensal());
             ft.commit();
         }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

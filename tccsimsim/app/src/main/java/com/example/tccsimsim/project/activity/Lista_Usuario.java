@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import com.example.tccsimsim.R;
 import com.example.tccsimsim.project.adapter.UsuarioAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Usuario;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
@@ -41,17 +43,25 @@ public class Lista_Usuario extends Fragment {
         bd = new BDSQLiteHelper(getActivity());
         listauser = bd.getAllUsuarios();
 
+        NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        final TextView permissao_usuario = (TextView) headerView.findViewById(R.id.permissaousuariologado);
+
         recyclerView.setAdapter(new UsuarioAdapter(listauser, R.layout.list_item_user, getActivity().getApplicationContext()));
         recyclerView.addOnItemTouchListener(
 
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        // do whatever
+                        if(permissao_usuario.getText().toString().equals("rw")) {
+                            // do whatever
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
                          ft.replace(R.id.conteudo_fragmento, new Cadastro_Usuario().newInstance(listauser.get(position).getId()));
                          ft.commit();
-
+                        }else{
+                            Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                     @Override public void onLongItemClick(View view, int position) {
                         // do whatever

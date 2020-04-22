@@ -11,6 +11,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="SIMSIM – Sistema de apoio a gerência de dados do serviço de inspeção municipal"
+        android:textAlignment="center"></TextView>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logosimsim">
+
+    </ImageView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Login"/>
     <EditText
         android:id="@+id/editText_Login"
@@ -33,6 +44,6 @@
         android:id="@+id/OkLogin"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Ok"/>
+        android:text="Login"/>
 
 </LinearLayout>
