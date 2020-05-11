@@ -77,10 +77,15 @@ public class Lista_Licenca_Ambiental extends Fragment {
         cadastra_licenca_abiental.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(permissao_usuario.getText().toString().equals("rw")) {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.conteudo_fragmento, new Cadastro_Licenca_Ambiental());
                 ft.commit();
+            }else{
+                Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                        Toast.LENGTH_LONG).show();
+            }
             }
         });
 

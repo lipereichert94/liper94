@@ -30,7 +30,21 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         bd = new BDSQLiteHelper(this);
 
         button_login.setOnClickListener(this);
+        criauseradmin();
+    }
 
+    private void criauseradmin() {
+        if (bd.login("admin") == null) {
+            Usuario admin = new Usuario();
+            admin.setPermissao("rw");
+            admin.setLogin("admin");
+            admin.setSenha("admin");
+            admin.setNome("Admin");
+            bd.addUsuario(admin);
+        }
+        else {
+
+        }
     }
 
     @Override
@@ -68,7 +82,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
         String parametro = "' "+login+" '%";
         Usuario user = bd.login(login);
-
         if(user==null){
             Toast.makeText(getBaseContext(),"Usuário não encontrado", Toast.LENGTH_LONG).show();
         }

@@ -90,31 +90,49 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         String CREATE_TABLE3 = "CREATE TABLE "+TABELA_PRODUTO+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "nome TEXT,"+
-                "id_estabelecimento REFERENCES estabelecimento(id) )";
+                "id_estabelecimento REFERENCES estabelecimento(id) " +
+                "ON UPDATE RESTRICT\n" +
+                "ON DELETE RESTRICT)";
 
         db.execSQL(CREATE_TABLE3);
         String CREATE_TABLE4 = "CREATE TABLE "+TABELA_ATESTADO_SAUDE+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "dt_registro DATE,"+
                 "dt_validade DATE,"+
-                "id_estabelecimento REFERENCES estabelecimento(id) )";
+                "id_estabelecimento REFERENCES estabelecimento(id) " +
+                "ON UPDATE RESTRICT\n" +
+                "ON DELETE RESTRICT)";
 
         db.execSQL(CREATE_TABLE4);
         String CREATE_TABLE5 = "CREATE TABLE "+TABELA_LICENCA_AMBIENTAL+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "dt_registro DATE,"+
                 "dt_validade DATE,"+
-                "id_estabelecimento REFERENCES estabelecimento(id) )";
+                "id_estabelecimento REFERENCES estabelecimento(id)" +
+                "ON UPDATE RESTRICT\n" +
+                "ON DELETE RESTRICT)";
 
         db.execSQL(CREATE_TABLE5);
         String CREATE_TABLE6 = "CREATE TABLE "+TABELA_MEDIA_MENSAL+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "data DATE,"+
                 "quantidade INTEGER,"+
-                "id_produto REFERENCES produto(id) )";
+                "id_produto REFERENCES produto(id) " +
+                "ON UPDATE RESTRICT\n" +
+                "ON DELETE RESTRICT)";
 
         db.execSQL(CREATE_TABLE6);
     }
+    @Override
+    public void onOpen(SQLiteDatabase db){
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            db.execSQL("PRAGMA foreign_keys=ON");
+
+        }
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -173,13 +191,16 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
         if (cursor == null) {
+            db.close();
             return null;
         } else {
             if(cursor.getCount() != 0) {
                 cursor.moveToFirst();
                 Usuario user = cursorToUsuario(cursor);
+                db.close();
                 return user;
             }else{
+                db.close();
                 return null;
             }
         }
@@ -288,11 +309,21 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     }
     public int deleteEstabelecimento(Estabelecimento estabelecimento) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int i = db.delete(TABELA_ESTABELECIMENTO, //tabela
-                ID_ESTABELECIMENTO+" = ?", // colunas para comparar
-                new String[] { String.valueOf(estabelecimento.getId()) }); //parâmetros
-        db.close();
-        return i; // número de linhas excluídas
+        int i = 0;
+        try {
+             i = db.delete(TABELA_ESTABELECIMENTO, //tabela
+                    ID_ESTABELECIMENTO + " = ?", // colunas para comparar
+                    new String[]{String.valueOf(estabelecimento.getId())}); //parâmetro
+            db.close();
+            Log.d("----->", "método retornou i = "+i);
+            return i; // número de linhas excluídas
+
+        }catch (Exception e){
+            Log.d("----->", "método retornou i = "+i);
+            Log.d("----->", "Exception = "+e);
+            db.close();
+            return i;
+        }
     }
     //---------------------------------------------PRODUTO------------------------------------------------------------
     public void addProduto(Produto produto) {
@@ -358,11 +389,22 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     }
     public int deleteProduto(Produto produto) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int i = db.delete(TABELA_PRODUTO, //tabela
-                ID_PRODUTO+" = ?", // colunas para comparar
-                new String[] { String.valueOf(produto.getId()) }); //parâmetros
-        db.close();
-        return i; // número de linhas excluídas
+        int i = 0;
+        try {
+            i = db.delete(TABELA_PRODUTO, //tabela
+                    ID_PRODUTO + " = ?", // colunas para comparar
+                    new String[]{String.valueOf(produto.getId())}); //parâmetro
+            db.close();
+            Log.d("----->", "método retornou i = "+i);
+            return i; // número de linhas excluídas
+
+        }catch (Exception e){
+            Log.d("----->", "método retornou i = "+i);
+            Log.d("----->", "Exception = "+e);
+            db.close();
+
+            return i;
+        }
     }
 
     //-----------------------------------------ATESTADO DE SAÚDE-------------------------------------------------------

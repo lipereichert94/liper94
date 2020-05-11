@@ -73,10 +73,15 @@ public class Lista_Usuario extends Fragment {
         cadastra_usuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.conteudo_fragmento, new Cadastro_Usuario());
-                ft.commit();
+                if (permissao_usuario.getText().toString().equals("rw")) {
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.conteudo_fragmento, new Cadastro_Usuario());
+                    ft.commit();
+                } else {
+                    Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 

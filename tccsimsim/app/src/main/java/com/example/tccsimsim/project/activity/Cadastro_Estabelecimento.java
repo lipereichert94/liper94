@@ -71,9 +71,16 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         final Estabelecimento finalestabelecimento = bd.getEstabelecimento(id);
-                        bd.deleteEstabelecimento(finalestabelecimento);
-                        Toast.makeText(getActivity(), "Estabelecimento Excluído com sucesso!",
-                                Toast.LENGTH_LONG).show();
+                        int exlusao = 0;
+                        exlusao = bd.deleteEstabelecimento(finalestabelecimento);
+                        if(exlusao==1) {
+                            Toast.makeText(getActivity(), "Estabelecimento Excluído com sucesso!",
+                                    Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getActivity(), "Erro ao excluir estabelecimento pois está sendo utilizado" +
+                                            "em outros registros!",
+                                    Toast.LENGTH_LONG).show();
+                        }
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
                         ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());

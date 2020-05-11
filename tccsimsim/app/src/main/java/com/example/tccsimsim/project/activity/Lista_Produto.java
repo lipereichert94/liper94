@@ -80,10 +80,16 @@ public class Lista_Produto extends Fragment {
         cadastra_produto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (permissao_usuario.getText().toString().equals("rw")) {
+
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.conteudo_fragmento, new Cadastro_Produto());
                 ft.commit();
+                } else {
+                    Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 

@@ -89,9 +89,16 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         final Produto finalproduto = bd.getProduto(id);
-                        bd.deleteProduto(finalproduto);
-                        Toast.makeText(getActivity(), "Produto Excluído com sucesso!",
-                                Toast.LENGTH_LONG).show();
+                        int exlusao = 0;
+                        exlusao = bd.deleteProduto(finalproduto);
+                        if(exlusao==1) {
+                            Toast.makeText(getActivity(), "Produto Excluído com sucesso!",
+                                    Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getActivity(), "Erro ao excluir produto pois está sendo utilizado" +
+                                            "em outros registros!",
+                                    Toast.LENGTH_LONG).show();
+                        }
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
                         ft.replace(R.id.conteudo_fragmento, new Lista_Produto());
