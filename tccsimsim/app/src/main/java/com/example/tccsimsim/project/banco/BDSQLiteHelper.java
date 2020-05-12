@@ -12,6 +12,7 @@ import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Licenca_Ambiental;
 import com.example.tccsimsim.project.model.Media_Mensal;
 import com.example.tccsimsim.project.model.Produto;
+import com.example.tccsimsim.project.model.RNC;
 import com.example.tccsimsim.project.model.Usuario;
 
 import java.text.ParseException;
@@ -60,13 +61,23 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String QUANTIDADE_MEDIA_MENSAL = "quantidade";
     private static final String ID_PRODUTO_MEDIA_MENSAL = "id_Produto";
 
+    private static final String TABELA_RNC = "rnc";
+    private static final String ID_RNC = "id";
+    private static final String DT_INSPECAO = "dt_inspecao";
+    private static final String DESCRICAO = "descricao";
+    private static final String DT_VERIFICACAO = "dt_verificacao";
+    private static final String SITUACAO = "situacao";
+    private static final String URL_IMAGEM = "url_imagem";
+    private static final String ID_ESTABELECIMENTO_RNC= "id_estabelecimento";
+
+
     private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO,PERMISSAO_USUARIO};
     private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO};
     private static final String[] COLUNAS_PRODUTO = {ID_PRODUTO,NOME_PRODUTO,ID_PRODUTO_ESTABELECIMENTO};
     private static final String[] COLUNAS_ATESTADO_SAUDE = {ID_ATESTADO_SAUDE,DT_REGISTRO_ATESTADO_SAUDE,DT_VALIDADE_ATESTADO_SAUDE,ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE};
     private static final String[] COLUNAS_LICENCA_AMBIENTAL = {ID_LICENCA_AMBIENTAL,DT_REGISTRO_LICENCA_AMBIENTAL,DT_VALIDADE_LICENCA_AMBIENTAL,ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL};
     private static final String[] COLUNAS_MEDIA_MENSAL = {ID_MEDIA_MENSAL,DT_MEDIA_MENSAL,QUANTIDADE_MEDIA_MENSAL,ID_PRODUTO_MEDIA_MENSAL};
-
+    private static final String[] COLUNAS_RNC = {ID_RNC,DT_INSPECAO,DESCRICAO,DT_VERIFICACAO,SITUACAO,URL_IMAGEM,ID_ESTABELECIMENTO_RNC};
     public BDSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -75,6 +86,8 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("PRAGMA foreign_keys=ON");
+
         String CREATE_TABLE = "CREATE TABLE "+TABELA_USUARIO+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "nome TEXT,"+
@@ -122,16 +135,28 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 "ON DELETE RESTRICT)";
 
         db.execSQL(CREATE_TABLE6);
-    }
-    @Override
-    public void onOpen(SQLiteDatabase db){
-        super.onOpen(db);
-        if (!db.isReadOnly()) {
-            // Enable foreign key constraints
-            db.execSQL("PRAGMA foreign_keys=ON");
+        String CREATE_TABLE7 = "CREATE TABLE "+TABELA_RNC+" ("+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "dt_inspecao DATE,"+
+                "descricao TEXT,"+
+                "dt_verificacao DATE,"+
+                "situacao TEXT,"+
+                "url_imagem TEXT,"+
+                "id_estabelecimento REFERENCES estabelecimento(id) " +
+                "ON UPDATE RESTRICT\n" +
+                "ON DELETE RESTRICT)";
 
-        }
+        db.execSQL(CREATE_TABLE7);
     }
+   // @Override
+  //  public void onOpen(SQLiteDatabase db){
+  //      super.onOpen(db);
+   //     if (!db.isReadOnly()) {
+   //         // Enable foreign key constraints
+  //          db.execSQL("PRAGMA foreign_keys=ON");
+
+   //     }
+   // }
 
 
     @Override
@@ -142,6 +167,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS atestado_saude");
         db.execSQL("DROP TABLE IF EXISTS licenca_ambiental");
         db.execSQL("DROP TABLE IF EXISTS media_mensal");
+        db.execSQL("DROP TABLE IF EXISTS rnc");
 
         this.onCreate(db);
     }
@@ -643,6 +669,91 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return i; // número de linhas excluídas
     }
+
+
+    //-----------------------------------------RELATORIO DE NAO CONFORMIDADE - RNC-------------------------------------------------------
+    public void addRNC(RNC rnc) throws ParseException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_INSPECAO, formataDataddmmaaaatoyyyymmdd(rnc.getDt_inspecao()));
+        values.put(DESCRICAO,rnc.getDescricao());
+        values.put(DT_VERIFICACAO, formataDataddmmaaaatoyyyymmdd(rnc.getDt_verificacao()));
+        values.put(SITUACAO,rnc.getSituacao());
+        values.put(URL_IMAGEM,rnc.getUrl_imagem());
+        values.put(ID_ESTABELECIMENTO_RNC, new Integer(rnc.getEstabelecimento().getId()));
+        db.insert(TABELA_RNC, null, values);
+        db.close();
+    }
+
+    public RNC getAtestadoSaude(int id) throws ParseException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_ATESTADO_SAUDE, // a. tabela
+                COLUNAS_ATESTADO_SAUDE, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            return null;
+        } else {
+            cursor.moveToFirst();
+            Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
+            return atestado_saude;
+        }
+    }
+
+    private Atestado_Saude cursorToAtestado_Saude(Cursor cursor) throws ParseException {
+
+        Estabelecimento estabelecimento = new Estabelecimento();
+        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
+
+        Atestado_Saude atestado_saude = new Atestado_Saude();
+        atestado_saude.setId(Integer.parseInt(cursor.getString(0)));
+        atestado_saude.setDt_registro(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
+        atestado_saude.setDt_validade(formataDatayyyymmddtoddmmaaa(cursor.getString(2)));
+        atestado_saude.setEstabelecimento(estabelecimento);
+
+        return atestado_saude;
+    }
+    public ArrayList<Atestado_Saude> getAllAtestadoSaude() throws ParseException {
+        ArrayList<Atestado_Saude> listaAtestadoSaude = new ArrayList<Atestado_Saude>();
+        String query = "SELECT * FROM " + TABELA_ATESTADO_SAUDE +" ORDER by " +DT_VALIDADE_ATESTADO_SAUDE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
+                listaAtestadoSaude.add(atestado_saude);
+            } while (cursor.moveToNext());
+        }
+        return listaAtestadoSaude;
+    }
+    public int updateAtestadoSaude(Atestado_Saude atestado_saude) throws ParseException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_REGISTRO_ATESTADO_SAUDE, formataDataddmmaaaatoyyyymmdd(atestado_saude.getDt_registro()));
+        values.put(DT_VALIDADE_ATESTADO_SAUDE, formataDataddmmaaaatoyyyymmdd(atestado_saude.getDt_validade()));
+        values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
+        int i = db.update(TABELA_ATESTADO_SAUDE, //tabela
+                values, // valores
+                ID_ATESTADO_SAUDE+" = ?", // colunas para comparar
+                new String[] { String.valueOf(atestado_saude.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
+    public int deleteAtestadoSaude(Atestado_Saude atestado_saude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_ATESTADO_SAUDE, //tabela
+                ID_ATESTADO_SAUDE+" = ?", // colunas para comparar
+                new String[] { String.valueOf(atestado_saude.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
+
+
+    //--------------------------------------------------- OUTROS METODOS ---------------------------------------------------------
     private String formataDataddmmaaaatoyyyymmdd(String data) throws ParseException {
 
         // *** note that it's "yyyy-MM-dd hh:mm:ss" not "yyyy-mm-dd hh:mm:ss"
