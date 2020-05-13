@@ -685,10 +685,10 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public RNC getAtestadoSaude(int id) throws ParseException {
+    public RNC getRNC(int id) throws ParseException {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABELA_ATESTADO_SAUDE, // a. tabela
-                COLUNAS_ATESTADO_SAUDE, // b. colunas
+        Cursor cursor = db.query(TABELA_RNC, // a. tabela
+                COLUNAS_RNC, // b. colunas
                 " id = ?", // c. colunas para comparar
                 new String[] { String.valueOf(id) }, // d. parâmetros
                 null, // e. group by
@@ -699,55 +699,61 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
             return null;
         } else {
             cursor.moveToFirst();
-            Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
-            return atestado_saude;
+            RNC rnc = cursorToRNC(cursor);
+            return rnc;
         }
     }
 
-    private Atestado_Saude cursorToAtestado_Saude(Cursor cursor) throws ParseException {
+    private RNC cursorToRNC(Cursor cursor) throws ParseException {
 
         Estabelecimento estabelecimento = new Estabelecimento();
-        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(3)));
+        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(6)));
 
-        Atestado_Saude atestado_saude = new Atestado_Saude();
-        atestado_saude.setId(Integer.parseInt(cursor.getString(0)));
-        atestado_saude.setDt_registro(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
-        atestado_saude.setDt_validade(formataDatayyyymmddtoddmmaaa(cursor.getString(2)));
-        atestado_saude.setEstabelecimento(estabelecimento);
+        RNC rnc = new RNC();
+        rnc.setId(Integer.parseInt(cursor.getString(0)));
+        rnc.setDt_inspecao(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
+        rnc.setDescricao(cursor.getString(2));
+        rnc.setDt_verificacao(formataDatayyyymmddtoddmmaaa(cursor.getString(3)));
+        rnc.setSituacao(cursor.getString(4));
+        rnc.setUrl_imagem(cursor.getString(5));
+        rnc.setEstabelecimento(estabelecimento);
 
-        return atestado_saude;
+        return rnc;
     }
-    public ArrayList<Atestado_Saude> getAllAtestadoSaude() throws ParseException {
-        ArrayList<Atestado_Saude> listaAtestadoSaude = new ArrayList<Atestado_Saude>();
-        String query = "SELECT * FROM " + TABELA_ATESTADO_SAUDE +" ORDER by " +DT_VALIDADE_ATESTADO_SAUDE;
+    public ArrayList<RNC> getAllRNC() throws ParseException {
+        ArrayList<RNC> listaRNC = new ArrayList<RNC>();
+        String query = "SELECT * FROM " + TABELA_RNC +" ORDER by " +DT_VERIFICACAO;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
-                Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
-                listaAtestadoSaude.add(atestado_saude);
+                RNC rnc = cursorToRNC(cursor);
+                listaRNC.add(rnc);
             } while (cursor.moveToNext());
         }
-        return listaAtestadoSaude;
+        return listaRNC;
     }
-    public int updateAtestadoSaude(Atestado_Saude atestado_saude) throws ParseException {
+    public int updateRNC(RNC rnc) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DT_REGISTRO_ATESTADO_SAUDE, formataDataddmmaaaatoyyyymmdd(atestado_saude.getDt_registro()));
-        values.put(DT_VALIDADE_ATESTADO_SAUDE, formataDataddmmaaaatoyyyymmdd(atestado_saude.getDt_validade()));
-        values.put(ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE, new Integer(atestado_saude.getEstabelecimento().getId()));
-        int i = db.update(TABELA_ATESTADO_SAUDE, //tabela
+        values.put(DT_INSPECAO, formataDataddmmaaaatoyyyymmdd(rnc.getDt_inspecao()));
+        values.put(DESCRICAO, rnc.getDescricao());
+        values.put(DT_VERIFICACAO,formataDataddmmaaaatoyyyymmdd(rnc.getDt_verificacao()));
+        values.put(SITUACAO,rnc.getSituacao());
+        values.put(URL_IMAGEM,rnc.getUrl_imagem());
+        values.put(ID_ESTABELECIMENTO_RNC, new Integer(rnc.getEstabelecimento().getId()));
+        int i = db.update(TABELA_RNC, //tabela
                 values, // valores
-                ID_ATESTADO_SAUDE+" = ?", // colunas para comparar
-                new String[] { String.valueOf(atestado_saude.getId()) }); //parâmetros
+                ID_RNC+" = ?", // colunas para comparar
+                new String[] { String.valueOf(rnc.getId()) }); //parâmetros
         db.close();
         return i; // número de linhas modificadas
     }
-    public int deleteAtestadoSaude(Atestado_Saude atestado_saude) {
+    public int deleteRNC(RNC rnc) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int i = db.delete(TABELA_ATESTADO_SAUDE, //tabela
-                ID_ATESTADO_SAUDE+" = ?", // colunas para comparar
-                new String[] { String.valueOf(atestado_saude.getId()) }); //parâmetros
+        int i = db.delete(TABELA_RNC, //tabela
+                ID_RNC+" = ?", // colunas para comparar
+                new String[] { String.valueOf(rnc.getId()) }); //parâmetros
         db.close();
         return i; // número de linhas excluídas
     }
