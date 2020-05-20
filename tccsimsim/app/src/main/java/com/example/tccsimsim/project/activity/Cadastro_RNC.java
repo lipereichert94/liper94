@@ -1,9 +1,17 @@
 package com.example.tccsimsim.project.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +23,9 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,15 +36,18 @@ import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.RNC;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.app.Activity.RESULT_OK;
+
 public class Cadastro_RNC extends Fragment implements View.OnClickListener {
 
     View minhaView;
-    private Button btnescolherestabelecimento, btnsalvar, btnremover,dt_inspecao,dt_verificacao;
+    private Button btnescolherestabelecimento, btnsalvar, btnremover,dt_inspecao,dt_verificacao,btncancelar;
     private BDSQLiteHelper bd;
     private EditText descricao;
     private RadioButton rbconforme,rbnaoconforme;
@@ -55,6 +69,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
         minhaView = inflater.inflate(R.layout.layout_cadastro_rnc, container, false);
         bd = new BDSQLiteHelper(getActivity());
 
+        btncancelar = (Button) minhaView.findViewById(R.id.button_CancelarRNC);
         btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarRNC);
         btnremover = (Button) minhaView.findViewById(R.id.button_removerRNC);
         dt_inspecao = (Button) minhaView.findViewById(R.id.button_data_inspecao_cadastro_RNC);
@@ -62,14 +77,20 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
         descricao = (EditText)minhaView.findViewById(R.id.descricao_cadastro_RNC);
         rbconforme = (RadioButton)minhaView.findViewById(R.id.radioconforme);
         rbnaoconforme = (RadioButton)minhaView.findViewById(R.id.radionaoconforme);
+        btnfoto = (Button) minhaView.findViewById(R.id.btnFoto);
+        btngaleria = (Button) minhaView.findViewById(R.id.btn_Galeria);
         foto = (ImageButton) minhaView.findViewById(R.id.foto_RNC);
         btnescolherestabelecimento = (Button) minhaView.findViewById(R.id.button_EscolherEstabelecimento_cadastro_RNC);
         btnsalvar.setOnClickListener(this);
         dt_verificacao.setOnClickListener(this);
         dt_inspecao.setOnClickListener(this);
+        btncancelar.setOnClickListener(this);
+        btnfoto.setOnClickListener(this);
+        btngaleria.setOnClickListener(this);
         btnescolherestabelecimento.setOnClickListener(this);
         setDataAtual();
         readBundle(getArguments());
+
         //verifica se é cadastro ou alteração
         if (id_estabelecimento != -1) {
             Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
@@ -86,9 +107,113 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
             dt_inspecao.setText(rnc.getDt_inspecao());
             dt_verificacao.setText(rnc.getDt_inspecao());
         }
+
+        // Pede permissão para acessar as mídias gravadas no dispositivo
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PERMISSAO_REQUEST);
+            }
+        }
+
+        // Pede permissão para escrever arquivos no dispositivo
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSAO_REQUEST);
+            }
+        }
+
         return minhaView;
     }
 
+    public void buscar(View view) {
+
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALERIA_IMAGENS);
+    }
+    //Método para tirar foto
+    public void tirarFoto(View view) {
+        Log.d("----->", "CHEGOU NO METODO PARA TIRAR FOTO");
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) !=null){
+            try {
+                arquivoFoto = criaArquivo();
+            } catch (IOException ex) {
+                mostraAlerta(getString(R.string.erro), getString(
+                        R.string.erro_salvando_foto));
+            }
+            if (arquivoFoto != null) {
+                Uri photoURI = FileProvider.getUriForFile(getActivity().getBaseContext(), getActivity().getBaseContext().getApplicationContext().getPackageName() + ".provider", arquivoFoto);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA);
+                Log.d("----->", "ABRIU CAMERA");
+
+            }
+        }
+    }
+    //Método que cria arquivo
+    private File criaArquivo() throws IOException {
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_Hhmmss").format(new Date());
+        File pasta = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File imagem = new File(pasta.getPath() + File.separator + "JPG_" + timeStamp + ".jpg");
+        return imagem;
+    }
+    //Retorno da câmera
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("----->", "ENTROUU ON RESULT FRAGMENTTTT ");
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == GALERIA_IMAGENS) {
+            Uri selectedImage = data.getData();
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor c = getActivity().getContentResolver().query(selectedImage, filePath, null,
+                    null, null);
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePath[0]);
+            String picturePath = c.getString(columnIndex);
+            c.close();
+            arquivoFoto = new File(picturePath);
+            caminho_foto = arquivoFoto.getAbsolutePath();
+            mostraFotoSelfie(arquivoFoto.getAbsolutePath());
+        }
+        if (resultCode == RESULT_OK && requestCode == CAMERA) {
+            getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(arquivoFoto)));
+            Log.d("----->", "CAMINHOFOTO: "+arquivoFoto.getAbsolutePath());
+            caminho_foto = arquivoFoto.getAbsolutePath();
+            if(caminho_foto!=null){
+                mostraFotoSelfie(arquivoFoto.getAbsolutePath());
+            }
+        }
+    }
+    private void mostraFotoSelfie(String caminho) {
+        // Bitmap bitmap = BitmapFactory.decodeFile(caminho);
+        foto.setImageBitmap(BitmapFactory.decodeFile(caminho));
+
+    }
+    private void mostraAlerta(String titulo, String mensagem) {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle(titulo);
+        alertDialog.setMessage(mensagem);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
     private void setDataAtual() {
         Calendar c= Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis());
@@ -107,7 +232,6 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
         else{
             dt_inspecao.setText(""+dt_inspecao.getText()+(month+1)+"-"+year);
         }
-        dt_inspecao.setText(day + "-" + (month + 1) + "-" + year);
 
     }
 
@@ -127,6 +251,12 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                 break;
             case R.id.button_data_inspecao_cadastro_RNC:
                 EscolherData();
+                break;
+            case R.id.btnFoto:
+                tirarFoto(view);
+                break;
+            case R.id.btn_Galeria:
+                buscar(view);
                 break;
             case R.id.button_removerRNC:
                 if (id != 0) {
@@ -149,16 +279,16 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
             @Override
             public void onDateSet(DatePicker datePicker, int myear, int mMonth, int mDay) {
                 if(mDay == 1 || mDay == 2 || mDay == 3 || mDay ==4 || mDay ==5 || mDay ==6 || mDay ==7 || mDay ==8 || mDay ==9 ){
-                    dt_inspecao.setText("0"+mDay+"-");
+                    dt_verificacao.setText("0"+mDay+"-");
                 }
                 else{
-                    dt_inspecao.setText(mDay+"-");
+                    dt_verificacao.setText(mDay+"-");
                 }
                 if(mMonth == 0 || mMonth == 1 || mMonth == 2 || mMonth == 3 || mMonth ==4 || mMonth ==5 || mMonth ==6 || mMonth ==7 || mMonth ==8 || mMonth ==9 ) {
-                    dt_inspecao.setText(dt_inspecao.getText()+"0"+(mMonth+1)+"-"+myear);
+                    dt_verificacao.setText(dt_verificacao.getText()+"0"+(mMonth+1)+"-"+myear);
                 }
                 else{
-                    dt_inspecao.setText(""+dt_inspecao.getText()+(mMonth+1)+"-"+myear);
+                    dt_verificacao.setText(""+dt_verificacao.getText()+(mMonth+1)+"-"+myear);
                 }
             }
         }, year,month,day);
@@ -219,6 +349,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                 if(rbnaoconforme.isChecked()==true){
                     rnc.setSituacao("Não Conforme");
                 }
+                rnc.setUrl_imagem(caminho_foto);
                 rnc.setEstabelecimento(estabelecimento);
                 bd.updateRNC(rnc);
                 Toast.makeText(getActivity(), "RNC alterado com sucesso!",
@@ -246,6 +377,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                     rnc.setSituacao("Não Conforme");
                 }
                 rnc.setEstabelecimento(estabelecimento);
+                rnc.setUrl_imagem(caminho_foto);
                 bd.addRNC(rnc);
                 Toast.makeText(getActivity(), "RNC criado com sucesso!",
                         Toast.LENGTH_LONG).show();

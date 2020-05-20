@@ -92,7 +92,7 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
         else{
             dt_registro.setText(""+dt_registro.getText()+(month+1)+"-"+year);
         }
-        dt_registro.setText(day + "-" + (month + 1) + "-" + year);
+      //  dt_registro.setText(day + "-" + (month + 1) + "-" + year);
 
     }
 

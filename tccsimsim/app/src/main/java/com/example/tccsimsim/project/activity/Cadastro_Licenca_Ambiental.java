@@ -90,7 +90,7 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         else{
             dt_registro.setText(""+dt_registro.getText()+(month+1)+"-"+year);
         }
-        dt_registro.setText(day + "-" + (month + 1) + "-" + year);
+      //  dt_registro.setText(day + "-" + (month + 1) + "-" + year);
 
     }
 
