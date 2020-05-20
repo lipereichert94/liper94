@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Escolha o Estabelecimento*"/>
+    <Button
+        android:id="@+id/button_EscolherEstabelecimento_cadastro_RNC"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher estabelecimento"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data da inspeção*"/>
+    <Button
+        android:id="@+id/button_data_inspecao_cadastro_RNC"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descrição:"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/descricao_cadastro_RNC"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="2"
+        android:gravity="top|left"
+        android:maxLines="15"
+        android:scrollbars="vertical"></EditText>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data de verificação"/>
+    <Button
+        android:id="@+id/btn_dtverificacao_RNC"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Situação*"
+        android:layout_marginTop="10dp"/>
+
+    <RadioGroup
+        android:id="@+id/situacaoRNC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/radioconforme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Conforme" />
+
+        <RadioButton
+            android:id="@+id/radionaoconforme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Não conforme" />
+
+        </LinearLayout>
+    </RadioGroup>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Imagem:"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnFoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Tirar Foto "
+            android:layout_weight="1"></Button>
+        <Button
+            android:id="@+id/btn_Galeria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Acessar galeria"></Button>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/foto_RNC"
+        android:layout_width="228dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"></ImageButton>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <Button
+        android:id="@+id/button_SalvarRNC"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Salvar"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_removerRNC"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Limpar"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_CancelarRNC"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:text="Cancelar"
+        android:textAllCaps="false"/>
+    </LinearLayout>
+</LinearLayout>
