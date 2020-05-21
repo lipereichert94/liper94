@@ -59,7 +59,7 @@ public class Lista_Usuario extends Fragment {
                          ft.replace(R.id.conteudo_fragmento, new Cadastro_Usuario().newInstance(listauser.get(position).getId()));
                          ft.commit();
                         }else{
-                            Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                            Toast.makeText(getActivity(), "Você não possui permissão para alterar dados, favor contatar o administrador do sistema!",
                                     Toast.LENGTH_LONG).show();
                         }
                     }

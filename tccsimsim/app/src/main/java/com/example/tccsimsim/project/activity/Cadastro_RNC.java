@@ -95,6 +95,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
         if (id_estabelecimento != -1) {
             Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
             btnescolherestabelecimento.setText(estabelecimento.getNome());
+
         }
         if (id != 0) {
             btnremover.setText("Remover");
@@ -105,7 +106,15 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                 e.printStackTrace();
             }
             dt_inspecao.setText(rnc.getDt_inspecao());
-            dt_verificacao.setText(rnc.getDt_inspecao());
+            dt_verificacao.setText(rnc.getDt_verificacao());
+            descricao.setText(rnc.getDescricao());
+            if (rnc.getSituacao().equals("Conforme"))
+                rbconforme.setChecked(true);
+            else
+                rbnaoconforme.setChecked(true);
+            caminho_foto = rnc.getUrl_imagem();
+            mostraFotoSelfie(caminho_foto);
+
         }
 
         // Pede permissão para acessar as mídias gravadas no dispositivo
@@ -249,7 +258,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
             case R.id.button_EscolherEstabelecimento_cadastro_RNC:
                 EscolherEstabelecimento();
                 break;
-            case R.id.button_data_inspecao_cadastro_RNC:
+            case R.id.btn_dtverificacao_RNC:
                 EscolherData();
                 break;
             case R.id.btnFoto:
@@ -350,13 +359,14 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                     rnc.setSituacao("Não Conforme");
                 }
                 rnc.setUrl_imagem(caminho_foto);
+                mostraFotoSelfie(caminho_foto);
                 rnc.setEstabelecimento(estabelecimento);
                 bd.updateRNC(rnc);
                 Toast.makeText(getActivity(), "RNC alterado com sucesso!",
                         Toast.LENGTH_LONG).show();
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
+                ft.replace(R.id.conteudo_fragmento, new Lista_RNC());
                 ft.commit();
             }
         }
@@ -383,7 +393,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                         Toast.LENGTH_LONG).show();
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
+                ft.replace(R.id.conteudo_fragmento, new Lista_RNC());
                 ft.commit();
             }
         }

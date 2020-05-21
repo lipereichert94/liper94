@@ -8,15 +8,20 @@
     android:gravity="center"
     android:padding="10dp"
     >
-    <TextView
+    <Button
+        android:id="@+id/button__listarRNC_CadastraRNC"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Escolha o Estabelecimento"
+        android:text="Cadastrar"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Lista de RNC: ">
+</TextView>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_ListaEscolhaEstabelecimentos"
+        android:id="@+id/recyclerView_ListaRNC"
         android:layout_width="match_parent"
         android:layout_height ="match_parent"
         >

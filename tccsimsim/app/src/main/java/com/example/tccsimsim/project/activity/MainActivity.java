@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
         else if (id == R.id.nav_RNC) {
-            ft.replace(R.id.conteudo_fragmento, new Cadastro_RNC());
+            ft.replace(R.id.conteudo_fragmento, new Lista_RNC());
             ft.commit();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

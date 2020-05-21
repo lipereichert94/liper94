@@ -28,6 +28,7 @@ public class Lista_Escolher_Estabelecimento extends Fragment {
     ArrayList<Estabelecimento> listaestabelecimento;
     private int id_produto = 0;
     private int id_atestado_saude = 0;
+    private int id_rnc = 0;
     private String origem = "";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +56,9 @@ public class Lista_Escolher_Estabelecimento extends Fragment {
                         }
                         else if (origem.equals("licenca_ambiental")) {
                             ft.replace(R.id.conteudo_fragmento, new Cadastro_Licenca_Ambiental().newInstance(id_produto, listaestabelecimento.get(position).getId()));
+                        }
+                        else if (origem.equals("RNC")) {
+                            ft.replace(R.id.conteudo_fragmento, new Cadastro_RNC().newInstance(id_produto, listaestabelecimento.get(position).getId()));
                         }
                         ft.commit();
 
@@ -91,6 +95,7 @@ public class Lista_Escolher_Estabelecimento extends Fragment {
             id_produto = bundle.getInt("id_produto");
             origem = bundle.getString("origem");
             id_atestado_saude = bundle.getInt("id_atestado_saude");
+            id_rnc = bundle.getInt("RNC");
         }
     }
 }

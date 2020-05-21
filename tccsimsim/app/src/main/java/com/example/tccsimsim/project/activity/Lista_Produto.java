@@ -60,7 +60,7 @@ public class Lista_Produto extends Fragment {
                         ft.replace(R.id.conteudo_fragmento, new Cadastro_Produto().newInstance(listaproduto.get(position).getId(),listaproduto.get(position).getEstabelecimento().getId()));
                          ft.commit();
                         }else{
-                            Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
+                            Toast.makeText(getActivity(), "Você não possui permissão para alterar dados, favor contatar o administrador do sistema!",
                                     Toast.LENGTH_LONG).show();
                         }
                     }

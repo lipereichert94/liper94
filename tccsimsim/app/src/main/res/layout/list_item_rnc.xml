@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rnc_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="72dp"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:text="Estabelecimento:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Estabelecimento"
+            android:id="@+id/estabelecimento_rnc_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Data da inspeção:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Data da Inspeção"
+            android:id="@+id/dt_inspecao_rnc_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Descrição:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Descrição"
+            android:id="@+id/dt_descricao_rnc_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Data da verificação:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Data da verificação"
+            android:id="@+id/dt_verificacao_rnc_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Situação:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Situação"
+            android:id="@+id/situacao_rnc_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Imagem:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <ImageView
+            android:id="@+id/imagem_rnc_lista"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/colorWhite"
+            android:scaleType="centerInside"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

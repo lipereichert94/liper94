@@ -16,41 +16,41 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tccsimsim.R;
 import com.example.tccsimsim.project.adapter.AtestadoSaudeAdapter;
-import com.example.tccsimsim.project.adapter.LicencaAmbientalAdapter;
+import com.example.tccsimsim.project.adapter.RNCAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Atestado_Saude;
-import com.example.tccsimsim.project.model.Licenca_Ambiental;
+import com.example.tccsimsim.project.model.RNC;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class Lista_Licenca_Ambiental extends Fragment {
+public class Lista_RNC extends Fragment {
 
 
     View minhaView;
     private BDSQLiteHelper bd;
-    ArrayList<Licenca_Ambiental> listalicencaambiental;
-    private Button cadastra_licenca_abiental;
+    ArrayList<RNC> listarnc;
+    private Button cadastra_rnc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        minhaView = inflater.inflate(R.layout.layout_listar_licenca_ambiental, container, false);
+        minhaView = inflater.inflate(R.layout.layout_listar_rnc, container, false);
 
-        cadastra_licenca_abiental = (Button)minhaView.findViewById(R.id.button__listaLicencaAmbiental_CadastraLicencaAmbiental);
-        final RecyclerView recyclerView = (RecyclerView) minhaView.findViewById(R.id.recyclerView_ListaLicencasAmbientais);
+        cadastra_rnc = (Button)minhaView.findViewById(R.id.button__listarRNC_CadastraRNC);
+        final RecyclerView recyclerView = (RecyclerView) minhaView.findViewById(R.id.recyclerView_ListaRNC);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bd = new BDSQLiteHelper(getActivity());
-        try {
-            listalicencaambiental = bd.getAllLicencaAmbiental();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         final TextView permissao_usuario = (TextView) headerView.findViewById(R.id.permissaousuariologado);
+        try {
+            listarnc = bd.getAllRNC();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        recyclerView.setAdapter(new LicencaAmbientalAdapter(listalicencaambiental, R.layout.list_item_licenca_ambiental, getActivity().getApplicationContext()));
+        recyclerView.setAdapter(new RNCAdapter(listarnc, R.layout.list_item_rnc, getActivity().getApplicationContext()));
         recyclerView.addOnItemTouchListener(
 
                 new RecyclerItemClickListener(getActivity(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
@@ -59,7 +59,7 @@ public class Lista_Licenca_Ambiental extends Fragment {
                             // do whatever
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                        ft.replace(R.id.conteudo_fragmento, new Cadastro_Licenca_Ambiental().newInstance(listalicencaambiental.get(position).getId(),listalicencaambiental.get(position).getEstabelecimento().getId()));
+                        ft.replace(R.id.conteudo_fragmento, new Cadastro_RNC().newInstance(listarnc.get(position).getId(),listarnc.get(position).getEstabelecimento().getId()));
                         ft.commit();
                         }else{
                             Toast.makeText(getActivity(), "Você não possui permissão para alterar dados, favor contatar o administrador do sistema!",
@@ -74,18 +74,19 @@ public class Lista_Licenca_Ambiental extends Fragment {
 
         );
 
-        cadastra_licenca_abiental.setOnClickListener(new View.OnClickListener() {
+        cadastra_rnc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(permissao_usuario.getText().toString().equals("rw")) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.conteudo_fragmento, new Cadastro_Licenca_Ambiental());
-                ft.commit();
-            }else{
-                Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
-                        Toast.LENGTH_LONG).show();
-            }
+
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.conteudo_fragmento, new Cadastro_RNC());
+                    ft.commit();
+                }else{
+                        Toast.makeText(getActivity(), "Você não possui permissão para alterar dados, favor contatar o administrador do sistema!",
+                                Toast.LENGTH_LONG).show();
+                    }
             }
         });
 
