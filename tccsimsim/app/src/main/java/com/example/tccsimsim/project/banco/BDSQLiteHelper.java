@@ -148,15 +148,15 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_TABLE7);
     }
-   // @Override
-  //  public void onOpen(SQLiteDatabase db){
-  //      super.onOpen(db);
-   //     if (!db.isReadOnly()) {
-   //         // Enable foreign key constraints
-  //          db.execSQL("PRAGMA foreign_keys=ON");
+    @Override
+    public void onOpen(SQLiteDatabase db){
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            db.execSQL("PRAGMA foreign_keys=ON");
 
-   //     }
-   // }
+        }
+    }
 
 
     @Override
@@ -199,10 +199,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
         if (cursor == null) {
+            db.close();
             return null;
         } else {
             cursor.moveToFirst();
             Usuario user = cursorToUsuario(cursor);
+            db.close();
             return user;
         }
     }
@@ -252,6 +254,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 listaUsuario.add(user);
             } while (cursor.moveToNext());
         }
+        db.close();
         return listaUsuario;
     }
     public int updateUsuario(Usuario user) {
@@ -295,10 +298,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
         if (cursor == null) {
+            db.close();
             return null;
         } else {
             cursor.moveToFirst();
             Estabelecimento estabelecimento = cursorToEstabelecimento(cursor);
+            db.close();
             return estabelecimento;
         }
     }
@@ -320,6 +325,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 listaEstabelecimento.add(estabelecimento);
             } while (cursor.moveToNext());
         }
+        db.close();
         return listaEstabelecimento;
     }
     public int updateEstabelecimento(Estabelecimento estabelecimento) {
@@ -372,10 +378,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
         if (cursor == null) {
+            db.close();
             return null;
         } else {
             cursor.moveToFirst();
             Produto produto = cursorToProduto(cursor);
+            db.close();
             return produto;
         }
     }
@@ -399,6 +407,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 listaProdutos.add(produto);
             } while (cursor.moveToNext());
         }
+        db.close();
         return listaProdutos;
     }
     public int updateProduto(Produto produto) {
@@ -455,10 +464,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
         if (cursor == null) {
+            db.close();
             return null;
         } else {
             cursor.moveToFirst();
             Atestado_Saude atestado_saude = cursorToAtestado_Saude(cursor);
+            db.close();
             return atestado_saude;
         }
     }
@@ -487,6 +498,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 listaAtestadoSaude.add(atestado_saude);
             } while (cursor.moveToNext());
         }
+        db.close();
         return listaAtestadoSaude;
     }
     public int updateAtestadoSaude(Atestado_Saude atestado_saude) throws ParseException {
@@ -535,10 +547,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
         if (cursor == null) {
+            db.close();
             return null;
         } else {
             cursor.moveToFirst();
             Licenca_Ambiental licenca_ambiental = cursorToLicencaAmbiental(cursor);
+            db.close();
             return licenca_ambiental;
         }
     }
@@ -567,6 +581,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 listaLicencaAmbiental.add(licenca_ambiental);
             } while (cursor.moveToNext());
         }
+        db.close();
         return listaLicencaAmbiental;
     }
     public int updateLicencaAmbiental(Licenca_Ambiental licenca_ambiental) throws ParseException {
@@ -614,10 +629,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
         if (cursor == null) {
+            db.close();
             return null;
         } else {
             cursor.moveToFirst();
             Media_Mensal media_mensal = cursorToMediaMensal(cursor);
+            db.close();
             return media_mensal;
         }
     }
@@ -646,6 +663,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 listaMediaMensal.add(media_mensal);
             } while (cursor.moveToNext());
         }
+        db.close();
         return listaMediaMensal;
     }
     public int updateMediaMensal(Media_Mensal media_mensal) throws ParseException {
@@ -696,10 +714,12 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
         if (cursor == null) {
+            db.close();
             return null;
         } else {
             cursor.moveToFirst();
             RNC rnc = cursorToRNC(cursor);
+            db.close();
             return rnc;
         }
     }
@@ -731,6 +751,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 listaRNC.add(rnc);
             } while (cursor.moveToNext());
         }
+        db.close();
         return listaRNC;
     }
     public int updateRNC(RNC rnc) throws ParseException {
