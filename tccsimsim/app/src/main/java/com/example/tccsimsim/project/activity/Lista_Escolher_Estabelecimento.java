@@ -60,6 +60,9 @@ public class Lista_Escolher_Estabelecimento extends Fragment {
                         else if (origem.equals("RNC")) {
                             ft.replace(R.id.conteudo_fragmento, new Cadastro_RNC().newInstance(id_produto, listaestabelecimento.get(position).getId()));
                         }
+                        else if (origem.equals("AI")) {
+                            ft.replace(R.id.conteudo_fragmento, new Cadastro_AI().newInstance(id_produto, listaestabelecimento.get(position).getId()));
+                        }
                         ft.commit();
 
                     }

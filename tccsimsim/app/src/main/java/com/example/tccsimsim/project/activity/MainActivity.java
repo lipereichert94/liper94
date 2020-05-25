@@ -118,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.conteudo_fragmento, new Lista_RNC());
             ft.commit();
         }
+        else if (id == R.id.nav_AI) {
+            ft.replace(R.id.conteudo_fragmento, new Lista_AI());
+            ft.commit();
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

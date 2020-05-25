@@ -333,7 +333,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                                 Toast.LENGTH_LONG).show();
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         FragmentTransaction ft = fm.beginTransaction();
-                        ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
+                        ft.replace(R.id.conteudo_fragmento, new Lista_RNC());
                         ft.commit();
                     }
                 })

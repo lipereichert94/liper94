@@ -23,6 +23,9 @@
         <item
             android:id="@+id/nav_RNC"
             android:title="RNC" />
+        <item
+            android:id="@+id/nav_AI"
+            android:title="AI" />
     </group>
 
 </menu>

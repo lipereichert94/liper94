@@ -7,11 +7,17 @@
     android:gravity="center"
     android:padding="10dp"
     >
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Escolha o Estabelecimento*"/>
+        android:text="Cadastro de Produtos:"
+        android:textAlignment="center"
+        android:textSize="35dp"></TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Escolha o Estabelecimento:"/>
     <Button
         android:id="@+id/button_EscolherEstabelecimento_cadastro_produto"
         android:layout_width="200dp"
@@ -22,18 +28,25 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nome do Produto*"/>
+        android:text="Nome do Produto:"
+        android:layout_marginTop="20dp"/>
     <EditText
         android:id="@+id/editText_NomeCadastroProduto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:hint="Insira o nome do produto"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <Button
         android:id="@+id/button_SalvarProduto"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Salvar"
+        android:layout_weight="1"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button
@@ -41,6 +54,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Limpar"
+        android:layout_weight="1"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button
@@ -48,5 +62,8 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Cancelar"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
+    </LinearLayout>
 </LinearLayout>

@@ -10,18 +10,30 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nome*"/>
+        android:text="Cadastro de Estabelecimentos"
+        android:textAlignment="center"
+        android:textSize="35dp"></TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Nome:"/>
     <EditText
         android:id="@+id/editText_NomeCadastroEstabelecimento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Insira o nome do estabelecimento"
+        android:hint="Insira o nome do estabelecimento:"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <Button
         android:id="@+id/button_SalvarEstabelecimento"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Salvar"
+        android:layout_weight="1"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button
@@ -29,6 +41,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Limpar"
+        android:layout_weight="1"
         android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
     <Button
@@ -36,5 +49,8 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Cancelar"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
         android:textAllCaps="false"/>
+    </LinearLayout>
 </LinearLayout>

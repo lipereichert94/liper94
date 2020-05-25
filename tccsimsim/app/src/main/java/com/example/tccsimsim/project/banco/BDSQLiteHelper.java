@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.tccsimsim.project.model.AI;
 import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Licenca_Ambiental;
@@ -70,6 +71,13 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String URL_IMAGEM = "url_imagem";
     private static final String ID_ESTABELECIMENTO_RNC= "id_estabelecimento";
 
+    private static final String TABELA_AI = "ai";
+    private static final String ID_AI = "id";
+    private static final String DT_AI = "dt_ai";
+    private static final String INFRACAO_AI = "infracao_ai";
+    private static final String PENALIDADE_AI = "penalidade_ai";
+    private static final String SITUACAO_AI= "situacao_ai";
+    private static final String ID_ESTABELECIMENTO_AI= "id_estabelecimento";
 
     private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO,PERMISSAO_USUARIO};
     private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO};
@@ -78,6 +86,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String[] COLUNAS_LICENCA_AMBIENTAL = {ID_LICENCA_AMBIENTAL,DT_REGISTRO_LICENCA_AMBIENTAL,DT_VALIDADE_LICENCA_AMBIENTAL,ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL};
     private static final String[] COLUNAS_MEDIA_MENSAL = {ID_MEDIA_MENSAL,DT_MEDIA_MENSAL,QUANTIDADE_MEDIA_MENSAL,ID_PRODUTO_MEDIA_MENSAL};
     private static final String[] COLUNAS_RNC = {ID_RNC,DT_INSPECAO,DESCRICAO,DT_VERIFICACAO,SITUACAO,URL_IMAGEM,ID_ESTABELECIMENTO_RNC};
+    private static final String[] COLUNAS_AI = {ID_AI,DT_AI,INFRACAO_AI,PENALIDADE_AI,SITUACAO_AI,ID_ESTABELECIMENTO_AI};
     public BDSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -147,6 +156,17 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 "ON DELETE RESTRICT)";
 
         db.execSQL(CREATE_TABLE7);
+        String CREATE_TABLE8 = "CREATE TABLE "+TABELA_AI+" ("+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "dt_ai DATE,"+
+                "infracao_ai TEXT,"+
+                "penalidade_ai DATE,"+
+                "situacao_ai TEXT,"+
+                "id_estabelecimento REFERENCES estabelecimento(id) " +
+                "ON UPDATE RESTRICT\n" +
+                "ON DELETE RESTRICT)";
+
+        db.execSQL(CREATE_TABLE8);
     }
     @Override
     public void onOpen(SQLiteDatabase db){
@@ -168,7 +188,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS licenca_ambiental");
         db.execSQL("DROP TABLE IF EXISTS media_mensal");
         db.execSQL("DROP TABLE IF EXISTS rnc");
-
+        db.execSQL("DROP TABLE IF EXISTS ai");
         this.onCreate(db);
     }
     public void limpatabela(String tabela){
@@ -780,6 +800,92 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     }
 
 
+    //-----------------------------------------AUTO DE INFRAÇÃO-----------------------------------
+    public void addAI(AI ai) throws ParseException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_AI, formataDataddmmaaaatoyyyymmdd(ai.getDt_ai()));
+        values.put(INFRACAO_AI,ai.getInfracao_ai());
+        values.put(PENALIDADE_AI,ai.getPenalidade_ai());
+        values.put(SITUACAO_AI,ai.getSituacao_ai());
+        values.put(ID_ESTABELECIMENTO_AI, new Integer(ai.getEstabelecimento().getId()));
+        db.insert(TABELA_AI, null, values);
+        db.close();
+    }
+
+    public AI getAI(int id) throws ParseException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_AI, // a. tabela
+                COLUNAS_AI, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            db.close();
+            return null;
+        } else {
+            cursor.moveToFirst();
+            AI ai = cursorToAI(cursor);
+            db.close();
+            return ai;
+        }
+    }
+
+    private AI cursorToAI(Cursor cursor) throws ParseException {
+
+        Estabelecimento estabelecimento = new Estabelecimento();
+        estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(5)));
+
+        AI ai = new AI();
+        ai.setId(Integer.parseInt(cursor.getString(0)));
+        ai.setDt_ai(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
+        ai.setInfracao_ai(cursor.getString(2));
+        ai.setPenalidade_ai(cursor.getString(3));
+        ai.setSituacao_ai(cursor.getString(4));
+        ai.setEstabelecimento(estabelecimento);
+
+        return ai;
+    }
+    public ArrayList<AI> getAllAI() throws ParseException {
+        ArrayList<AI> listaAI = new ArrayList<AI>();
+        String query = "SELECT * FROM " + TABELA_AI +" ORDER by " +ID_ESTABELECIMENTO_AI;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                AI ai = cursorToAI(cursor);
+                listaAI.add(ai);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return listaAI;
+    }
+    public int updateAI(AI ai) throws ParseException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_AI, formataDataddmmaaaatoyyyymmdd(ai.getDt_ai()));
+        values.put(INFRACAO_AI, ai.getInfracao_ai());
+        values.put(PENALIDADE_AI,ai.getPenalidade_ai());
+        values.put(SITUACAO_AI,ai.getSituacao_ai());
+        values.put(ID_ESTABELECIMENTO_AI, new Integer(ai.getEstabelecimento().getId()));
+        int i = db.update(TABELA_AI, //tabela
+                values, // valores
+                ID_AI+" = ?", // colunas para comparar
+                new String[] { String.valueOf(ai.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
+    public int deleteAI(AI ai) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_AI, //tabela
+                ID_AI+" = ?", // colunas para comparar
+                new String[] { String.valueOf(ai.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
     //--------------------------------------------------- OUTROS METODOS ---------------------------------------------------------
     private String formataDataddmmaaaatoyyyymmdd(String data) throws ParseException {
 
