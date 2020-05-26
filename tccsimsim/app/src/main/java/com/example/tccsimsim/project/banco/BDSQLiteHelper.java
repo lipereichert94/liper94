@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.tccsimsim.project.model.AI;
+import com.example.tccsimsim.project.model.Analise_Laboratorial;
 import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Licenca_Ambiental;
@@ -79,6 +80,15 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String SITUACAO_AI= "situacao_ai";
     private static final String ID_ESTABELECIMENTO_AI= "id_estabelecimento";
 
+    private static final String TABELA_ANALISE_LABORATORIAL = "analise_laboratorial";
+    private static final String ID_ANALISE_LABORATORIAL = "id";
+    private static final String DT_COLETA = "dt_coleta";
+    private static final String SITUACAO_COLETA = "situacao_coleta";
+    private static final String NOTIFICACAO = "notificacao";
+    private static final String DT_NOVA_COLETA = "dt_nova_coleta";
+    private static final String SITUACAO_NOVA_COLETA = "situacao_nova_coleta";
+    private static final String ID_PRODUTO_ANALISE_LABORATORIAL = "id_produto";
+
     private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO,PERMISSAO_USUARIO};
     private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO};
     private static final String[] COLUNAS_PRODUTO = {ID_PRODUTO,NOME_PRODUTO,ID_PRODUTO_ESTABELECIMENTO};
@@ -87,6 +97,9 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String[] COLUNAS_MEDIA_MENSAL = {ID_MEDIA_MENSAL,DT_MEDIA_MENSAL,QUANTIDADE_MEDIA_MENSAL,ID_PRODUTO_MEDIA_MENSAL};
     private static final String[] COLUNAS_RNC = {ID_RNC,DT_INSPECAO,DESCRICAO,DT_VERIFICACAO,SITUACAO,URL_IMAGEM,ID_ESTABELECIMENTO_RNC};
     private static final String[] COLUNAS_AI = {ID_AI,DT_AI,INFRACAO_AI,PENALIDADE_AI,SITUACAO_AI,ID_ESTABELECIMENTO_AI};
+    private static final String[] COLUNAS_ANALISE_LABORATORIAL = {ID_ANALISE_LABORATORIAL,DT_COLETA,SITUACAO_COLETA,NOTIFICACAO,DT_NOVA_COLETA,SITUACAO_NOVA_COLETA,ID_PRODUTO_ANALISE_LABORATORIAL};
+
+
     public BDSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -167,6 +180,18 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 "ON DELETE RESTRICT)";
 
         db.execSQL(CREATE_TABLE8);
+        String CREATE_TABLE9 = "CREATE TABLE "+TABELA_ANALISE_LABORATORIAL+" ("+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "dt_coleta DATE,"+
+                "situacao_coleta TEXT,"+
+                "notificacao TEXT,"+
+                "dt_nova_coleta DATE,"+
+                "situacao_nova_coleta TEXT,"+
+                "id_produto REFERENCES produto(id) " +
+                "ON UPDATE RESTRICT\n" +
+                "ON DELETE RESTRICT)";
+
+        db.execSQL(CREATE_TABLE9);
     }
     @Override
     public void onOpen(SQLiteDatabase db){
@@ -189,6 +214,8 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS media_mensal");
         db.execSQL("DROP TABLE IF EXISTS rnc");
         db.execSQL("DROP TABLE IF EXISTS ai");
+        db.execSQL("DROP TABLE IF EXISTS analise_laboratorial");
+
         this.onCreate(db);
     }
     public void limpatabela(String tabela){
@@ -886,8 +913,99 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return i; // número de linhas excluídas
     }
+
+    //-----------------------------------------ANALISE LABORATORIAL -----------------------------------
+    public void addAnaliseLaboratorial(Analise_Laboratorial analise_laboratorial) throws ParseException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_COLETA, formataDataddmmaaaatoyyyymmdd(analise_laboratorial.getDt_coleta()));
+        values.put(SITUACAO_COLETA,analise_laboratorial.getSituacao_coleta());
+        values.put(NOTIFICACAO,analise_laboratorial.getNotificacao());
+        values.put(DT_NOVA_COLETA,formataDataddmmaaaatoyyyymmdd(analise_laboratorial.getDt_nova_coleta()));
+        values.put(SITUACAO_NOVA_COLETA,analise_laboratorial.getSituacao_nova_coleta());
+        values.put(ID_PRODUTO_ANALISE_LABORATORIAL, new Integer(analise_laboratorial.getProduto().getId()));
+        db.insert(TABELA_ANALISE_LABORATORIAL, null, values);
+        db.close();
+    }
+
+    public Analise_Laboratorial getAnaliseLaboratorial(int id) throws ParseException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABELA_ANALISE_LABORATORIAL, // a. tabela
+                COLUNAS_ANALISE_LABORATORIAL, // b. colunas
+                " id = ?", // c. colunas para comparar
+                new String[] { String.valueOf(id) }, // d. parâmetros
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        if (cursor == null) {
+            db.close();
+            return null;
+        } else {
+            cursor.moveToFirst();
+            Analise_Laboratorial analise_laboratorial = cursorToAnaliseLaboratorial(cursor);
+            db.close();
+            return analise_laboratorial;
+        }
+    }
+
+    private Analise_Laboratorial cursorToAnaliseLaboratorial(Cursor cursor) throws ParseException {
+
+        Produto produto = new Produto();
+        produto =  getProduto(Integer.parseInt(cursor.getString(6)));
+
+        Analise_Laboratorial analise_laboratorial = new Analise_Laboratorial();
+        analise_laboratorial.setId(Integer.parseInt(cursor.getString(0)));
+        analise_laboratorial.setDt_coleta(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
+        analise_laboratorial.setSituacao_coleta(cursor.getString(2));
+        analise_laboratorial.setNotificacao(cursor.getString(3));
+        analise_laboratorial.setDt_nova_coleta(formataDatayyyymmddtoddmmaaa(cursor.getString(4)));
+        analise_laboratorial.setSituacao_nova_coleta(cursor.getString(5));
+        analise_laboratorial.setProduto(produto);
+
+        return analise_laboratorial;
+    }
+    public ArrayList<Analise_Laboratorial> getAllAnaliseLaboratorial() throws ParseException {
+        ArrayList<Analise_Laboratorial> listaAnaliseLaboratorial = new ArrayList<Analise_Laboratorial>();
+        String query = "SELECT * FROM " + TABELA_ANALISE_LABORATORIAL +" ORDER by " +ID_PRODUTO_ANALISE_LABORATORIAL;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Analise_Laboratorial analise_laboratorial = cursorToAnaliseLaboratorial(cursor);
+                listaAnaliseLaboratorial.add(analise_laboratorial);
+            } while (cursor.moveToNext());
+        }
+        db.close();
+        return listaAnaliseLaboratorial;
+    }
+    public int updateAnaliseLaboratorial(Analise_Laboratorial analise_laboratorial) throws ParseException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DT_COLETA, formataDataddmmaaaatoyyyymmdd(analise_laboratorial.getDt_coleta()));
+        values.put(SITUACAO_COLETA, analise_laboratorial.getSituacao_coleta());
+        values.put(NOTIFICACAO,analise_laboratorial.getNotificacao());
+        values.put(DT_NOVA_COLETA,formataDataddmmaaaatoyyyymmdd(analise_laboratorial.getDt_nova_coleta()));
+        values.put(SITUACAO_NOVA_COLETA,analise_laboratorial.getSituacao_nova_coleta());
+        values.put(ID_PRODUTO_ANALISE_LABORATORIAL, new Integer(analise_laboratorial.getProduto().getId()));
+        int i = db.update(TABELA_ANALISE_LABORATORIAL, //tabela
+                values, // valores
+                ID_ANALISE_LABORATORIAL+" = ?", // colunas para comparar
+                new String[] { String.valueOf(analise_laboratorial.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas modificadas
+    }
+    public int deleteAnaliseLaboratorial(Analise_Laboratorial analise_laboratorial) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int i = db.delete(TABELA_ANALISE_LABORATORIAL, //tabela
+                ID_ANALISE_LABORATORIAL+" = ?", // colunas para comparar
+                new String[] { String.valueOf(analise_laboratorial.getId()) }); //parâmetros
+        db.close();
+        return i; // número de linhas excluídas
+    }
     //--------------------------------------------------- OUTROS METODOS ---------------------------------------------------------
     private String formataDataddmmaaaatoyyyymmdd(String data) throws ParseException {
+        if (data != null) {
 
         // *** note that it's "yyyy-MM-dd hh:mm:ss" not "yyyy-mm-dd hh:mm:ss"
         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
@@ -903,22 +1021,29 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         Log.d("----->", "DATA FORMATADA "+data);
 
         return data;
+        }else{
+            return data;
+        }
     }
 
     private String formataDatayyyymmddtoddmmaaa(String data) throws ParseException {
         // *** note that it's "yyyy-MM-dd hh:mm:ss" not "yyyy-mm-dd hh:mm:ss"
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
-        Date date;
-        date = dt.parse(data);
+        if (data != null) {
+            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+            Date date;
+            date = dt.parse(data);
 
-        // *** same for the format String below
+            // *** same for the format String below
 
-        SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
-        Log.d("----->", "DATA RECEBIDA "+data);
-        data = dt1.format(date);
+            SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
+            Log.d("----->", "DATA RECEBIDA " + data);
+            data = dt1.format(date);
 
-        Log.d("----->", "DATA FORMATADA "+data);
+            Log.d("----->", "DATA FORMATADA " + data);
 
-        return data;
+            return data;
+        }else{
+            return data;
+        }
     }
 }

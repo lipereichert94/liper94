@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp"
+  >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cadastro de Análise Laboratorial"
+        android:textAlignment="center"
+        android:textSize="35dp"></TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Escolha o Produto:"/>
+    <Button
+        android:id="@+id/button_EscolherProduto_cadastro_AnaliseLaboratorial"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher o produto"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data da Coleta:"/>
+    <Button
+        android:id="@+id/button_data_coleta_cadastro_AnaliseLaboratorial"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data da coleta"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Situação da coleta:"
+        android:layout_marginTop="10dp"/>
+
+
+        <RadioGroup
+            android:id="@+id/situacao_coleta_analise_laboratorial_cadastro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            >
+
+
+            <RadioButton
+                android:id="@+id/radioconforme_analise_laboratorial_cadastro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:checked="true"
+                android:text="Conforme" />
+
+            <RadioButton
+                android:id="@+id/radionaoconforme_analise_laboratorial_cadastro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="Não conforme" />
+        </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notificação:"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/notificacao_cadastro_analise_laboratorial"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="2"
+        android:gravity="top|left"
+        android:maxLines="15"
+        android:scrollbars="vertical"></EditText>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Data da Nova Coleta:"/>
+    <Button
+        android:id="@+id/button_data_nova_coleta_cadastro_AnaliseLaboratorial"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data da nova coleta"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Situação da nova coleta:"
+        android:layout_marginTop="10dp"/>
+
+
+    <RadioGroup
+        android:id="@+id/situacao_nova_coleta_analise_laboratorial_cadastro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+
+
+        <RadioButton
+            android:id="@+id/radioconforme_nova_coleta_analise_laboratorial_cadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="Conforme" />
+
+        <RadioButton
+            android:id="@+id/radionaoconforme_nova_coleta_analise_laboratorial_cadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:checked="true"
+            android:text="Não conforme" />
+    </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <Button
+        android:id="@+id/button_SalvarAnaliseLaboratorial"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Salvar"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_removerANaliseLaboratorial"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Limpar"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/button_CancelarAnaliseLaboratorial"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:text="Cancelar"
+        android:textAllCaps="false"/>
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>

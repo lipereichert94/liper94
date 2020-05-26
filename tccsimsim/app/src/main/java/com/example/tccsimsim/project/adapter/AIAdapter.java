@@ -23,11 +23,11 @@ public class AIAdapter extends RecyclerView.Adapter<AIAdapter.DatumViewHolder> {
     private int rowLayout;
     private Context context;
     public static class DatumViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout rnclayout;
+        LinearLayout ailayout;
         TextView nome_estabelecimento,dt_ai,infracao,penalidade,situacao;
         public DatumViewHolder(View v) {
             super(v);
-            rnclayout = (LinearLayout) v.findViewById(R.id.ai_layout);
+            ailayout = (LinearLayout) v.findViewById(R.id.ai_layout);
             nome_estabelecimento = (TextView) v.findViewById(R.id.estabelecimento_ai_lista);
             dt_ai = (TextView)v.findViewById(R.id.dt_ai_lista);
             infracao = (TextView)v.findViewById(R.id.infracao_ai_lista);

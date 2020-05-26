@@ -51,8 +51,8 @@ public class Lista_Escolher_Produto extends Fragment {
                         FragmentTransaction ft = fm.beginTransaction();
                         if(origem.equals("media_mensal")){
                             ft.replace(R.id.conteudo_fragmento, new Cadastro_Media_Mensal().newInstance(id_media_mensal, listaproduto.get(position).getId()));
-                        }else if (origem.equals("cadastro_produto")) {
-                            //ft.replace(R.id.conteudo_fragmento, new Cadastro_Produto().newInstance(id_produto, listaestabelecimento.get(position).getId()));
+                        }else if (origem.equals("analise_laboratorial")) {
+                            ft.replace(R.id.conteudo_fragmento, new Cadastro_Analise_Laboratorial().newInstance(id_media_mensal, listaproduto.get(position).getId()));
                         }
                         else if (origem.equals("licenca_ambiental")) {
                            // ft.replace(R.id.conteudo_fragmento, new Cadastro_Licenca_Ambiental().newInstance(id_produto, listaestabelecimento.get(position).getId()));

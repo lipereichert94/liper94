@@ -82,6 +82,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
         foto = (ImageButton) minhaView.findViewById(R.id.foto_RNC);
         btnescolherestabelecimento = (Button) minhaView.findViewById(R.id.button_EscolherEstabelecimento_cadastro_RNC);
         btnsalvar.setOnClickListener(this);
+        btnremover.setOnClickListener(this);
         dt_verificacao.setOnClickListener(this);
         dt_inspecao.setOnClickListener(this);
         btncancelar.setOnClickListener(this);

@@ -122,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.conteudo_fragmento, new Lista_AI());
             ft.commit();
         }
+        else if (id == R.id.nav_AnaliseLaboratorial) {
+            ft.replace(R.id.conteudo_fragmento, new Lista_Analise_Laboratorial());
+            ft.commit();
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

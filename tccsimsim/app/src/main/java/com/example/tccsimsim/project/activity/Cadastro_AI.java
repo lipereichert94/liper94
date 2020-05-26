@@ -70,6 +70,7 @@ public class Cadastro_AI extends Fragment implements View.OnClickListener {
         situacao = (EditText)minhaView.findViewById(R.id.editText_situacao_cadastro_ai);
         btnescolherestabelecimento = (Button) minhaView.findViewById(R.id.button_EscolherEstabelecimento_cadastro_AI);
         btnsalvar.setOnClickListener(this);
+        btnremover.setOnClickListener(this);
         dt_ai.setOnClickListener(this);
         btncancelar.setOnClickListener(this);
         btnescolherestabelecimento.setOnClickListener(this);
