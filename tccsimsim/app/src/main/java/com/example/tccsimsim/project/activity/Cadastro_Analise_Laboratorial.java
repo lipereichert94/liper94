@@ -34,7 +34,7 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
     private Button btnescolherproduto, btnsalvar, btnremover,dt_coleta,dt_nova_coleta,btncancelar;
     private BDSQLiteHelper bd;
     private EditText notificacao;
-    private RadioButton conforme,naoconforme,conforme_nova_coleta,naoconforme_nova_coleta;
+    private RadioButton conforme,naoconforme,conforme_nova_coleta,naoconforme_nova_coleta,fisicoquimico,microbiologico;
     private int id = 0;
     private int id_produto = -1;
     DatePickerDialog dpd;
@@ -55,6 +55,8 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
         naoconforme = (RadioButton) minhaView.findViewById(R.id.radionaoconforme_analise_laboratorial_cadastro);
         conforme_nova_coleta = (RadioButton) minhaView.findViewById(R.id.radioconforme_nova_coleta_analise_laboratorial_cadastro);
         naoconforme_nova_coleta = (RadioButton) minhaView.findViewById(R.id.radionaoconforme_nova_coleta_analise_laboratorial_cadastro);
+        fisicoquimico = (RadioButton)minhaView.findViewById(R.id.radiotipofisicoquimico_analise_laboratorial_cadastro);
+        microbiologico = (RadioButton)minhaView.findViewById(R.id.radiotipomicrobiologico_analise_laboratorial_cadastro);
         btnescolherproduto = (Button) minhaView.findViewById(R.id.button_EscolherProduto_cadastro_AnaliseLaboratorial);
         btnsalvar.setOnClickListener(this);
         dt_coleta.setOnClickListener(this);
@@ -80,9 +82,12 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Log.d("----->", "valor data nova coleta  "+analise_laboratorial.getDt_nova_coleta());
 
             dt_coleta.setText(analise_laboratorial.getDt_coleta());
+            if (analise_laboratorial.getTipo().equals("microbiológico"))
+                microbiologico.setChecked(true);
+            else
+                fisicoquimico.setChecked(true);
             if (analise_laboratorial.getSituacao_coleta().equals("Conforme"))
                 conforme.setChecked(true);
             else
@@ -143,6 +148,12 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
                 break;
             case R.id.button_data_nova_coleta_cadastro_AnaliseLaboratorial:
                 EscolherData();
+                break;
+            case R.id.button_CancelarAnaliseLaboratorial:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Analise_Laboratorial());
+                ft.commit();
                 break;
         }
     }
@@ -225,6 +236,12 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
                 }else {
                     analise_laboratorial.setDt_nova_coleta(dt_nova_coleta.getText().toString());
                 }
+                if(microbiologico.isChecked()==true){
+                    analise_laboratorial.setTipo("microbiológico");
+                }
+                if(fisicoquimico.isChecked()==true){
+                    analise_laboratorial.setTipo("físico-químico");
+                }
                 if(conforme.isChecked()==true){
                     analise_laboratorial.setSituacao_coleta("Conforme");
                 }
@@ -260,6 +277,12 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
                     analise_laboratorial.setDt_nova_coleta(null);
                 }else {
                     analise_laboratorial.setDt_nova_coleta(dt_nova_coleta.getText().toString());
+                }
+                if(microbiologico.isChecked()==true){
+                    analise_laboratorial.setTipo("microbiológico");
+                }
+                if(fisicoquimico.isChecked()==true){
+                    analise_laboratorial.setTipo("físico-químico");
                 }
                 if(conforme.isChecked()==true){
                     analise_laboratorial.setSituacao_coleta("Conforme");

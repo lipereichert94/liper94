@@ -30,7 +30,7 @@ import java.util.Date;
 public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClickListener {
 
     View minhaView;
-    private Button btnescolherestabelecimento, btnsalvar, btnremover, btnescolherdata,dt_registro;
+    private Button btnescolherestabelecimento, btnsalvar, btnremover, btnescolherdata,dt_registro,btncancelar;
     private BDSQLiteHelper bd;
     private int id = 0;
     private int id_estabelecimento = -1;
@@ -42,6 +42,7 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         minhaView = inflater.inflate(R.layout.layout_cadastro_licenca_ambiental, container, false);
         bd = new BDSQLiteHelper(getActivity());
 
+        btncancelar = (Button) minhaView.findViewById(R.id.button_CancelarLicencaAmbiental);
         btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarLicencaAmbiental);
         btnremover = (Button) minhaView.findViewById(R.id.button_removerLicencaAmbiental);
         dt_registro = (Button) minhaView.findViewById(R.id.btn_dtregistro_licenca_ambiental);
@@ -50,6 +51,7 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         btnsalvar.setOnClickListener(this);
         btnescolherdata.setOnClickListener(this);
         btnremover.setOnClickListener(this);
+        btncancelar.setOnClickListener(this);
         btnescolherestabelecimento.setOnClickListener(this);
         setDataAtual();
         readBundle(getArguments());
@@ -115,6 +117,12 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
                 if (id != 0) {
                     RemoverLicencaAmbiental();
                 }
+                break;
+            case R.id.button_CancelarLicencaAmbiental:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Licenca_Ambiental());
+                ft.commit();
                 break;
         }
     }

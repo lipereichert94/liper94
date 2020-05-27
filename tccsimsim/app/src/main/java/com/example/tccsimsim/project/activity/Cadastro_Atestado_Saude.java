@@ -32,7 +32,7 @@ import java.util.Date;
 public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickListener {
 
     View minhaView;
-    private Button btnescolherestabelecimento, btnsalvar, btnremover, btnescolherdata,dt_registro;
+    private Button btnescolherestabelecimento, btnsalvar, btnremover, btnescolherdata,dt_registro,cancelar;
     private BDSQLiteHelper bd;
     private int id = 0;
     private int id_estabelecimento = -1;
@@ -46,11 +46,13 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
 
         btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarAtestadoSaude);
         btnremover = (Button) minhaView.findViewById(R.id.button_removerAtestadoSaude);
+        cancelar = (Button) minhaView.findViewById(R.id.button_CancelarAtestadoSaude);
         dt_registro = (Button) minhaView.findViewById(R.id.btn_dtregistro_atestadosaude);
         btnescolherestabelecimento = (Button) minhaView.findViewById(R.id.button_EscolherEstabelecimento_cadastro_atestado_saude);
         btnescolherdata = (Button) minhaView.findViewById(R.id.button_EscolherData_cadastro_atestado_saude);
         btnsalvar.setOnClickListener(this);
         btnescolherdata.setOnClickListener(this);
+        cancelar.setOnClickListener(this);
         btnremover.setOnClickListener(this);
         btnescolherestabelecimento.setOnClickListener(this);
         setDataAtual();
@@ -112,6 +114,12 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
                 break;
             case R.id.button_EscolherData_cadastro_atestado_saude:
                 EscolherData();
+                break;
+            case R.id.button_CancelarAtestadoSaude:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Atestado_Saude());
+                ft.commit();
                 break;
             case R.id.button_removerAtestadoSaude:
                 if (id != 0) {

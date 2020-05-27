@@ -34,6 +34,25 @@
             android:textColor="@color/colorBlack"
             android:textSize="16sp" />
         <TextView
+            android:text="Tipo da análise:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
+            android:text="Tipo da análise"
+            android:id="@+id/tipo_analise_laboratorial_lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+        <TextView
             android:text="Data da Coleta:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

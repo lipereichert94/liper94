@@ -82,6 +82,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String TABELA_ANALISE_LABORATORIAL = "analise_laboratorial";
     private static final String ID_ANALISE_LABORATORIAL = "id";
+    private static final String TIPO_ANALISE_LABORATORIAL = "tipo";
     private static final String DT_COLETA = "dt_coleta";
     private static final String SITUACAO_COLETA = "situacao_coleta";
     private static final String NOTIFICACAO = "notificacao";
@@ -97,7 +98,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String[] COLUNAS_MEDIA_MENSAL = {ID_MEDIA_MENSAL,DT_MEDIA_MENSAL,QUANTIDADE_MEDIA_MENSAL,ID_PRODUTO_MEDIA_MENSAL};
     private static final String[] COLUNAS_RNC = {ID_RNC,DT_INSPECAO,DESCRICAO,DT_VERIFICACAO,SITUACAO,URL_IMAGEM,ID_ESTABELECIMENTO_RNC};
     private static final String[] COLUNAS_AI = {ID_AI,DT_AI,INFRACAO_AI,PENALIDADE_AI,SITUACAO_AI,ID_ESTABELECIMENTO_AI};
-    private static final String[] COLUNAS_ANALISE_LABORATORIAL = {ID_ANALISE_LABORATORIAL,DT_COLETA,SITUACAO_COLETA,NOTIFICACAO,DT_NOVA_COLETA,SITUACAO_NOVA_COLETA,ID_PRODUTO_ANALISE_LABORATORIAL};
+    private static final String[] COLUNAS_ANALISE_LABORATORIAL = {ID_ANALISE_LABORATORIAL,TIPO_ANALISE_LABORATORIAL,DT_COLETA,SITUACAO_COLETA,NOTIFICACAO,DT_NOVA_COLETA,SITUACAO_NOVA_COLETA,ID_PRODUTO_ANALISE_LABORATORIAL};
 
 
     public BDSQLiteHelper(Context context) {
@@ -182,6 +183,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE8);
         String CREATE_TABLE9 = "CREATE TABLE "+TABELA_ANALISE_LABORATORIAL+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                "tipo TEXT,"+
                 "dt_coleta DATE,"+
                 "situacao_coleta TEXT,"+
                 "notificacao TEXT,"+
@@ -918,6 +920,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     public void addAnaliseLaboratorial(Analise_Laboratorial analise_laboratorial) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(TIPO_ANALISE_LABORATORIAL,analise_laboratorial.getTipo());
         values.put(DT_COLETA, formataDataddmmaaaatoyyyymmdd(analise_laboratorial.getDt_coleta()));
         values.put(SITUACAO_COLETA,analise_laboratorial.getSituacao_coleta());
         values.put(NOTIFICACAO,analise_laboratorial.getNotificacao());
@@ -952,15 +955,16 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private Analise_Laboratorial cursorToAnaliseLaboratorial(Cursor cursor) throws ParseException {
 
         Produto produto = new Produto();
-        produto =  getProduto(Integer.parseInt(cursor.getString(6)));
+        produto =  getProduto(Integer.parseInt(cursor.getString(7)));
 
         Analise_Laboratorial analise_laboratorial = new Analise_Laboratorial();
         analise_laboratorial.setId(Integer.parseInt(cursor.getString(0)));
-        analise_laboratorial.setDt_coleta(formataDatayyyymmddtoddmmaaa(cursor.getString(1)));
-        analise_laboratorial.setSituacao_coleta(cursor.getString(2));
-        analise_laboratorial.setNotificacao(cursor.getString(3));
-        analise_laboratorial.setDt_nova_coleta(formataDatayyyymmddtoddmmaaa(cursor.getString(4)));
-        analise_laboratorial.setSituacao_nova_coleta(cursor.getString(5));
+        analise_laboratorial.setTipo(cursor.getString(1));
+        analise_laboratorial.setDt_coleta(formataDatayyyymmddtoddmmaaa(cursor.getString(2)));
+        analise_laboratorial.setSituacao_coleta(cursor.getString(3));
+        analise_laboratorial.setNotificacao(cursor.getString(4));
+        analise_laboratorial.setDt_nova_coleta(formataDatayyyymmddtoddmmaaa(cursor.getString(5)));
+        analise_laboratorial.setSituacao_nova_coleta(cursor.getString(6));
         analise_laboratorial.setProduto(produto);
 
         return analise_laboratorial;
@@ -982,6 +986,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     public int updateAnaliseLaboratorial(Analise_Laboratorial analise_laboratorial) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(TIPO_ANALISE_LABORATORIAL,analise_laboratorial.getTipo());
         values.put(DT_COLETA, formataDataddmmaaaatoyyyymmdd(analise_laboratorial.getDt_coleta()));
         values.put(SITUACAO_COLETA, analise_laboratorial.getSituacao_coleta());
         values.put(NOTIFICACAO,analise_laboratorial.getNotificacao());

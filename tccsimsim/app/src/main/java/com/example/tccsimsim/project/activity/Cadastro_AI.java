@@ -135,6 +135,12 @@ public class Cadastro_AI extends Fragment implements View.OnClickListener {
             case R.id.button_EscolherEstabelecimento_cadastro_AI:
                 EscolherEstabelecimento();
                 break;
+            case R.id.button_CancelarAI:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_AI());
+                ft.commit();
+                break;
             case R.id.button_removerAI:
                 if (id != 0) {
                     RemoverAI();

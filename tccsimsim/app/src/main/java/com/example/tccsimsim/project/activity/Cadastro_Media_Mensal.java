@@ -32,7 +32,7 @@ import java.util.Date;
 public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListener {
 
     View minhaView;
-    private Button btnescolherproduto, btnsalvar, btnremover, btnescolherdata;
+    private Button btnescolherproduto, btnsalvar, btnremover, btnescolherdata,btncancelar;
     private BDSQLiteHelper bd;
     private int id = 0;
     private int id_produto = -1;
@@ -45,6 +45,7 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
         minhaView = inflater.inflate(R.layout.layout_cadastro_media_mensal_produto, container, false);
         bd = new BDSQLiteHelper(getActivity());
 
+        btncancelar = (Button) minhaView.findViewById(R.id.button_CancelarMediaMensal);
         btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarMediaMensal);
         btnremover = (Button) minhaView.findViewById(R.id.button_removerMediaMensal);
         btnescolherproduto = (Button) minhaView.findViewById(R.id.button_EscolherProduto_cadastro_media_mensal);
@@ -54,6 +55,7 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
         btnescolherdata.setOnClickListener(this);
         btnremover.setOnClickListener(this);
         btnescolherproduto.setOnClickListener(this);
+        btncancelar.setOnClickListener(this);
         setDataAtual();
         readBundle(getArguments());
         //verifica se é cadastro ou alteração
@@ -105,6 +107,12 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
                 if (id != 0) {
                     RemoverMediaMensal();
                 }
+                break;
+            case R.id.button_CancelarMediaMensal:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Media_Mensal());
+                ft.commit();
                 break;
         }
     }

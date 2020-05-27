@@ -2,6 +2,7 @@ package com.example.tccsimsim.project.model;
 
 public class Analise_Laboratorial {
     private int id;
+    private String tipo;
     private String dt_coleta;
     private String situacao_coleta;
     private String notificacao;
@@ -9,17 +10,27 @@ public class Analise_Laboratorial {
     private String situacao_nova_coleta;
     private Produto produto;
 
-    public Analise_Laboratorial() {
-    }
-
-    public Analise_Laboratorial(int id, String dt_coleta, String situacao_coleta, String notificacao, String dt_nova_coleta, String situacao_nova_coleta, Produto produto) {
+    public Analise_Laboratorial(int id, String tipo, String dt_coleta, String situacao_coleta, String notificacao, String dt_nova_coleta, String situacao_nova_coleta, Produto produto) {
         this.id = id;
+        this.tipo = tipo;
         this.dt_coleta = dt_coleta;
         this.situacao_coleta = situacao_coleta;
         this.notificacao = notificacao;
         this.dt_nova_coleta = dt_nova_coleta;
         this.situacao_nova_coleta = situacao_nova_coleta;
         this.produto = produto;
+    }
+
+    public Analise_Laboratorial() {
+    }
+
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public int getId() {

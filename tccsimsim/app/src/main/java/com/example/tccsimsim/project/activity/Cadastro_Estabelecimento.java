@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -18,12 +17,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.tccsimsim.R;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Estabelecimento;
-import com.example.tccsimsim.project.model.Usuario;
-import com.google.android.material.navigation.NavigationView;
 
 public class Cadastro_Estabelecimento extends Fragment implements View.OnClickListener {
     View minhaView;
-    private Button btnsalvar, btnremover;
+    private Button btnsalvar, btnremover,cancelar;
     private EditText nome;
     private BDSQLiteHelper bd;
     private int id = 0;
@@ -33,9 +30,11 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
         bd = new BDSQLiteHelper(getActivity());
         btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarEstabelecimento);
         btnremover = (Button) minhaView.findViewById(R.id.button_removerEstabelecimento);
+        cancelar = (Button) minhaView.findViewById(R.id.button_CancelarEstabelecimento);
         nome = (EditText) minhaView.findViewById(R.id.editText_NomeCadastroEstabelecimento);
         btnsalvar.setOnClickListener(this);
         btnremover.setOnClickListener(this);
+        cancelar.setOnClickListener(this);
         readBundle(getArguments());
         if (id != 0) {
             btnremover.setText("Remover");
@@ -51,6 +50,12 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
 
             case R.id.button_SalvarEstabelecimento:
                 SalvarEstabelecimento();
+                break;
+            case R.id.button_CancelarEstabelecimento:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());
+                ft.commit();
                 break;
             case R.id.button_removerEstabelecimento:
                 if (id != 0) {
@@ -146,12 +151,12 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
         return fragment;
     }
 
+
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
             id = bundle.getInt("id");
         }
     }
-
 
 }
 

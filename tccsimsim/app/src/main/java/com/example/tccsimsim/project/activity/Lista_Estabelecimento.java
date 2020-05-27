@@ -25,7 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-public class Lista_Estabelecimento extends Fragment {
+public class Lista_Estabelecimento extends Fragment  {
 
 
     View minhaView;
@@ -79,7 +79,8 @@ public class Lista_Estabelecimento extends Fragment {
                 if(permissao_usuario.getText().toString().equals("rw")) {
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.conteudo_fragmento, new Cadastro_Estabelecimento());
+                    ft.replace(R.id.conteudo_fragmento, new Cadastro_Estabelecimento()).addToBackStack(null);
+
                     ft.commit();
                 }else{
                     Toast.makeText(getActivity(), "Você não permissão para alterar dados, favor contatar o administrador do sistema!",
@@ -93,4 +94,5 @@ public class Lista_Estabelecimento extends Fragment {
 
     }
 
-}
+    }
+

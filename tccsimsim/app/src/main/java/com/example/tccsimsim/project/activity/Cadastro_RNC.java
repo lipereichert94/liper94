@@ -273,6 +273,12 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                     RemoverRNC();
                 }
                 break;
+            case R.id.button_CancelarRNC:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_RNC());
+                ft.commit();
+                break;
         }
     }
 

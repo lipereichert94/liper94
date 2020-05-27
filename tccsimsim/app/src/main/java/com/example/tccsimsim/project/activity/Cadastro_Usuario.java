@@ -24,7 +24,7 @@ import com.example.tccsimsim.project.model.Usuario;
 
 public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
     View minhaView;
-    private Button btnsalvar, btnremover;
+    private Button btnsalvar, btnremover,btncancelar;
     private EditText nome, login, senha, confirmar_senha;
     private BDSQLiteHelper bd;
     private int id = 0;
@@ -34,6 +34,7 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         minhaView = inflater.inflate(R.layout.layout_cadastro_usuario, container, false);
         bd = new BDSQLiteHelper(getActivity());
+        btncancelar = (Button) minhaView.findViewById(R.id.button_CancelarUsuario);
         btnsalvar = (Button) minhaView.findViewById(R.id.button_SalvarUsuario);
         btnremover = (Button) minhaView.findViewById(R.id.button_removerUsuario);
         nome = (EditText) minhaView.findViewById(R.id.editText_NomeCadastro);
@@ -44,6 +45,7 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
         visualizador = (RadioButton)minhaView.findViewById(R.id.radioleitura);
         btnsalvar.setOnClickListener(this);
         btnremover.setOnClickListener(this);
+        btncancelar.setOnClickListener(this);
         readBundle(getArguments());
         if (id != 0) {
             btnremover.setText("Remover");
@@ -74,6 +76,12 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
                 } else {
                     limparcampos();
                 }
+                break;
+            case R.id.button_CancelarUsuario:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.conteudo_fragmento, new Lista_Usuario());
+                ft.commit();
                 break;
         }
     }

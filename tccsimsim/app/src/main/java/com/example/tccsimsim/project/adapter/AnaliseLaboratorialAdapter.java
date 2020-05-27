@@ -22,11 +22,13 @@ public class AnaliseLaboratorialAdapter extends RecyclerView.Adapter<AnaliseLabo
     private Context context;
     public static class DatumViewHolder extends RecyclerView.ViewHolder {
         LinearLayout analiselaboratoriallayout;
-        TextView nome_produto,dt_coleta,situacao_coleta,notificacao,dt_nova_coleta,situacao_nova_coleta;
+        TextView nome_produto,dt_coleta,situacao_coleta,notificacao,dt_nova_coleta,situacao_nova_coleta,tipo;
         public DatumViewHolder(View v) {
             super(v);
+
             analiselaboratoriallayout = (LinearLayout) v.findViewById(R.id.analise_laboratorial_layout);
             nome_produto = (TextView) v.findViewById(R.id.produto_analise_laboratorial_lista);
+            tipo = (TextView) v.findViewById(R.id.tipo_analise_laboratorial_lista);
             dt_coleta = (TextView)v.findViewById(R.id.dt_coleta_analise_laboratorial_lista);
             situacao_coleta = (TextView)v.findViewById(R.id.situacao_coleta_analise_laboratorial_lista);
             notificacao = (TextView)v.findViewById(R.id.notificacao_analise_laboratorial_lista);
@@ -53,6 +55,7 @@ public class AnaliseLaboratorialAdapter extends RecyclerView.Adapter<AnaliseLabo
     public void onBindViewHolder(@NonNull DatumViewHolder holder, int position) {
 
         holder.nome_produto.setText(""+analise_laboratorial.get(position).getProduto().getNome());
+        holder.tipo.setText(analise_laboratorial.get(position).getTipo());
         holder.dt_coleta.setText(analise_laboratorial.get(position).getDt_coleta());
         holder.situacao_coleta.setText(analise_laboratorial.get(position).getSituacao_coleta());
         holder.notificacao.setText(analise_laboratorial.get(position).getNotificacao());

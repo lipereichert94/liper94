@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -22,6 +23,8 @@ import com.example.tccsimsim.project.model.Usuario;
 import com.google.android.material.navigation.NavigationView;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private BDSQLiteHelper bd;
@@ -58,10 +61,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         FragmentManager fm = this.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.conteudo_fragmento, new Lista_Estabelecimento());
+        ft.replace(R.id.conteudo_fragmento,fm.getFragments().get((fm.getFragments().size())-1));
         ft.commit();
-    }
 
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

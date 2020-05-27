@@ -32,6 +32,40 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Tipo da Análise Laboratorial:"
+        android:layout_marginTop="10dp"/>
+
+
+    <RadioGroup
+        android:id="@+id/tipo_analise_laboratorial_cadastro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+
+
+        <RadioButton
+            android:id="@+id/radiotipofisicoquimico_analise_laboratorial_cadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:checked="true"
+            android:text="físico-químico" />
+
+        <RadioButton
+            android:id="@+id/radiotipomicrobiologico_analise_laboratorial_cadastro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="microbiológico" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Data da Coleta:"/>
     <Button
         android:id="@+id/button_data_coleta_cadastro_AnaliseLaboratorial"

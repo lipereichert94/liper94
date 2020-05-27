@@ -1,6 +1,8 @@
 package com.example.tccsimsim.project.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -95,6 +97,13 @@ public class login extends AppCompatActivity implements View.OnClickListener {
             Toast.makeText(getBaseContext(),"Senha incorreta", Toast.LENGTH_LONG).show();
 
         }
+    }
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = this.getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }
 
