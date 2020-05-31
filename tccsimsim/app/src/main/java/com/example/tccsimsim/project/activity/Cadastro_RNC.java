@@ -148,8 +148,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
 
     public void buscar(View view) {
 
-        Intent intent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, GALERIA_IMAGENS);
     }
     //Método para tirar foto
