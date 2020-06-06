@@ -94,7 +94,12 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
 
         //verifica se é cadastro ou alteração
         if (id_estabelecimento != -1) {
-            Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            Estabelecimento estabelecimento = null;
+            try {
+                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             btnescolherestabelecimento.setText(estabelecimento.getNome());
 
         }
@@ -118,30 +123,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
 
         }
 
-        // Pede permissão para acessar as mídias gravadas no dispositivo
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        PERMISSAO_REQUEST);
-            }
-        }
 
-        // Pede permissão para escrever arquivos no dispositivo
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSAO_REQUEST);
-            }
-        }
 
         return minhaView;
     }

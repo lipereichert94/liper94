@@ -69,7 +69,12 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
 
         //verifica se é cadastro ou alteração
         if (id_produto != -1) {
-            Produto produto = bd.getProduto(id_produto);
+            Produto produto = null;
+            try {
+                produto = bd.getProduto(id_produto);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             btnescolherproduto.setText(produto.getNome());
 
         }

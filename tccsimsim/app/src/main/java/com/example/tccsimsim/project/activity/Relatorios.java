@@ -1,5 +1,6 @@
 package com.example.tccsimsim.project.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -54,6 +57,8 @@ public class Relatorios extends Fragment implements View.OnClickListener {
         gerarelatorio = (Button) minhaView.findViewById(R.id.button__Relatorios);
         imageView = (ImageView)minhaView.findViewById(R.id.imageView_StorageDownload);
         gerarelatorio.setOnClickListener(this);
+
+
         return minhaView;
     }
 

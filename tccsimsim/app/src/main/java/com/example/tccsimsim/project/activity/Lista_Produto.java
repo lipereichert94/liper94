@@ -23,6 +23,7 @@ import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Produto;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Lista_Produto extends Fragment {
@@ -41,7 +42,11 @@ public class Lista_Produto extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) minhaView.findViewById(R.id.recyclerView_ListaProdutos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bd = new BDSQLiteHelper(getActivity());
-        listaproduto = bd.getAllProduto();
+        try {
+            listaproduto = bd.getAllProduto();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);

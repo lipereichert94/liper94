@@ -39,6 +39,15 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String TABELA_ESTABELECIMENTO = "estabelecimento";
     private static final String ID_ESTABELECIMENTO = "id";
     private static final String NOME_ESTABELECIMENTO = "nome";
+    private static final String NOME__FANTASIA_ESTABELECIMENTO = "nome_fantasia";
+    private static final String CLASSIFICACAO = "classificacao";
+    private static final String CNPJ = "cnpj";
+    private static final String INSCRICAO_ESTADUAL = "inscricao_estadual";
+    private static final String INSCRICAO_MUNICIPAL = "inscricao_municipal";
+    private static final String ENDERECO = "endereco";
+    private static final String ENDERECO_ELETRONICO = "endereco_eletronico";
+    private static final String DATA_REGISTRO = "dt_registro";
+    private static final String FONE = "fone";
 
     private static final String TABELA_PRODUTO = "produto";
     private static final String ID_PRODUTO = "id";
@@ -91,7 +100,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
     private static final String ID_PRODUTO_ANALISE_LABORATORIAL = "id_produto";
 
     private static final String[] COLUNAS_USUARIO = {ID_USUARIO, NOME_USUARIO, LOGIN_USUARIO, SENHA_USUARIO,PERMISSAO_USUARIO};
-    private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO};
+    private static final String[] COLUNAS_ESTABELECIMENTO = {ID_ESTABELECIMENTO,NOME_ESTABELECIMENTO,NOME__FANTASIA_ESTABELECIMENTO,CLASSIFICACAO,CNPJ,INSCRICAO_ESTADUAL,INSCRICAO_MUNICIPAL,ENDERECO,ENDERECO_ELETRONICO,DATA_REGISTRO,FONE};
     private static final String[] COLUNAS_PRODUTO = {ID_PRODUTO,NOME_PRODUTO,ID_PRODUTO_ESTABELECIMENTO};
     private static final String[] COLUNAS_ATESTADO_SAUDE = {ID_ATESTADO_SAUDE,DT_REGISTRO_ATESTADO_SAUDE,DT_VALIDADE_ATESTADO_SAUDE,ID_PRODUTO_ESTABELECIMENTO_ATESTADO_SAUDE};
     private static final String[] COLUNAS_LICENCA_AMBIENTAL = {ID_LICENCA_AMBIENTAL,DT_REGISTRO_LICENCA_AMBIENTAL,DT_VALIDADE_LICENCA_AMBIENTAL,ID_PRODUTO_ESTABELECIMENTO_LICENCA_AMBIENTAL};
@@ -121,7 +130,16 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
 
         String CREATE_TABLE2 = "CREATE TABLE "+TABELA_ESTABELECIMENTO+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "nome TEXT )";
+                "nome TEXT,"+
+                "nome_fantasia TEXT,"+
+                "classificacao TEXT,"+
+                "cnpj INTEGER,"+
+                "inscricao_estadual INTEGER,"+
+                "inscricao_municipal INTEGER,"+
+                "endereco TEXT,"+
+                "endereco_eletronico TEXT,"+
+                "dt_registro DATE,"+
+                "fone INTEGER )";
         db.execSQL(CREATE_TABLE2);
         String CREATE_TABLE3 = "CREATE TABLE "+TABELA_PRODUTO+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -329,14 +347,23 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         return i; // número de linhas excluídas
     }
     //---------------------------------------------ESTABELECIMENTO--------------------------------------------------
-    public void addEstabelecimento(Estabelecimento estabelecimento) {
+    public void addEstabelecimento(Estabelecimento estabelecimento) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NOME_ESTABELECIMENTO, estabelecimento.getNome());
+        values.put(NOME__FANTASIA_ESTABELECIMENTO,estabelecimento.getNome_fantasia());
+        values.put(CLASSIFICACAO,estabelecimento.getClassificacao());
+        values.put(CNPJ,estabelecimento.getCnpj());
+        values.put(INSCRICAO_ESTADUAL,estabelecimento.getInscricao_estadual());
+        values.put(INSCRICAO_MUNICIPAL,estabelecimento.getInscricao_municipal());
+        values.put(ENDERECO,estabelecimento.getEndereco());
+        values.put(ENDERECO_ELETRONICO,estabelecimento.getEndereco_eletronico());
+        values.put(DATA_REGISTRO,formataDataddmmaaaatoyyyymmdd(estabelecimento.getDt_registro()));
+        values.put(FONE,estabelecimento.getFone());
         db.insert(TABELA_ESTABELECIMENTO, null, values);
         db.close();
     }
-    public Estabelecimento getEstabelecimento(int id) {
+    public Estabelecimento getEstabelecimento(int id) throws ParseException {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABELA_ESTABELECIMENTO, // a. tabela
                 COLUNAS_ESTABELECIMENTO, // b. colunas
@@ -357,13 +384,22 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    private Estabelecimento cursorToEstabelecimento(Cursor cursor) {
+    private Estabelecimento cursorToEstabelecimento(Cursor cursor) throws ParseException {
         Estabelecimento estabelecimento = new Estabelecimento();
         estabelecimento.setId(Integer.parseInt(cursor.getString(0)));
         estabelecimento.setNome(cursor.getString(1));
+        estabelecimento.setNome_fantasia(cursor.getString(2));
+        estabelecimento.setClassificacao(cursor.getString(3));
+        estabelecimento.setCnpj(Integer.parseInt(cursor.getString(4)));
+        estabelecimento.setInscricao_estadual(Integer.parseInt(cursor.getString(5)));
+        estabelecimento.setInscricao_municipal(Integer.parseInt(cursor.getString(6)));
+        estabelecimento.setEndereco(cursor.getString(7));
+        estabelecimento.setEndereco_eletronico(cursor.getString(8));
+        estabelecimento.setDt_registro(formataDatayyyymmddtoddmmaaa(cursor.getString(9)));
+        estabelecimento.setFone(cursor.getString(10));
         return estabelecimento;
     }
-    public ArrayList<Estabelecimento> getAllEstabelecimentos() {
+    public ArrayList<Estabelecimento> getAllEstabelecimentos() throws ParseException {
         ArrayList<Estabelecimento> listaEstabelecimento = new ArrayList<Estabelecimento>();
         String query = "SELECT * FROM " + TABELA_ESTABELECIMENTO;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -377,10 +413,19 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
         return listaEstabelecimento;
     }
-    public int updateEstabelecimento(Estabelecimento estabelecimento) {
+    public int updateEstabelecimento(Estabelecimento estabelecimento) throws ParseException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NOME_ESTABELECIMENTO, estabelecimento.getNome());
+        values.put(NOME__FANTASIA_ESTABELECIMENTO,estabelecimento.getNome_fantasia());
+        values.put(CLASSIFICACAO,estabelecimento.getClassificacao());
+        values.put(CNPJ,estabelecimento.getCnpj());
+        values.put(INSCRICAO_ESTADUAL,estabelecimento.getInscricao_estadual());
+        values.put(INSCRICAO_MUNICIPAL,estabelecimento.getInscricao_municipal());
+        values.put(ENDERECO,estabelecimento.getEndereco());
+        values.put(ENDERECO_ELETRONICO,estabelecimento.getEndereco_eletronico());
+        values.put(DATA_REGISTRO,formataDataddmmaaaatoyyyymmdd(estabelecimento.getDt_registro()));
+        values.put(FONE,estabelecimento.getFone());
         int i = db.update(TABELA_ESTABELECIMENTO, //tabela
                 values, // valores
                 ID_ESTABELECIMENTO+" = ?", // colunas para comparar
@@ -416,7 +461,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Produto getProduto(int id) {
+    public Produto getProduto(int id) throws ParseException {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABELA_PRODUTO, // a. tabela
                 COLUNAS_PRODUTO, // b. colunas
@@ -436,7 +481,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
             return produto;
         }
     }
-    private Produto cursorToProduto(Cursor cursor) {
+    private Produto cursorToProduto(Cursor cursor) throws ParseException {
         Estabelecimento estabelecimento = new Estabelecimento();
         estabelecimento =  getEstabelecimento(Integer.parseInt(cursor.getString(2)));
         Produto produto = new Produto();
@@ -445,7 +490,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         produto.setEstabelecimento(estabelecimento);
         return produto;
     }
-    public ArrayList<Produto> getAllProduto() {
+    public ArrayList<Produto> getAllProduto() throws ParseException {
         ArrayList<Produto> listaProdutos = new ArrayList<Produto>();
         String query = "SELECT * FROM " + TABELA_PRODUTO;
         SQLiteDatabase db = this.getReadableDatabase();

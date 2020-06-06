@@ -23,6 +23,7 @@ import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Usuario;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Lista_Estabelecimento extends Fragment  {
@@ -41,7 +42,11 @@ public class Lista_Estabelecimento extends Fragment  {
         final RecyclerView recyclerView = (RecyclerView) minhaView.findViewById(R.id.recyclerView_ListaEstabelecimentos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bd = new BDSQLiteHelper(getActivity());
-        listaestabelecimento = bd.getAllEstabelecimentos();
+        try {
+            listaestabelecimento = bd.getAllEstabelecimentos();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         final TextView permissao_usuario = (TextView) headerView.findViewById(R.id.permissaousuariologado);

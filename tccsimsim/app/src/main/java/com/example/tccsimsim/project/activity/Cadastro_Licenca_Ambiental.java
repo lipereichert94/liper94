@@ -57,7 +57,12 @@ public class Cadastro_Licenca_Ambiental extends Fragment implements View.OnClick
         readBundle(getArguments());
         //verifica se é cadastro ou alteração
         if (id_estabelecimento != -1) {
-            Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            Estabelecimento estabelecimento = null;
+            try {
+                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             btnescolherestabelecimento.setText(estabelecimento.getNome());
         }
         if (id != 0) {

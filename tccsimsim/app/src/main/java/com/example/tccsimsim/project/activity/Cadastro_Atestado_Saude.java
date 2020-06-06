@@ -59,7 +59,12 @@ public class Cadastro_Atestado_Saude extends Fragment implements View.OnClickLis
         readBundle(getArguments());
         //verifica se é cadastro ou alteração
         if (id_estabelecimento != -1) {
-            Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            Estabelecimento estabelecimento = null;
+            try {
+                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             btnescolherestabelecimento.setText(estabelecimento.getNome());
         }
         if (id != 0) {

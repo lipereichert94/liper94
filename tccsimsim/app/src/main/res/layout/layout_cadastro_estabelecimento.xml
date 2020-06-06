@@ -1,5 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:padding="10dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,10 +31,116 @@
         android:layout_height="wrap_content"
         android:hint="Insira o nome do estabelecimento:"
         />
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="20dp"
+        android:text="Nome Fantasia:"/>
+    <EditText
+        android:id="@+id/editText_Nome_Fantasia_CadastroEstabelecimento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insira o nome fantasia do estabelecimento:"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Classificação:"/>
+    <EditText
+        android:id="@+id/editText_Classificacao_CadastroEstabelecimento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insira a classificação do estabelecimento:"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="CNPJ:"/>
+    <EditText
+        android:id="@+id/editText_CNPJCadastroEstabelecimento"
+        android:layout_width="match_parent"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:hint="Insira o CNPJ do estabelecimento:"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Inscrição Estadual:"/>
+    <EditText
+        android:id="@+id/editText_Inscricao_EstadualCadastroEstabelecimento"
+        android:layout_width="match_parent"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:hint="Insira a Inscrição Estadual do estabelecimento:"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Inscrição Municipal:"/>
+    <EditText
+        android:id="@+id/editText_Inscricao_MunicipalCadastroEstabelecimento"
+        android:layout_width="match_parent"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:hint="Insira a Inscrição Municipal do estabelecimento:"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Endereço:"/>
+    <EditText
+        android:id="@+id/editText_Endereco_CadastroEstabelecimento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Insira o endereço do estabelecimento:"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Endereço eletrônico:"/>
+    <EditText
+        android:id="@+id/editText_Endereco_Eletronico_CadastroEstabelecimento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="Insira o endereço eletrônico do estabelecimento:"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Data de registro:"/>
+    <Button
+        android:id="@+id/btn_dtregistro_Cadastro_Estabelecimento"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Clique para escolher a data"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:inputType="phone"
+            android:text="Telefone:"/>
+        <EditText
+            android:id="@+id/editText_Telefone_CadastroEstabelecimento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Insira o telefone do estabelecimento:"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
     <Button
         android:id="@+id/button_SalvarEstabelecimento"
         android:layout_width="200dp"
@@ -54,3 +167,4 @@
         android:textAllCaps="false"/>
     </LinearLayout>
 </LinearLayout>
+</ScrollView>

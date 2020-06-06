@@ -79,7 +79,12 @@ public class Cadastro_AI extends Fragment implements View.OnClickListener {
 
         //verifica se é cadastro ou alteração
         if (id_estabelecimento != -1) {
-            Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            Estabelecimento estabelecimento = null;
+            try {
+                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             btnescolherestabelecimento.setText(estabelecimento.getNome());
 
         }

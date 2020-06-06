@@ -60,8 +60,18 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
         readBundle(getArguments());
         //verifica se é cadastro ou alteração
         if (id_produto != -1) {
-            Produto produto = bd.getProduto(id_produto);
-            Estabelecimento estabelecimento = bd.getEstabelecimento(produto.getEstabelecimento().getId());
+            Produto produto = null;
+            try {
+                produto = bd.getProduto(id_produto);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Estabelecimento estabelecimento = null;
+            try {
+                estabelecimento = bd.getEstabelecimento(produto.getEstabelecimento().getId());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             btnescolherproduto.setText("Estabelecimento: "+estabelecimento.getNome()+" Produto:"+produto.getNome());
         }
         if (id != 0) {

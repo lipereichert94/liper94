@@ -20,6 +20,8 @@ import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Produto;
 
+import java.text.ParseException;
+
 public class Cadastro_Produto extends Fragment implements View.OnClickListener {
     View minhaView;
     private Button btnescolherestabelecimento,btnsalvar, btnremover,btncancelar;
@@ -43,12 +45,22 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
         btnescolherestabelecimento.setOnClickListener(this);
         readBundle(getArguments());
         if (id_estabelecimento != -1 ) {
-            Estabelecimento estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            Estabelecimento estabelecimento = null;
+            try {
+                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             btnescolherestabelecimento.setText(estabelecimento.getNome());
         }
         if (id != 0) {
             btnremover.setText("Remover");
-            Produto produto = bd.getProduto(id);
+            Produto produto = null;
+            try {
+                produto = bd.getProduto(id);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             nome.setText(produto.getNome());
         }
         return minhaView;
@@ -59,7 +71,11 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
 
             case R.id.button_SalvarProduto:
-                SalvarProduto();
+                try {
+                    SalvarProduto();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.button_EscolherEstabelecimento_cadastro_produto:
                 EscolherEstabelecimento();
@@ -96,7 +112,12 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        final Produto finalproduto = bd.getProduto(id);
+                         Produto finalproduto = null;
+                        try {
+                            finalproduto = bd.getProduto(id);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         int exlusao = 0;
                         exlusao = bd.deleteProduto(finalproduto);
                         if(exlusao==1) {
@@ -120,15 +141,19 @@ public class Cadastro_Produto extends Fragment implements View.OnClickListener {
         nome.setText("");
     }
 
-    private void SalvarProduto() {
+    private void SalvarProduto() throws ParseException {
         if (id != 0) {
             if(verificacampos()) {
                 //alterar
-                Estabelecimento estabelecimento = new Estabelecimento();
+                Estabelecimento estabelecimento = null;
                 Produto produto = new Produto();
                 produto.setId(id);
                 produto.setNome(nome.getText().toString());
-                estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+                try {
+                    estabelecimento = bd.getEstabelecimento(id_estabelecimento);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 produto.setEstabelecimento(estabelecimento);
                 bd.updateProduto(produto);
                 Toast.makeText(getActivity(), "Produto alterado com sucesso!",

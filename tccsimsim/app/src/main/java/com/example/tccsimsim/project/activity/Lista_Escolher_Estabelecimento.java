@@ -18,6 +18,7 @@ import com.example.tccsimsim.project.adapter.EstabelecimentoAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Estabelecimento;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Lista_Escolher_Estabelecimento extends Fragment {
@@ -37,7 +38,11 @@ public class Lista_Escolher_Estabelecimento extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) minhaView.findViewById(R.id.recyclerView_ListaEscolhaEstabelecimentos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         bd = new BDSQLiteHelper(getActivity());
-        listaestabelecimento = bd.getAllEstabelecimentos();
+        try {
+            listaestabelecimento = bd.getAllEstabelecimentos();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         readBundle(getArguments());
 
         recyclerView.setAdapter(new EstabelecimentoAdapter(listaestabelecimento, R.layout.list_item_estabelecimento, getActivity().getApplicationContext()));

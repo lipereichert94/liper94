@@ -21,11 +21,20 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
     private Context context;
     public static class DatumViewHolder extends RecyclerView.ViewHolder {
         LinearLayout estabelecimentoLayout;
-        TextView nome;
+        TextView nome,nome_fantasia,classificacao,cnpj,inscricao_estadual,inscricao_municipal,endereco,endereco_eletronico,dt_registro,telefone;
         public DatumViewHolder(View v) {
             super(v);
             estabelecimentoLayout = (LinearLayout) v.findViewById(R.id.estabelecimento_layout);
             nome = (TextView) v.findViewById(R.id.nome_estabelecimento_lista);
+            nome_fantasia = (TextView) v.findViewById(R.id.nome_fantasia_estabelecimento_lista);
+            classificacao = (TextView)v.findViewById(R.id.classificacao_estabelecimento_lista);
+            cnpj = (TextView) v.findViewById(R.id.cnpj_estabelecimento_lista);
+            inscricao_estadual = (TextView) v.findViewById(R.id.inscricao_estadual_estabelecimento_lista);
+            inscricao_municipal = (TextView) v.findViewById(R.id.inscricao_municipal_estabelecimento_lista);
+            endereco = (TextView) v.findViewById(R.id.endereco_estabelecimento_lista);
+            endereco_eletronico =(TextView) v.findViewById(R.id.endereco_eletronico_estabelecimento_lista);
+            dt_registro = (TextView) v.findViewById(R.id.dt_registro_estabelecimento_lista);
+            telefone = (TextView) v.findViewById(R.id.fone_estabelecimento_lista);
         }
     }
     public EstabelecimentoAdapter(List<Estabelecimento> estabelecimentos, int rowLayout, Context context) {
@@ -44,7 +53,17 @@ public class EstabelecimentoAdapter extends RecyclerView.Adapter<Estabelecimento
 
     @Override
     public void onBindViewHolder(@NonNull DatumViewHolder holder, int position) {
-        holder.nome.setText(estabelecimentos.get(position).getNome());
+        holder.nome.setText(""+estabelecimentos.get(position).getNome());
+        holder.nome_fantasia.setText(""+estabelecimentos.get(position).getNome_fantasia());
+        holder.classificacao.setText(""+estabelecimentos.get(position).getClassificacao());
+        holder.cnpj.setText(""+estabelecimentos.get(position).getCnpj());
+        holder.inscricao_estadual.setText(""+estabelecimentos.get(position).getInscricao_estadual());
+        holder.inscricao_municipal.setText(""+estabelecimentos.get(position).getInscricao_municipal());
+        holder.endereco.setText(""+estabelecimentos.get(position).getEndereco());
+        holder.endereco_eletronico.setText(""+estabelecimentos.get(position).getEndereco_eletronico());
+        holder.dt_registro.setText(""+estabelecimentos.get(position).getDt_registro());
+        holder.telefone.setText(""+estabelecimentos.get(position).getFone());
+
     }
 
     @Override
