@@ -73,8 +73,8 @@
     <EditText
         android:id="@+id/editText_Inscricao_EstadualCadastroEstabelecimento"
         android:layout_width="match_parent"
-        android:inputType="number"
         android:layout_height="wrap_content"
+        android:inputType="number"
         android:hint="Insira a Inscrição Estadual do estabelecimento:"
         />
     <TextView
@@ -85,8 +85,8 @@
     <EditText
         android:id="@+id/editText_Inscricao_MunicipalCadastroEstabelecimento"
         android:layout_width="match_parent"
-        android:inputType="number"
         android:layout_height="wrap_content"
+        android:inputType="number"
         android:hint="Insira a Inscrição Municipal do estabelecimento:"
         />
     <TextView

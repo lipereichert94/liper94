@@ -50,6 +50,7 @@ public class Relatorios extends Fragment implements View.OnClickListener {
     Button gerarelatorio;
     private BDSQLiteHelper bd;
     private ImageView imageView;
+    private final int PERMISSAO_REQUEST = 2;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         minhaView = inflater.inflate(R.layout.layout_relatorios, container, false);
@@ -57,7 +58,30 @@ public class Relatorios extends Fragment implements View.OnClickListener {
         gerarelatorio = (Button) minhaView.findViewById(R.id.button__Relatorios);
         imageView = (ImageView)minhaView.findViewById(R.id.imageView_StorageDownload);
         gerarelatorio.setOnClickListener(this);
+// Pede permissão para acessar as mídias gravadas no dispositivo
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PERMISSAO_REQUEST);
+            }
+        }
 
+        // Pede permissão para escrever arquivos no dispositivo
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSAO_REQUEST);
+            }
+        }
 
         return minhaView;
     }
@@ -82,6 +106,7 @@ public class Relatorios extends Fragment implements View.OnClickListener {
 
 
     private void gerarPDF() throws DocumentException, FileNotFoundException {
+
 
 
 
