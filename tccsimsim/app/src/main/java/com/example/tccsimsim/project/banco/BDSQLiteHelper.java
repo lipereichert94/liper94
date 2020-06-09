@@ -133,13 +133,13 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
                 "nome TEXT,"+
                 "nome_fantasia TEXT,"+
                 "classificacao TEXT,"+
-                "cnpj INTEGER,"+
+                "cnpj TEXT,"+
                 "inscricao_estadual INTEGER,"+
                 "inscricao_municipal INTEGER,"+
                 "endereco TEXT,"+
                 "endereco_eletronico TEXT,"+
                 "dt_registro DATE,"+
-                "fone INTEGER )";
+                "fone TEXT )";
         db.execSQL(CREATE_TABLE2);
         String CREATE_TABLE3 = "CREATE TABLE "+TABELA_PRODUTO+" ("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"+
@@ -390,7 +390,7 @@ public class BDSQLiteHelper extends SQLiteOpenHelper {
         estabelecimento.setNome(cursor.getString(1));
         estabelecimento.setNome_fantasia(cursor.getString(2));
         estabelecimento.setClassificacao(cursor.getString(3));
-        estabelecimento.setCnpj(Integer.parseInt(cursor.getString(4)));
+        estabelecimento.setCnpj((cursor.getString(4)));
         estabelecimento.setInscricao_estadual(Integer.parseInt(cursor.getString(5)));
         estabelecimento.setInscricao_municipal(Integer.parseInt(cursor.getString(6)));
         estabelecimento.setEndereco(cursor.getString(7));

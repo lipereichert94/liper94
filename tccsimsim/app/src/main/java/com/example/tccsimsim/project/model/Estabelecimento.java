@@ -6,7 +6,7 @@ public class Estabelecimento {
     private String nome;
     private String nome_fantasia;
     private String classificacao;
-    private int cnpj;
+    private String cnpj;
     private int inscricao_estadual;
     private int inscricao_municipal;
     private String endereco;
@@ -14,10 +14,7 @@ public class Estabelecimento {
     private String dt_registro;
     private String fone;
 
-    public Estabelecimento() {
-    }
-
-    public Estabelecimento(Integer id, String nome, String nome_fantasia, String classificacao, int cnpj, int inscricao_estadual, int inscricao_municipal, String endereco, String endereco_eletronico, String dt_registro, String fone) {
+    public Estabelecimento(Integer id, String nome, String nome_fantasia, String classificacao, String cnpj, int inscricao_estadual, int inscricao_municipal, String endereco, String endereco_eletronico, String dt_registro, String fone) {
         this.id = id;
         this.nome = nome;
         this.nome_fantasia = nome_fantasia;
@@ -29,6 +26,9 @@ public class Estabelecimento {
         this.endereco_eletronico = endereco_eletronico;
         this.dt_registro = dt_registro;
         this.fone = fone;
+    }
+
+    public Estabelecimento() {
     }
 
     public Integer getId() {
@@ -63,11 +63,11 @@ public class Estabelecimento {
         this.classificacao = classificacao;
     }
 
-    public int getCnpj() {
+    public String getCnpj() {
         return cnpj;
     }
 
-    public void setCnpj(int cnpj) {
+    public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
 

@@ -3,6 +3,7 @@ package com.example.tccsimsim.project.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tccsimsim.R;
+import com.example.tccsimsim.project.Utils.Mask;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Estabelecimento;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Cadastro_Estabelecimento extends Fragment implements View.OnClickListener {
     View minhaView;
@@ -47,6 +51,9 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
         btnsalvar.setOnClickListener(this);
         btnremover.setOnClickListener(this);
         cancelar.setOnClickListener(this);
+        telefone.addTextChangedListener(Mask.insert("(##)####-####", telefone));
+        cnpj.addTextChangedListener(Mask.insert("##.###.###/####-##", cnpj));
+
         setDataAtual();
         readBundle(getArguments());
         if (id != 0) {
@@ -64,7 +71,7 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
             inscricao_estadual.setText(""+estabelecimento.getInscricao_estadual());
             inscricao_municipal.setText(""+estabelecimento.getInscricao_municipal());
             endereco.setText(""+estabelecimento.getEndereco());
-            endereco_eletronico.setText(""+estabelecimento.getFone());
+            endereco_eletronico.setText(""+estabelecimento.getEndereco_eletronico());
             dt_registro.setText(""+estabelecimento.getDt_registro());
             telefone.setText(""+estabelecimento.getFone());
         }
@@ -133,6 +140,14 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
 
     private void limparcampos() {
         nome.setText("");
+        nome_fantasia.setText("");
+        classificacao.setText("");
+        inscricao_estadual.setText("");
+        inscricao_municipal.setText("");
+        endereco.setText("");
+        endereco_eletronico.setText("");
+        telefone.setText("");
+
     }
 
     private void SalvarEstabelecimento() throws ParseException {
@@ -144,7 +159,7 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
                 estabelecimento.setNome(nome.getText().toString());
                 estabelecimento.setNome_fantasia(nome_fantasia.getText().toString());
                 estabelecimento.setClassificacao(classificacao.getText().toString());
-                estabelecimento.setCnpj(Integer.parseInt(cnpj.getText().toString()));
+                estabelecimento.setCnpj(cnpj.getText().toString());
                 estabelecimento.setInscricao_estadual(Integer.parseInt(inscricao_estadual.getText().toString()));
                 estabelecimento.setInscricao_municipal(Integer.parseInt(inscricao_municipal.getText().toString()));
                 estabelecimento.setEndereco(endereco.getText().toString());
@@ -167,7 +182,7 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
                 estabelecimento.setNome(nome.getText().toString());
                 estabelecimento.setNome_fantasia(nome_fantasia.getText().toString());
                 estabelecimento.setClassificacao(classificacao.getText().toString());
-                estabelecimento.setCnpj(Integer.parseInt(cnpj.getText().toString()));
+                estabelecimento.setCnpj((cnpj.getText().toString()));
                 estabelecimento.setInscricao_estadual(Integer.parseInt(inscricao_estadual.getText().toString()));
                 estabelecimento.setInscricao_municipal(Integer.parseInt(inscricao_municipal.getText().toString()));
                 estabelecimento.setEndereco(endereco.getText().toString());
@@ -202,17 +217,46 @@ public class Cadastro_Estabelecimento extends Fragment implements View.OnClickLi
         else{
             dt_registro.setText(""+dt_registro.getText()+(month+1)+"-"+year);
         }
-        //  dt_registro.setText(day + "-" + (month + 1) + "-" + year);
 
     }
     private boolean verificacampos() {
-        if(nome.getText().toString().equals("")){
-            Toast.makeText(getActivity(), "Favor preencher o nome do estabelecimento!",
+        if(nome.getText().toString().equals("") || nome_fantasia.getText().toString().equals("") || classificacao.getText().toString().equals("") || cnpj.getText().toString().equals("")|| inscricao_municipal.getText().toString().equals("")
+        || inscricao_estadual.getText().toString().equals("") || endereco.getText().toString().equals("") || endereco_eletronico.getText().toString().equals("") || dt_registro.getText().toString().equals("") ) {
+            Toast.makeText(getActivity(), "Favor preencher todos os campos!",
                     Toast.LENGTH_LONG).show();
+            Log.d("----->", "lenght telefone " + telefone.getText().toString().length());
             return false;
-        }else{
+
+        }else if(telefone.getText().toString().length() < 12){
+                Log.d("----->", "entrou if "+telefone.getText().toString().length());
+
+                Toast.makeText(getActivity(),"Preencha corretamente o telefone!",Toast.LENGTH_LONG).show();
+            return false;
+        }else if(isValidEmailAddressRegex(endereco_eletronico.getText().toString()) == false){
+            Toast.makeText(getActivity(),"Email inválido!",Toast.LENGTH_LONG).show();
+            return false;
+        }else if(cnpj.getText().toString().length() < 18){
+            Log.d("----->", "entrou if "+telefone.getText().toString().length());
+
+            Toast.makeText(getActivity(),"Preencha corretamente o CNPJ!",Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else{
             return true;
         }
+    }
+
+    public  boolean isValidEmailAddressRegex(String email) {
+        boolean isEmailIdValid = false;
+        if (email != null && email.length() > 0) {
+            String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(email);
+            if (matcher.matches()) {
+                isEmailIdValid = true;
+            }
+        }
+        return isEmailIdValid;
     }
 
     public static Cadastro_Estabelecimento newInstance(int id) {

@@ -90,6 +90,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
         btngaleria.setOnClickListener(this);
         btnescolherestabelecimento.setOnClickListener(this);
         setDataAtual();
+
         readBundle(getArguments());
 
         //verifica se é cadastro ou alteração
@@ -123,30 +124,7 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
 
         }
 
-        // Pede permissão para acessar as mídias gravadas no dispositivo
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        PERMISSAO_REQUEST);
-            }
-        }
 
-        // Pede permissão para escrever arquivos no dispositivo
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSAO_REQUEST);
-            }
-        }
 
         return minhaView;
     }
@@ -276,6 +254,9 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                 if (id != 0) {
                     RemoverRNC();
                 }
+                else {
+                    limparcampos();
+                }
                 break;
             case R.id.button_CancelarRNC:
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -284,6 +265,10 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
                 ft.commit();
                 break;
         }
+    }
+
+    private void limparcampos() {
+        descricao.setText("");
     }
 
     private void EscolherData() {
@@ -411,30 +396,20 @@ public class Cadastro_RNC extends Fragment implements View.OnClickListener {
     }
 
     private boolean verificacampos() {
-     //   if(btnescolherestabelecimento.getText().toString().equals("Clique para escolher estabelecimento") || btnescolherdata.getText().toString().equals("Clique para escolher a data")){
-    //        Toast.makeText(getActivity(), "Escolha os campos solicitados!",
-     //               Toast.LENGTH_LONG).show();
-    //        return false;
-     //   }
-      //  else{
-            return true;
-   //     }
-    }
+        if(descricao.getText().toString().equals("")||btnescolherestabelecimento.getText().toString().equals("Clique para escolher estabelecimento") || dt_verificacao.getText().toString().equals("Clique para escolher a data")){
+            Toast.makeText(getActivity(), "Preencha todos os campos solicitados!",
+                    Toast.LENGTH_LONG).show();
 
-    private Date formataStringtoDate(String string) {
-        Date dt = new Date();
-        Log.d("----->", "Formatar data "+string);
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-        try {
-            dt = formatter.parse(string);
-            Log.d("----->", "Formatada data "+dt.toString());
-
-        } catch (ParseException e) {
-            e.printStackTrace();
+            return false;
+        }else if(caminho_foto == null){
+            Toast.makeText(getActivity(),"Cadastre a imagem!",Toast.LENGTH_LONG).show();
+            return false;
         }
-        return dt;
+        else{
+            return true;
+        }
     }
+
     public static Cadastro_RNC newInstance(int id, int id_estabelecimento) {
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);

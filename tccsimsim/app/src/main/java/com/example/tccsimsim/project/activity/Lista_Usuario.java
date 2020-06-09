@@ -1,9 +1,6 @@
 package com.example.tccsimsim.project.activity;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tccsimsim.R;
+import com.example.tccsimsim.project.Utils.RecyclerItemClickListener;
 import com.example.tccsimsim.project.adapter.UsuarioAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Usuario;

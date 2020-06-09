@@ -132,6 +132,19 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), "Favor preencher login",
                         Toast.LENGTH_LONG).show();
 
+            }
+            else if(login.getText().toString().equals("")){
+                Toast.makeText(getActivity(), "Favor preencher login!",
+                        Toast.LENGTH_LONG).show();
+
+            }else if(nome.getText().toString().equals("")){
+                Toast.makeText(getActivity(), "Favor preencher o nome!",
+                        Toast.LENGTH_LONG).show();
+
+            }else if(senha.getText().toString().equals("")){
+                Toast.makeText(getActivity(), "Favor preencher a senha!",
+                        Toast.LENGTH_LONG).show();
+
             }else {
 
                 Usuario user = new Usuario();
@@ -159,18 +172,26 @@ public class Cadastro_Usuario extends Fragment implements View.OnClickListener {
         else {
 
             if (bd.login(login.getText().toString()) != null) {
-                Toast.makeText(getActivity(), "Nome de login já utilizado, favor inserir outro",
+                Toast.makeText(getActivity(), "Nome de login já utilizado, favor utilizar outro!",
                         Toast.LENGTH_LONG).show();
             } else if (!senha.getText().toString().equals(confirmar_senha.getText().toString())) {
-                Toast.makeText(getActivity(), "As senhas não correspondem",
+                Toast.makeText(getActivity(), "As senhas não correspondem!",
                         Toast.LENGTH_LONG).show();
             } else if(administrador.isChecked()==false && visualizador.isChecked()==false){
-                Toast.makeText(getActivity(), "Favor selecionar a permissão",
+                Toast.makeText(getActivity(), "Favor selecionar a permissão!",
                         Toast.LENGTH_LONG).show();
 
             }
             else if(login.getText().toString().equals("")){
-                Toast.makeText(getActivity(), "Favor preencher login",
+                Toast.makeText(getActivity(), "Favor preencher login!",
+                        Toast.LENGTH_LONG).show();
+
+            }else if(nome.getText().toString().equals("")){
+                Toast.makeText(getActivity(), "Favor preencher o nome!",
+                        Toast.LENGTH_LONG).show();
+
+            }else if(senha.getText().toString().equals("")){
+                Toast.makeText(getActivity(), "Favor preencher a senha!",
                         Toast.LENGTH_LONG).show();
 
             }else{

@@ -3,14 +3,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_produtos"
-            android:title="Produtos" />
-        <item
             android:id="@+id/nav_estabelecimentos"
             android:title="Estabelecimentos" />
         <item
-            android:id="@+id/nav_usuarios"
-            android:title="Usuários" />
+            android:id="@+id/nav_produtos"
+            android:title="Produtos" />
+        <item
+            android:id="@+id/nav_mediaMensal"
+            android:title="Média Mensal" />
+        <item
+            android:id="@+id/nav_AnaliseLaboratorial"
+            android:title="Análise Laboratorial" />
+        <item
+            android:id="@+id/nav_RNC"
+            android:title="RNC" />
+
+        <item
+            android:id="@+id/nav_AI"
+            android:title="AI" />
         <item
             android:id="@+id/nav_atestadoSaude"
             android:title="Atestado de Saúde" />
@@ -18,20 +28,11 @@
             android:id="@+id/nav_licencaAmbiental"
             android:title="Licenca Ambiental" />
         <item
-            android:id="@+id/nav_mediaMensal"
-            android:title="Média Mensal" />
-        <item
-            android:id="@+id/nav_RNC"
-            android:title="RNC" />
-        <item
-            android:id="@+id/nav_AI"
-            android:title="AI" />
-        <item
-            android:id="@+id/nav_AnaliseLaboratorial"
-            android:title="Análise Laboratorial" />
-        <item
             android:id="@+id/nav_Relatorios"
-            android:title="Relatórios" />
+            android:title="Gerar PDF - Auditoria" />
+        <item
+            android:id="@+id/nav_usuarios"
+            android:title="Usuários" />
     </group>
 
 </menu>

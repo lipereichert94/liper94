@@ -150,6 +150,9 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
                 if (id != 0) {
                     RemoverAnaliseLaboratorial();
                 }
+                else {
+                    limparcampos();
+                }
                 break;
             case R.id.button_data_nova_coleta_cadastro_AnaliseLaboratorial:
                 EscolherData();
@@ -162,8 +165,11 @@ public class Cadastro_Analise_Laboratorial extends Fragment implements View.OnCl
                 break;
         }
     }
+
+    private void limparcampos() {
+    }
+
     private void EscolherData() {
-        Log.d("----->", "Entrou no método escolherdata");
 
         Calendar c= Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis());

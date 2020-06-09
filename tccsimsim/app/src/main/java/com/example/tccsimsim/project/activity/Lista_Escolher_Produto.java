@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,12 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tccsimsim.R;
-import com.example.tccsimsim.project.adapter.EstabelecimentoAdapter;
+import com.example.tccsimsim.project.Utils.RecyclerItemClickListener;
 import com.example.tccsimsim.project.adapter.ProdutoAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
-import com.example.tccsimsim.project.model.Estabelecimento;
 import com.example.tccsimsim.project.model.Produto;
-import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
 import java.util.ArrayList;

@@ -117,6 +117,9 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
                 if (id != 0) {
                     RemoverMediaMensal();
                 }
+                else {
+                    limparcampos();
+                }
                 break;
             case R.id.button_CancelarMediaMensal:
                 FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -125,6 +128,10 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
                 ft.commit();
                 break;
         }
+    }
+
+    private void limparcampos() {
+        quantidade.setText("");
     }
 
     private void EscolherData() {
@@ -212,7 +219,7 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
                 ft.commit();
             }
         }
-        //gravar novo atestado saude
+        //gravar novo produto
         else {
             if(verificacampos()) {
                 Produto produto = new Produto();
@@ -243,20 +250,6 @@ public class Cadastro_Media_Mensal extends Fragment implements View.OnClickListe
         }
     }
 
-    private Date formataStringtoDate(String string) {
-        Date dt = new Date();
-        Log.d("----->", "Formatar data "+string);
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-        try {
-            dt = formatter.parse(string);
-            Log.d("----->", "Formatada data "+dt.toString());
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return dt;
-    }
     public static Cadastro_Media_Mensal newInstance(int id, int id_produto) {
         Bundle bundle = new Bundle();
         bundle.putInt("id", id);

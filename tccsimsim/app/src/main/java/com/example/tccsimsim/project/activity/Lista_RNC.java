@@ -15,10 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tccsimsim.R;
-import com.example.tccsimsim.project.adapter.AtestadoSaudeAdapter;
+import com.example.tccsimsim.project.Utils.RecyclerItemClickListener;
 import com.example.tccsimsim.project.adapter.RNCAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
-import com.example.tccsimsim.project.model.Atestado_Saude;
 import com.example.tccsimsim.project.model.RNC;
 import com.google.android.material.navigation.NavigationView;
 

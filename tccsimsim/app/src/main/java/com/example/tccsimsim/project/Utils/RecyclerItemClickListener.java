@@ -1,4 +1,4 @@
-package com.example.tccsimsim.project.activity;
+package com.example.tccsimsim.project.Utils;
 
 import android.content.Context;
 import android.view.GestureDetector;

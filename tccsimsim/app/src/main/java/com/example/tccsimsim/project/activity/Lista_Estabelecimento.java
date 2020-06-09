@@ -16,11 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tccsimsim.R;
+import com.example.tccsimsim.project.Utils.RecyclerItemClickListener;
 import com.example.tccsimsim.project.adapter.EstabelecimentoAdapter;
-import com.example.tccsimsim.project.adapter.UsuarioAdapter;
 import com.example.tccsimsim.project.banco.BDSQLiteHelper;
 import com.example.tccsimsim.project.model.Estabelecimento;
-import com.example.tccsimsim.project.model.Usuario;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
